@@ -1,5 +1,6 @@
 import os
 import tkinter as tk
+import customtkinter as ctk
 from PIL import Image, ImageDraw, ImageTk
 import datetime as dt 
 import requests as rq
@@ -72,6 +73,7 @@ class IrisApp:
         self.time_popup.title("Date & Time")
         self.time_popup.geometry("1410x750")
         center_frame = tk.Frame(self.time_popup)
+        center_frame.pack(expand=True)
 
         self.current_date = dt.datetime.now().strftime("%A, %B %d")
         date_label = tk.Label(center_frame, text=self.current_date, font=("Atkinson Hyperlegible", 90, "bold"))
@@ -83,14 +85,13 @@ class IrisApp:
         self.close_btn = tk.Button(self.time_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.time_popup.destroy)
         self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
         
-        center_frame.pack(expand=True)
-
         def update_clock():
-            self.current_time = dt.datetime.now().strftime("%I:%M %p")
+            self.current_time = dt.datetime.now().strftime("%I:%M:%S %p")
             self.time_label.config(text=self.current_time)
             self.time_label.after(1000, update_clock)
         
         self.time_popup.grab_set()
+        self.time_popup.focus_set()
         update_clock()
 
     def open_weather_btn(self):
@@ -98,14 +99,16 @@ class IrisApp:
         self.weather_popup.title("Weather")
         self.weather_popup.geometry("1410x750")
         center_frame = tk.Frame(self.weather_popup)
+        center_frame.pack(expand=True)
 
         header_label = tk.Label(center_frame, text="Weather:", font=("Atkinson Hyperlegible", 90, "bold"))
         header_label.pack(pady=5)
 
+        self.daily_weather_btn = tk.Button(self.weather_popup, text="See daily weather forecast", font=("Atkinson Hyperlegible", 36, "bold"), command=self.open_daily_weather)
+        self.daily_weather_btn.place(relx=0.0, rely=0.0, anchor="nw")
+
         self.close_btn = tk.Button(self.weather_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.weather_popup.destroy)
         self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-
-        center_frame.pack(expand=True)
 
         def get_weather():
             ip_api = rq.get("http://ip-api.com/json/")
@@ -136,7 +139,6 @@ class IrisApp:
             else: 
                 print(f"Failed to fetch data. Error code: {ip_api.status_code}")
 
-        # The catcher sits on the left, the function execution sits on the right!
         temp, humidity, apparent_temp, wind_direction, wind_speed, rain, shower = get_weather()
 
         if wind_direction <= 22.5 or wind_direction > 337.5:
@@ -165,6 +167,100 @@ Precipitation: {rain} inches of rain,
 {shower} inches of shower""", font=("Atkinson Hyperlegible", 70, "bold"))
         weather_label.pack(pady=5)
 
+        self.weather_popup.grab_set()
+        self.weather_popup.focus_set()
+    
+    def open_daily_weather(self):
+        self.daily_weather_popup = tk.Toplevel(self.weather_popup)
+        self.daily_weather_popup.title("Daily Weather")
+        self.daily_weather_popup.geometry("1410x750")
+        center_frame = tk.Frame(self.daily_weather_popup)
+        center_frame.pack(expand=True)
+
+        average_header_label = tk.Label(center_frame, text="Daily Weather:", font=("Atkinson Hyperlegible", 90, "bold"))
+        average_header_label.pack(pady=5)
+
+        self.close_btn = tk.Button(self.daily_weather_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.daily_weather_popup.destroy)
+        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
+
+        def get_daily_weather():
+            ip_api = rq.get("http://ip-api.com/json/")
+
+            if ip_api.status_code == 200:
+                ip_data = ip_api.json()
+
+                lon = ip_data.get("lon")
+                lat = ip_data.get("lat")
+
+                daily_weather_api = rq.get(f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,uv_index_max,daylight_duration,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant,showers_sum,rain_sum&timezone=America%2FNew_York&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch")
+
+                if daily_weather_api.status_code == 200:
+                    weather_data = daily_weather_api.json()
+                    
+                    temp_max = weather_data["daily"]["temperature_2m_max"][0]
+                    temp_min = weather_data["daily"]["temperature_2m_min"][0]
+                    apparent_temp_max = weather_data["daily"]["apparent_temperature_max"][0]
+                    apparent_temp_min = weather_data["daily"]["apparent_temperature_min"][0]
+                    raw_sunrise = weather_data["daily"]["sunrise"][0]
+                    raw_sunset = weather_data["daily"]["sunset"][0]
+                    uv_index = weather_data["daily"]["uv_index_max"][0]
+                    daylight_seconds = weather_data["daily"]["daylight_duration"][0]
+                    precipitation_probability = weather_data["daily"]["precipitation_probability_max"][0]
+                    wind_speed_max = weather_data["daily"]["wind_speed_10m_max"][0]
+                    main_wind_direction = weather_data["daily"]["wind_direction_10m_dominant"][0]
+                    showers_sum =weather_data["daily"]["showers_sum"][0]
+                    rain_sum = weather_data["daily"]["rain_sum"][0]
+                    
+                    return temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum
+
+                else: 
+                    print(f"Failed to fetch data. Error code: {daily_weather_api.status_code}")
+            else: 
+                print(f"Failed to fetch data. Error code: {ip_api.status_code}")
+
+        temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum = get_daily_weather()
+
+        if main_wind_direction <= 22.5 or main_wind_direction > 337.5:
+            direction = "north"
+        elif main_wind_direction >= 22.5 and main_wind_direction < 67.5:
+            direction = "northeast"
+        elif main_wind_direction >= 67.5 and main_wind_direction < 112.5:
+            direction = "east"
+        elif main_wind_direction >= 112.5 and main_wind_direction < 157.5:
+            direction = "southeast"
+        elif main_wind_direction >= 157.5 and main_wind_direction < 202.5:
+            direction = "south"
+        elif main_wind_direction >= 202.5 and main_wind_direction < 247.5:
+            direction = "southwest"
+        elif main_wind_direction >= 247.5 and main_wind_direction < 292.5:
+            direction = "west"
+        elif main_wind_direction >= 292.5 and main_wind_direction < 337.5:
+            direction = "northwest"
+
+        daylight_hours = int(daylight_seconds // 3600)
+        daylight_minutes = int((daylight_seconds % 3600) // 60)
+
+        sunrise_object = dt.datetime.strptime(raw_sunrise, "%Y-%m-%dT%H:%M")
+        sunrise_time = sunrise_object.strftime("%I:%M %p")
+
+        sunset_object = dt.datetime.strptime(raw_sunset, "%Y-%m-%dT%H:%M")
+        sunset_time = sunset_object.strftime("%I:%M %p")
+
+        daily_weather_label = tk.Label(center_frame, text=f"""Temperature: High is {temp_max}°F, low is {temp_min}°F
+Feels Like: High is {apparent_temp_max}°F, low is {apparent_temp_min}°F
+Wind Direction: {main_wind_direction}° from the {direction}
+Wind Speed: {wind_speed_max} miles per hour
+Precipitation: {precipitation_probability}% chance of rain, 
+{rain_sum} inches of rain, {showers_sum} inches of shower
+Total Daylight: {daylight_hours} hours and {daylight_minutes} minutes
+UV Index: {uv_index}
+Sunrise is at {sunrise_time}, 
+and sunset is at {sunset_time}""", font=("Atkinson Hyperlegible", 70, "bold"))
+        daily_weather_label.pack(pady=5)
+
+        self.daily_weather_popup.grab_set()
+        self.daily_weather_popup.focus_set()
+
     def open_todo_btn(self):
         self.todo_popup = tk.Toplevel(self.root)
         self.todo_popup.title("To Do")
@@ -176,7 +272,7 @@ Precipitation: {rain} inches of rain,
 
         self.close_btn = tk.Button(self.todo_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.todo_popup.destroy)
         self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-
+        
         center_frame.pack(expand=True)
 
     def open_notes_btn(self):
