@@ -144,18 +144,18 @@ elif st.session_state.current_screen == "weather":
                     
                     temp = weather_data["current"]["temperature_2m"]
                     humidity = weather_data["current"]["relative_humidity_2m"]
-                    apparent_temp = weather_data["current"]["apparent_temperature"]
+                    app_temp = weather_data["current"]["apparent_temperature"]
                     wind_direction = weather_data["current"]["wind_direction_10m"]
                     wind_speed = weather_data["current"]["wind_speed_10m"]
                     rain = weather_data["current"]["rain"]
                     shower = weather_data["current"]["showers"]
                     
-                    return temp, humidity, apparent_temp, wind_direction, wind_speed, rain, shower
+                    return temp, humidity, app_temp, wind_direction, wind_speed, rain, shower
         except Exception:
             pass
         return 0, 0, 0, 0, 0, 0, 0
 
-    temp, humidity, apparent_temp, wind_direction, wind_speed, rain, shower = get_weather()
+    temp, humidity, app_temp, wind_direction, wind_speed, rain, shower = get_weather()
 
     if wind_direction <= 22.5 or wind_direction > 337.5:
         direction = "north"
@@ -173,6 +173,8 @@ elif st.session_state.current_screen == "weather":
         direction = "west"
     elif wind_direction >= 292.5 and wind_direction < 337.5:
         direction = "northwest"
+    else:
+        direction = "Unknown"
 
     st.markdown("<h1>Weather</h1>", unsafe_allow_html=True)
     st.write("---")
@@ -180,7 +182,7 @@ elif st.session_state.current_screen == "weather":
     st.markdown(f"""
     <div style='text-align: center; font-size: 100px; line-height: 1.5;'>
         Temperature: <b>{temp}°F</b><br>
-        Feels Like: <b>{apparent_temp}°F</b><br>
+        Feels like: <b>{app_temp}°F</b><br>
         Humidity: <b>{humidity}%</b><br>
         Wind: <b>{wind_speed} mph</b> from the <b>{direction}</b><br>
         Precipitation: <b>{rain + shower}</b> inches
@@ -216,8 +218,8 @@ elif st.session_state.current_screen == "daily_weather":
 
                     temp_max = weather_data["daily"]["temperature_2m_max"][0]
                     temp_min = weather_data["daily"]["temperature_2m_min"][0]
-                    apparent_temp_max = weather_data["daily"]["apparent_temperature_max"][0]
-                    apparent_temp_min = weather_data["daily"]["apparent_temperature_min"][0]
+                    app_temp_max = weather_data["daily"]["apparent_temperature_max"][0]
+                    app_temp_min = weather_data["daily"]["apparent_temperature_min"][0]
                     raw_sunrise = weather_data["daily"]["sunrise"][0]
                     raw_sunset = weather_data["daily"]["sunset"][0]
                     uv_index = weather_data["daily"]["uv_index_max"][0]
@@ -228,12 +230,12 @@ elif st.session_state.current_screen == "daily_weather":
                     showers_sum =weather_data["daily"]["showers_sum"][0]
                     rain_sum = weather_data["daily"]["rain_sum"][0]
 
-                    return temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum
+                    return temp_max, temp_min, app_temp_max, app_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum
         except Exception:
             pass
-        return 0, 0, 0, 0, 0, 0, 0
+        return 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-    temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum = get_daily_weather()
+    temp_max, temp_min, app_temp_max, app_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum = get_daily_weather()
 
     if main_wind_direction <= 22.5 or main_wind_direction > 337.5:
         direction = "north"
@@ -251,6 +253,8 @@ elif st.session_state.current_screen == "daily_weather":
         direction = "west"
     elif main_wind_direction >= 292.5 and main_wind_direction < 337.5:
         direction = "northwest"
+    else:
+        direction = "Unknown"
 
     daylight_hours = int(daylight_seconds // 3600)
     daylight_minutes = int((daylight_seconds % 3600) // 60)
@@ -267,7 +271,7 @@ elif st.session_state.current_screen == "daily_weather":
     st.markdown(f"""
     <div style='text-align: center; font-size: 100px; line-height: 1.5;'>
         Temperature: High is <b>{temp_max}°F<b/>, low is <b>{temp_min}°F<b/><br>
-        Feels Like: High is <b>{apparent_temp_max}°F<b/>, low is <b>{apparent_temp_min}°F<b/><br>
+        Feels like: High is <b>{app_temp_max}°F<b/>, low is <b>{app_temp_min}°F<b/><br>
         Wind: <b>{wind_speed_max} mph</b> from the <b>{direction}</b><br>
         Precipitation: <b>{precipitation_probability}%<b/> chance of rain, <b>{rain_sum + showers_sum} inches</b><br>
         Total Daylight: <b>{daylight_hours}<b/> hours and <b>{daylight_minutes}<b/> minutes<br>
@@ -281,10 +285,96 @@ elif st.session_state.current_screen == "daily_weather":
     col1, col2 = st.columns(2)
     with col1:
         if st.button("⬅️ Back", use_container_width=True):
-            st.session_state.current_screen = "home"
+            st.session_state.current_screen = "weather"
             st.rerun()
             
     with col2:
         if st.button("📅 Hourly Forecast", use_container_width=True):
             st.session_state.current_screen = "hourly_weather"
             st.rerun()
+
+elif st.session_state.current_screen == "hourly_weather":
+    def get_hourly_weather():
+        try:
+            ip_api = rq.get("http://ip-api.com/json/")
+            if ip_api.status_code == 200:
+                ip_data = ip_api.json()
+                lon = ip_data.get("lon")
+                lat = ip_data.get("lat")
+
+                daily_weather_api = rq.get(f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1")
+
+                if daily_weather_api.status_code == 200:
+                    weather_data = daily_weather_api.json()
+                    hourly = weather_data["hourly"]
+
+                    hourly_data = {}
+
+                    for time_str, temp, humidity, app_temp, probability, precipitation, wind_speed, wind_direction in zip(
+                        hourly["time"], 
+                        hourly["temperature_2m"],
+                        hourly["relative_humidity_2m"],
+                        hourly["apparent_temperature"],
+                        hourly["precipitation_probability"],
+                        hourly["precipitation"],
+                        hourly["wind_speed_10m"],
+                        hourly["wind_direction_10m"],
+                    ):
+
+                        hour_label = dt.datetime.fromisoformat(time_str).strftime("%I:%M %p")
+                        
+                        if wind_direction <= 22.5 or wind_direction > 337.5:
+                            direction = "North"
+                        elif wind_direction >= 22.5 and wind_direction < 67.5:
+                            direction = "Northeast"
+                        elif wind_direction >= 67.5 and wind_direction < 112.5:
+                            direction = "East"
+                        elif wind_direction >= 112.5 and wind_direction < 157.5:
+                            direction = "Southeast"
+                        elif wind_direction >= 157.5 and wind_direction < 202.5:
+                            direction = "South"
+                        elif wind_direction >= 202.5 and wind_direction < 247.5:
+                            direction = "Southwest"
+                        elif wind_direction >= 247.5 and wind_direction < 292.5:
+                            direction = "West"
+                        elif wind_direction >= 292.5 and wind_direction < 337.5:
+                            direction = "Northwest"
+                        else:
+                            direction = "Unknown"
+
+                        hourly_data[hour_label] = {
+                            "temp": temp,
+                            "humidity": humidity,
+                            "apparent_temp": app_temp,
+                            "precip_prob": probability,
+                            "precip_amount": precipitation,
+                            "wind_speed": wind_speed,
+                            "wind_direction": direction
+                        }
+
+                    return hourly_data
+        except Exception:
+            pass
+        return {}
+
+    hourly_weather = get_hourly_weather()
+
+    st.markdown("<h1>Hourly Weather</h1>", unsafe_allow_html=True)
+    st.write("---")
+    
+    for hour, data in hourly_weather.items():
+        st.markdown(f"<h2>{hour}</h2>", unsafe_allow_html=True)
+        st.markdown(f"""
+    <div style='text-align: center; font-size: 100px; line-height: 1.5;'>
+        Temperature: <b>{data['temp']}°F</b><br>
+        Feels like: <b>{data['apparent_temp']}°F</b><br>
+        Humidity: <b>{data['humidity']}%</b><br>
+        Wind: <b>{data['wind_speed']}</b> from the <b>{data['wind_direction']}</b><br>
+        Precipitation: <b>{data['precip_prob']}%</b> chance of rain, <b>{data['precip_amount']}</b> inches
+    </div>
+    """, unsafe_allow_html=True)
+        st.write("---")
+
+    if st.button("⬅️ Back"):
+        st.session_state.current_screen = "daily_weather"
+        st.rerun()
