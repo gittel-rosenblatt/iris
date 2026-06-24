@@ -1,128 +1,146 @@
 import os
-import tkinter as tk
-import customtkinter as ctk
-from PIL import Image, ImageDraw, ImageTk
+from PIL import Image 
 import datetime as dt 
 import requests as rq
+import streamlit as st
 
-class IrisApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Iris")
-        self.root.geometry("1460x800")
+if "current_screen" not in st.session_state:
+    st.session_state.current_screen = "home"
+
+if st.session_state.current_screen == "time":
+    dynamic_title = "Iris: Date & Time"
+elif st.session_state.current_screen == "weather":
+    dynamic_title = "Iris: Weather"
+elif st.session_state.current_screen == "daily_weather":
+    dynamic_title = "Iris: Daily Weather"
+elif st.session_state.current_screen == "hourly_weather":
+    dynamic_title = "Iris: Hourly Weather"
+elif st.session_state.current_screen == "todo":
+    dynamic_title = "Iris: To Do"
+elif st.session_state.current_screen == "notes":
+    dynamic_title = "Iris: Notes"
+elif st.session_state.current_screen == "email":
+    dynamic_title = "Iris: Email"
+elif st.session_state.current_screen == "forms":
+    dynamic_title = "Iris: Forms"
+else:
+    dynamic_title = "Iris"
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+logo_path = os.path.join(SCRIPT_DIR, 'iris-circle-icon.png')
+app_icon = Image.open(logo_path)
+
+st.set_page_config(
+    page_title=dynamic_title,
+    page_icon=app_icon, 
+    layout="wide"
+)
         
-        SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-        logo_path = os.path.join(SCRIPT_DIR, 'iris-icon.png')
-        img_original = Image.open(logo_path).convert("RGBA")
-        
-        canvas_size = (256, 256)
-        icon_size = (206, 206) 
-        
-        img_square = img_original.resize(icon_size, Image.Resampling.LANCZOS)
-        
-        mask = Image.new("L", icon_size, 0)
-        draw = ImageDraw.Draw(mask)
-        draw.rounded_rectangle([(0, 0), icon_size], radius=36, fill=255)
-        
-        rounded_icon = Image.new("RGBA", icon_size)
-        rounded_icon.paste(img_square, (0, 0), mask=mask)
-        
-        final_padded_canvas = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
-        offset = ((canvas_size[0] - icon_size[0]) // 2, (canvas_size[1] - icon_size[1]) // 2)
-        final_padded_canvas.paste(rounded_icon, offset)
-        
-        self.img = ImageTk.PhotoImage(final_padded_canvas)
+st.markdown(
+    """
+    <style>
+        html, body, [class*="css"], .stApp, h1, h2, h3, p {
+            font-family: 'Atkinson Hyperlegible', sans-serif !important;
+        }
 
-        root.iconphoto(False, self.img)
-        self.create_main_dashboard()
-        
-    def create_main_dashboard(self):
-        self.root.columnconfigure(0, weight=1, uniform="group1")
-        self.root.columnconfigure(1, weight=1, uniform="group1")
-        self.root.rowconfigure(0, weight=0)
-        self.root.rowconfigure(1, weight=1)
-        self.root.rowconfigure(2, weight=1)
-        self.root.rowconfigure(3, weight=1)
+        h1 { font-size: 120px !important; font-weight: bold !important; line-height: 1.1 !important; }
+        h2 { font-size: 100px !important; font-weight: bold; text-align: center !important; }
+        h3 { font-size: 80px !important; }
 
-        titel = tk.Label(self.root, text="Iris: Lighting Up the Digital World", font=("Atkinson Hyperlegible", 70, "bold"),)
-        titel.grid(row=0, column=0, columnspan=2, sticky="w", padx=15, pady=5)
+        button[data-testid="baseButton-secondary"], 
+        button[data-testid="baseButton-primary"],
+        .stButton button,
+        div.stButton > button {
+            border-radius: 15px !important;
+            min-height: 150px !important;
+        }
 
-        self.close_btn = tk.Button(self.root, text="Close", font=("Atkinson Hyperlegible", 60, "bold"), command=self.root.destroy)
-        self.close_btn.grid(row=0, column=1, sticky="ne", padx=10, pady=10)
- 
-        self.time_btn = tk.Button(self.root, text="Time", font=("Atkinson Hyperlegible", 108, "bold"), command=self.open_time_btn)
-        self.time_btn.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        button[data-testid="baseButton-secondary"] p,
+        button[data-testid="baseButton-primary"] p,
+        .stButton button p,
+        div.stButton > button p {
+            font-family: 'Atkinson Hyperlegible', sans-serif !important;
+            font-size: 100px !important;  
+            font-weight: bold !important;
+        }
 
-        self.weather_btn = tk.Button(self.root, text="Weather", font=("Atkinson Hyperlegible", 108, "bold"), command=self.open_weather_btn)
-        self.weather_btn.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
+        hr {
+            border: 0 !important;
+            height: 6px !important;
+            background-color: #333 !important; 
+            margin-top: 10px !important;
+            margin-bottom: 30px !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-        self.todo_btn = tk.Button(self.root, text="To Do", font=("Atkinson Hyperlegible", 108, "bold"), command=self.open_todo_btn)
-        self.todo_btn.grid(row=2, column=0, sticky="nsew", padx=10, pady=10)
+if st.session_state.current_screen == "home":
+    st.markdown("<h1>Iris: Lighting Up the Digital World</h1>", unsafe_allow_html=True)
+    st.write("---")
 
-        self.notes_btn = tk.Button(self.root, text="Notes", font=("Atkinson Hyperlegible", 108, "bold"), command=self.open_notes_btn)
-        self.notes_btn.grid(row=2, column=1, sticky="nsew", padx=10, pady=10)
+    row1_col1, row1_col2 = st.columns(2)
 
-        self.email_btn = tk.Button(self.root, text="Email", font=("Atkinson Hyperlegible", 108, "bold"), command=self.open_email_btn)
-        self.email_btn.grid(row=3, column=0, sticky="nsew", padx=10, pady=10)
+    with row1_col1:
+        if st.button("⏰ Time", use_container_width=True):
+            st.session_state.current_screen = "time"
+            st.rerun()
 
-        self.forms_btn = tk.Button(self.root, text="Forms", font=("Atkinson Hyperlegible", 108, "bold"), command=self.open_forms_btn)
-        self.forms_btn.grid(row=3, column=1, sticky="nsew", padx=10, pady=10)
+    with row1_col2:
+        if st.button("🌤️ Weather", use_container_width=True):
+            st.session_state.current_screen = "weather"
+            st.rerun()
 
-    def open_time_btn(self):
-        self.time_popup = tk.Toplevel(self.root)
-        self.time_popup.title("Date & Time")
-        self.time_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.time_popup)
-        center_frame.pack(expand=True)
+    row2_col1, row2_col2 = st.columns(2)
 
-        self.current_date = dt.datetime.now().strftime("%A, %B %d")
-        date_label = tk.Label(center_frame, text=self.current_date, font=("Atkinson Hyperlegible", 90, "bold"))
-        date_label.pack(pady=5)
+    with row2_col1:
+        if st.button("📝 To Do", use_container_width=True):
+            pass
 
-        self.time_label = tk.Label(center_frame, text="", font=("Atkinson Hyperlegible", 90, "bold"))
-        self.time_label.pack(pady=5)
+    with row2_col2:
+        if st.button("📓 Notes", use_container_width=True):
+            pass
 
-        self.close_btn = tk.Button(self.time_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.time_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-        
-        def update_clock():
-            self.current_time = dt.datetime.now().strftime("%I:%M:%S %p")
-            self.time_label.config(text=self.current_time)
-            self.time_label.after(1000, update_clock)
-        
-        self.time_popup.grab_set()
-        self.time_popup.focus_set()
-        update_clock()
+    row3_col1, row3_col2 = st.columns(2)
 
-    def open_weather_btn(self):
-        self.weather_popup = tk.Toplevel(self.root)
-        self.weather_popup.title("Weather")
-        self.weather_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.weather_popup)
-        center_frame.pack(expand=True)
+    with row3_col1:
+        if st.button("📧 Email", use_container_width=True):
+            pass
 
-        header_label = tk.Label(center_frame, text="Weather:", font=("Atkinson Hyperlegible", 90, "bold"))
-        header_label.pack(pady=5)
+    with row3_col2:
+        if st.button("📋 Forms", use_container_width=True):
+            pass
 
-        self.daily_weather_btn = tk.Button(self.weather_popup, text="See daily weather forecast", font=("Atkinson Hyperlegible", 36, "bold"), command=self.open_daily_weather)
-        self.daily_weather_btn.place(relx=0.0, rely=0.0, anchor="nw")
+elif st.session_state.current_screen == "time":
+    st.markdown("<h1>Date & Time</h1>", unsafe_allow_html=True)
+    st.write("---")
 
-        self.close_btn = tk.Button(self.weather_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.weather_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
+    current_date = dt.datetime.now().strftime("%A, %B %d")
+    current_time = dt.datetime.now().strftime("%I:%M %p")
 
-        def get_weather():
+    st.markdown(f"<h2>{current_date}</h2>", unsafe_allow_html=True)
+    st.write("")
+    st.markdown(f"<h2>{current_time}</h2>", unsafe_allow_html=True) 
+    st.write("---")
+
+    if st.button("⬅️ Back"):
+        st.session_state.current_screen = "home"
+        st.rerun()
+
+elif st.session_state.current_screen == "weather":
+    def get_weather():
+        try:
             ip_api = rq.get("http://ip-api.com/json/")
-
             if ip_api.status_code == 200:
                 ip_data = ip_api.json()
-
                 lon = ip_data.get("lon")
                 lat = ip_data.get("lat")
 
                 weather_api = rq.get(f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_direction_10m,wind_speed_10m,rain,showers&timezone=auto&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch")
 
                 if weather_api.status_code == 200:
-                    weather_data = weather_api.json()
+                    weather_data = weather_api.json()              
                     
                     temp = weather_data["current"]["temperature_2m"]
                     humidity = weather_data["current"]["relative_humidity_2m"]
@@ -133,62 +151,61 @@ class IrisApp:
                     shower = weather_data["current"]["showers"]
                     
                     return temp, humidity, apparent_temp, wind_direction, wind_speed, rain, shower
+        except Exception:
+            pass
+        return 0, 0, 0, 0, 0, 0, 0
 
-                else: 
-                    print(f"Failed to fetch data. Error code: {weather_api.status_code}")
-            else: 
-                print(f"Failed to fetch data. Error code: {ip_api.status_code}")
+    temp, humidity, apparent_temp, wind_direction, wind_speed, rain, shower = get_weather()
 
-        temp, humidity, apparent_temp, wind_direction, wind_speed, rain, shower = get_weather()
+    if wind_direction <= 22.5 or wind_direction > 337.5:
+        direction = "north"
+    elif wind_direction >= 22.5 and wind_direction < 67.5:
+        direction = "northeast"
+    elif wind_direction >= 67.5 and wind_direction < 112.5:
+        direction = "east"
+    elif wind_direction >= 112.5 and wind_direction < 157.5:
+        direction = "southeast"
+    elif wind_direction >= 157.5 and wind_direction < 202.5:
+        direction = "south"
+    elif wind_direction >= 202.5 and wind_direction < 247.5:
+        direction = "southwest"
+    elif wind_direction >= 247.5 and wind_direction < 292.5:
+        direction = "west"
+    elif wind_direction >= 292.5 and wind_direction < 337.5:
+        direction = "northwest"
 
-        if wind_direction <= 22.5 or wind_direction > 337.5:
-            direction = "north"
-        elif wind_direction >= 22.5 and wind_direction < 67.5:
-            direction = "northeast"
-        elif wind_direction >= 67.5 and wind_direction < 112.5:
-            direction = "east"
-        elif wind_direction >= 112.5 and wind_direction < 157.5:
-            direction = "southeast"
-        elif wind_direction >= 157.5 and wind_direction < 202.5:
-            direction = "south"
-        elif wind_direction >= 202.5 and wind_direction < 247.5:
-            direction = "southwest"
-        elif wind_direction >= 247.5 and wind_direction < 292.5:
-            direction = "west"
-        elif wind_direction >= 292.5 and wind_direction < 337.5:
-            direction = "northwest"
-
-        weather_label = tk.Label(center_frame, text=f"""Temperature: {temp}°F
-Humidity: {humidity}%
-Feels Like: {apparent_temp}°F
-Wind Direction: {wind_direction}° from the {direction}
-Wind Speed: {wind_speed} miles per hour
-Precipitation: {rain} inches of rain, 
-{shower} inches of shower""", font=("Atkinson Hyperlegible", 70, "bold"))
-        weather_label.pack(pady=5)
-
-        self.weather_popup.grab_set()
-        self.weather_popup.focus_set()
+    st.markdown("<h1>Weather</h1>", unsafe_allow_html=True)
+    st.write("---")
     
-    def open_daily_weather(self):
-        self.daily_weather_popup = tk.Toplevel(self.weather_popup)
-        self.daily_weather_popup.title("Daily Weather")
-        self.daily_weather_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.daily_weather_popup)
-        center_frame.pack(expand=True)
+    st.markdown(f"""
+    <div style='text-align: center; font-size: 100px; line-height: 1.5;'>
+        Temperature: <b>{temp}°F</b><br>
+        Feels Like: <b>{apparent_temp}°F</b><br>
+        Humidity: <b>{humidity}%</b><br>
+        Wind: <b>{wind_speed} mph</b> from the <b>{direction}</b><br>
+        Precipitation: <b>{rain + shower}</b> inches
+    </div>
+    """, unsafe_allow_html=True)
 
-        average_header_label = tk.Label(center_frame, text="Daily Weather:", font=("Atkinson Hyperlegible", 90, "bold"))
-        average_header_label.pack(pady=5)
+    st.write("---")
 
-        self.close_btn = tk.Button(self.daily_weather_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.daily_weather_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("⬅️ Back", use_container_width=True):
+            st.session_state.current_screen = "home"
+            st.rerun()
+            
+    with col2:
+        if st.button("📅 Daily Forecast", use_container_width=True):
+            st.session_state.current_screen = "daily_weather"
+            st.rerun()
 
-        def get_daily_weather():
+elif st.session_state.current_screen == "daily_weather":
+    def get_daily_weather():
+        try:
             ip_api = rq.get("http://ip-api.com/json/")
-
             if ip_api.status_code == 200:
                 ip_data = ip_api.json()
-
                 lon = ip_data.get("lon")
                 lat = ip_data.get("lat")
 
@@ -196,7 +213,7 @@ Precipitation: {rain} inches of rain,
 
                 if daily_weather_api.status_code == 200:
                     weather_data = daily_weather_api.json()
-                    
+
                     temp_max = weather_data["daily"]["temperature_2m_max"][0]
                     temp_min = weather_data["daily"]["temperature_2m_min"][0]
                     apparent_temp_max = weather_data["daily"]["apparent_temperature_max"][0]
@@ -210,114 +227,64 @@ Precipitation: {rain} inches of rain,
                     main_wind_direction = weather_data["daily"]["wind_direction_10m_dominant"][0]
                     showers_sum =weather_data["daily"]["showers_sum"][0]
                     rain_sum = weather_data["daily"]["rain_sum"][0]
-                    
+
                     return temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum
+        except Exception:
+            pass
+        return 0, 0, 0, 0, 0, 0, 0
 
-                else: 
-                    print(f"Failed to fetch data. Error code: {daily_weather_api.status_code}")
-            else: 
-                print(f"Failed to fetch data. Error code: {ip_api.status_code}")
+    temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum = get_daily_weather()
 
-        temp_max, temp_min, apparent_temp_max, apparent_temp_min, raw_sunrise, raw_sunset, uv_index, daylight_seconds, precipitation_probability, wind_speed_max, main_wind_direction, showers_sum, rain_sum = get_daily_weather()
+    if main_wind_direction <= 22.5 or main_wind_direction > 337.5:
+        direction = "north"
+    elif main_wind_direction >= 22.5 and main_wind_direction < 67.5:
+        direction = "northeast"
+    elif main_wind_direction >= 67.5 and main_wind_direction < 112.5:
+        direction = "east"
+    elif main_wind_direction >= 112.5 and main_wind_direction < 157.5:
+        direction = "southeast"
+    elif main_wind_direction >= 157.5 and main_wind_direction < 202.5:
+        direction = "south"
+    elif main_wind_direction >= 202.5 and main_wind_direction < 247.5:
+        direction = "southwest"
+    elif main_wind_direction >= 247.5 and main_wind_direction < 292.5:
+        direction = "west"
+    elif main_wind_direction >= 292.5 and main_wind_direction < 337.5:
+        direction = "northwest"
 
-        if main_wind_direction <= 22.5 or main_wind_direction > 337.5:
-            direction = "north"
-        elif main_wind_direction >= 22.5 and main_wind_direction < 67.5:
-            direction = "northeast"
-        elif main_wind_direction >= 67.5 and main_wind_direction < 112.5:
-            direction = "east"
-        elif main_wind_direction >= 112.5 and main_wind_direction < 157.5:
-            direction = "southeast"
-        elif main_wind_direction >= 157.5 and main_wind_direction < 202.5:
-            direction = "south"
-        elif main_wind_direction >= 202.5 and main_wind_direction < 247.5:
-            direction = "southwest"
-        elif main_wind_direction >= 247.5 and main_wind_direction < 292.5:
-            direction = "west"
-        elif main_wind_direction >= 292.5 and main_wind_direction < 337.5:
-            direction = "northwest"
+    daylight_hours = int(daylight_seconds // 3600)
+    daylight_minutes = int((daylight_seconds % 3600) // 60)
 
-        daylight_hours = int(daylight_seconds // 3600)
-        daylight_minutes = int((daylight_seconds % 3600) // 60)
+    sunrise_object = dt.datetime.strptime(raw_sunrise, "%Y-%m-%dT%H:%M")
+    sunrise_time = sunrise_object.strftime("%I:%M %p")
 
-        sunrise_object = dt.datetime.strptime(raw_sunrise, "%Y-%m-%dT%H:%M")
-        sunrise_time = sunrise_object.strftime("%I:%M %p")
+    sunset_object = dt.datetime.strptime(raw_sunset, "%Y-%m-%dT%H:%M")
+    sunset_time = sunset_object.strftime("%I:%M %p")
 
-        sunset_object = dt.datetime.strptime(raw_sunset, "%Y-%m-%dT%H:%M")
-        sunset_time = sunset_object.strftime("%I:%M %p")
+    st.markdown("<h1>Daily Weather</h1>", unsafe_allow_html=True)
+    st.write("---")
+    
+    st.markdown(f"""
+    <div style='text-align: center; font-size: 100px; line-height: 1.5;'>
+        Temperature: High is <b>{temp_max}°F<b/>, low is <b>{temp_min}°F<b/><br>
+        Feels Like: High is <b>{apparent_temp_max}°F<b/>, low is <b>{apparent_temp_min}°F<b/><br>
+        Wind: <b>{wind_speed_max} mph</b> from the <b>{direction}</b><br>
+        Precipitation: <b>{precipitation_probability}%<b/> chance of rain, <b>{rain_sum + showers_sum} inches</b><br>
+        Total Daylight: <b>{daylight_hours}<b/> hours and <b>{daylight_minutes}<b/> minutes<br>
+        UV Index: <b>{uv_index}<b/><br>
+        Sunrise is at <b>{sunrise_time}<b/>, and sunset is at <b>{sunset_time}<b/>
+    </div>
+    """, unsafe_allow_html=True)
 
-        daily_weather_label = tk.Label(center_frame, text=f"""Temperature: High is {temp_max}°F, low is {temp_min}°F
-Feels Like: High is {apparent_temp_max}°F, low is {apparent_temp_min}°F
-Wind Direction: {main_wind_direction}° from the {direction}
-Wind Speed: {wind_speed_max} miles per hour
-Precipitation: {precipitation_probability}% chance of rain, 
-{rain_sum} inches of rain, {showers_sum} inches of shower
-Total Daylight: {daylight_hours} hours and {daylight_minutes} minutes
-UV Index: {uv_index}
-Sunrise is at {sunrise_time}, 
-and sunset is at {sunset_time}""", font=("Atkinson Hyperlegible", 70, "bold"))
-        daily_weather_label.pack(pady=5)
+    st.write("---")
 
-        self.daily_weather_popup.grab_set()
-        self.daily_weather_popup.focus_set()
-
-    def open_todo_btn(self):
-        self.todo_popup = tk.Toplevel(self.root)
-        self.todo_popup.title("To Do")
-        self.todo_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.todo_popup)
-
-        weather_label = tk.Label(center_frame, text="To Do loading...", font=("Atkinson Hyperlegible", 90, "bold"))
-        weather_label.pack(pady=5)
-
-        self.close_btn = tk.Button(self.todo_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.todo_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-        
-        center_frame.pack(expand=True)
-
-    def open_notes_btn(self):
-        self.notes_popup = tk.Toplevel(self.root)
-        self.notes_popup.title("Notes")
-        self.notes_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.notes_popup)
-
-        weather_label = tk.Label(center_frame, text="Notes loading...", font=("Atkinson Hyperlegible", 90, "bold"))
-        weather_label.pack(pady=5)
-
-        self.close_btn = tk.Button(self.notes_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.notes_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-
-        center_frame.pack(expand=True)
-
-    def open_email_btn(self):
-        self.email_popup = tk.Toplevel(self.root)
-        self.email_popup.title("Email")
-        self.email_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.email_popup)
-
-        weather_label = tk.Label(center_frame, text="Email loading...", font=("Atkinson Hyperlegible", 90, "bold"))
-        weather_label.pack(pady=5)
-
-        self.close_btn = tk.Button(self.email_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.email_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-
-        center_frame.pack(expand=True)
-
-    def open_forms_btn(self):
-        self.forms_popup = tk.Toplevel(self.root)
-        self.forms_popup.title("Forms")
-        self.forms_popup.geometry("1410x750")
-        center_frame = tk.Frame(self.forms_popup)
-
-        weather_label = tk.Label(center_frame, text="Forms loading...", font=("Atkinson Hyperlegible", 90, "bold"))
-        weather_label.pack(pady=5)
-
-        self.close_btn = tk.Button(self.forms_popup, text="Close", font=("Atkinson Hyperlegible", 36, "bold"), command=self.forms_popup.destroy)
-        self.close_btn.place(relx=1.0, rely=0.0, anchor="ne")
-
-        center_frame.pack(expand=True)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = IrisApp(root)
-    root.mainloop()
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("⬅️ Back", use_container_width=True):
+            st.session_state.current_screen = "home"
+            st.rerun()
+            
+    with col2:
+        if st.button("📅 Hourly Forecast", use_container_width=True):
+            st.session_state.current_screen = "hourly_weather"
+            st.rerun()
