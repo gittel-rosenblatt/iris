@@ -156,6 +156,46 @@ main {
     overflow: hidden;
 }
 
+.our-story {
+    background-color: var(--bg-card);
+    flex: 2;
+    max-width: 790px;
+    overflow-y: auto;
+    border-right: 2px solid var(--iris-purple); 
+    padding: 40px;
+}
+
+.story-image {
+    background-color: var(--bg-cream);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    overflow: hidden;
+}
+
+.story-image img {
+    height: 400px;
+    width: auto;
+    display: block;
+}
+
+.privacy, .terms {
+    background-color: var(--bg-card);
+    margin: 0 auto;
+    text-align: left;
+    padding: 40px;
+}
+
+.privacy h2, .terms h2{
+    background-color: var(--bg-card);
+    margin: 0;
+    text-align: center;
+}
+
 footer {
     display: flex;
     flex-direction: column;

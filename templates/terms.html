@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris - Terms of Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=1) }}">
+</head>
+<body>
+    
+    <header>
+    <div class="header-left">
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo and link to bring you home">
+        </a>
+        <h1>Iris: Lighting up the digital world</h1>
+    </div>
+
+    <nav class="header-nav">
+        <a href="{{ url_for('story') }}" class="nav-link">Our Story</a>
+        <a href="{{ url_for('login') }}" class="login-link">Log in</a>
+    </nav>
+</header>
+
+<main>
+    <section class="terms">
+        <h2>Terms of Service</h2>
+        <p>Terms of Service will go there but until then... [yes this is copied from the privacy policy. get over it]</p>
+        <p>Loreum ipsum i love fake lorem ipsum especially cuz i cant spell any of it lmfao</p>
+        <p>la la la la la fillign space any way I can laaaaa dfsgksbfibsdibdbvdhvbhdbvhdbshvsvsvsdvassadsvsdafvadviugifogdsuyvgsdouyagvdvdhsadohvdsdvsdaeqrregbefreferero</p>
+        <p>lowkenuinely fun af :heart i don't remember how to do the less than sign :sob and im not looking up emojis so... </p>
+    </section>
+</main>
+
+<footer>
+    <div class="contact-info">
+        <a href="mailto:iris@gmail.com"><img src="{{ url_for('static', filename='images/gmail-logo.png') }}" alt="email logo">iris@gmail.com</a>
+        <a href="tel:+11234567890"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="phone logo">+1 (###) ###-###</a>
+        <a href="#"><img src="{{ url_for('static', filename='images/insta-logo.png') }}" alt="instagram logo">@instagram-handle</a>
+        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
+    </div>
+
+    <div class="copyright-legal">
+        <p>&copy; 2026 Iris. All Rights Reserved.</p>
+        <a href="{{ url_for('terms') }}">Terms of Service</a>
+        <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+    </div>
+</footer>
+
+</body>
+</html>
