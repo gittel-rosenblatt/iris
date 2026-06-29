@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_of
 
 app = Flask(__name__)
 
@@ -20,14 +20,22 @@ def privacy():
 
 @app.route('/login')
 def login():
-    return render_template("login.html")
+    if request.method == 'POST':
+        login_title = request.login.get('login_title')
+        login_description = request.login.get('login_description')
+        
+        print(f"New Form Created: {login_title} - {login_description}")
+        
+        return redirect('/dashboard')
+        
+    return render_template('workspace.html')
 
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html') 
     
 @app.route('/workspace')
-def forms():
+def workspace():
     return render_template('workspace.html') 
 
 @app.route('/profile')
