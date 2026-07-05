@@ -37,7 +37,7 @@ p, h1, h2, h3, nav a {
 a {
     color: var(--text-main);
     transition: color 0.2s ease;
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
 }
 
 a:hover {
@@ -50,15 +50,15 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
 }
 
 h2 {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 4vw, 2rem);
 }
 
 p {
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
     line-height: 1.6; 
 }
 
@@ -132,7 +132,7 @@ main {
     display: flex;
     flex: 1;
     height: 0;
-    flex-shrink: ;
+    flex-shrink: 0;
 }
 
 .info-section {
@@ -221,7 +221,7 @@ footer {
     flex-wrap: wrap;
     gap: 12px;
     text-decoration: none;
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
 }
 
 .contact-info img {
@@ -244,4 +244,38 @@ footer {
 .copyright-legal p, .copyright-legal a {
     font-size: 1.1rem;
     margin: 0;
+}
+
+.login-container {
+    background-color: var(--bg-card);
+    flex: 1;
+    overflow-y: auto;
+    border-right: 2px solid var(--iris-purple); 
+    padding: 40px;
+}
+
+.login-image {
+    background-color: var(--bg-cream);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    overflow: hidden;
+    position: relative;
+}
+
+.login-image .overlay-text {
+    position: absolute;
+    top: 51%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.form {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    line-height: 1.6; 
+    color: var(--text-main);
 }
