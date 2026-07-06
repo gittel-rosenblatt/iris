@@ -38,5 +38,9 @@ def profile():
 def forgot_password():
     return render_template("forgot-password.html") 
 
+@app.route("/contact-and-faqs")
+def contact():
+    return render_template("contact.html") 
+
 if __name__ == "__main__":
     app.run(debug=True)

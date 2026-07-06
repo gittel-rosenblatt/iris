@@ -16,8 +16,8 @@
     </div>
 
     <nav class="header-nav">
-        <a href="{{ url_for('story') }}" class="nav-link">Our Story</a>
-        <a href="{{ url_for('login') }}" class="login-link">Log in</a>
+        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
+        <a href="{{ url_for('login') }}">Log in</a>
     </nav>
 </header>
 
@@ -34,7 +34,7 @@
                 Gittel Rosenblatt &lt;3
             </p>
         </section>
-        <hr>
+    
         <section class="iris-founder">
             <h2>About Iris's Founder</h2>
             <p>To be completely honest with you, I don’t know how to start this, so why don’t we just try…</p>
@@ -49,25 +49,25 @@
         </section>
     </section>
         <section class="main-page">
-            <h1>Welcome to Iris</h1>
-            <p>A simple, accessible form assistant designed to make paperwork stress-free.</p>
-            <a href="{{ url_for('login') }}" class="btn">Get Started</a>
+            <section class="get-started">
+                <h1>Welcome to Iris</h1>
+                <p>A simple, accessible form assistant designed to make paperwork stress-free.</p>
+                <a href="{{ url_for('login') }}" class="btn">Get Started</a>
+            </section>
+            <section class="mission-statement">
+                <h1>Our Mission</h1>
+                <p>Our mission is simple: to make navigating essential online spaces equitable, independent, and seamless for the visually impaired.</p>
+                <p>You can learn more about us by visiting <a href="{{ url_for('contact') }}">our FAQs page</a> and <a href="{{ url_for('contact') }}">our story page</a>.</p>
+            </section>
         </section>
 </main>
 
 <footer>
-    <div class="contact-info">
-        <a href="mailto:iris@gmail.com"><img src="{{ url_for('static', filename='images/gmail-logo.png') }}" alt="email logo">iris@gmail.com</a>
-        <a href="tel:+11234567890"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="phone logo">+1 (###) ###-###</a>
-        <a href="#"><img src="{{ url_for('static', filename='images/insta-logo.png') }}" alt="instagram logo">@instagram-handle</a>
-        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
-    </div>
-
-    <div class="copyright-legal">
-        <p>&copy; 2026 Iris. All Rights Reserved.</p>
-        <a href="{{ url_for('terms') }}">Terms of Service</a>
-        <a href="{{ url_for('privacy') }}">Privacy Policy</a>
-    </div>
+    <p>&copy; 2026 Iris. All Rights Reserved.</p>
+    <a href="{{ url_for('terms') }}">Terms of Service</a>
+    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+    <a href="{{ url_for('contact') }}">Contact Us & FAQs</a>
+    <a href="{{ url_for('story') }}">Our Story</a>
 </footer>
 
 </body>

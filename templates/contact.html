@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris - Privacy Policy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">    
+</head>
+<body>
+    
+<header>
+    <div class="header-left">
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
+        </a>
+        <h1>Iris: Lighting up the digital world</h1>
+    </div>
+
+    <nav class="header-nav">
+        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
+        <a href="{{ url_for('login') }}">Log in</a>
+    </nav>
+</header>
+
+<main id="contact-main">
+    <section class="contact-faq">
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers to some common questions.</p>
+        
+        <div class="faq-group">
+            <details>
+                <summary>What is Iris?</summary>
+                <p>Iris is an accessible form assistant designed to make filling out digital forms stress-free and straightforward for the visually impaired.</p>
+            </details>
+
+            <details>
+                <summary>What is Iris's mission?</summary>
+                <p>Iris is dedicated to lighting up the digital world by breaking down barriers to online accessibility. We believe that navigating the internet should be equitable, stress-free, and seamless for everyone. By transforming complex digital paperwork into clean, accessible user experiences, Iris empowers visually impaired individuals to navigate essential online spaces with absolute independence and confidence.</p>
+            </details>
+
+            <details>
+                <summary>Is Iris free to use?</summary>
+                <p>Yes! We want to keep digital spaces open and accessible to everyone who needs them.</p>
+            </details>
+
+            <details>
+                <summary>How can I get involved?</summary>
+                <p>We love collaborators! Feel free to drop us a line using the form or check out our social media channels.</p>
+            </details>
+        </div>
+    </section>
+
+    <section id="contact-form-section">
+        <h2>Get in touch</h2>
+        <p>Send us a message, and we'll get back to you soon.</p>
+
+        <form class="form" id="contact-form">
+            <div class="form-group">
+                <label for="contact-name">Full name:</label>
+                <input type="text" id="contact-name" name="name" placeholder="Your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact-email">Email:</label>
+                <input type="email" id="contact-email" name="email" placeholder="Your email address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact-message">Message:</label>
+                <textarea id="contact-message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+            </div>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <div class="contact-info">
+            <a href="mailto:iris@gmail.com"><img src="{{ url_for('static', filename='images/gmail-logo.png') }}" alt="email logo">iris@gmail.com</a>
+            <a href="tel:+11234567890"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="phone logo">+1 (###) ###-###</a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta-logo.png') }}" alt="instagram logo">@instagram-handle</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Iris. All Rights Reserved.</p>
+    <a href="{{ url_for('terms') }}">Terms of Service</a>
+    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+    <a href="{{ url_for('contact') }}">Contact Us</a>
+</footer>
+
+</body>
+</html>
