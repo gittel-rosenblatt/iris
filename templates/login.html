@@ -23,47 +23,51 @@
     </nav>
 </header>
 
-<main>
-    <section class="login-container">
-        <h2>Login Here</h2>
-        <p>Welcome back &lt;3</p>
-        <form class="form" action="/login-endpoint" method="POST">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input 
-                type="text" 
-                id="username" 
-                name="username" 
-                autocomplete="username"
-                placeholder="Enter your username" 
-                required
-                >
-            </div>
+<main id="login-main">
+    <div class="login-container">
+        <section class="login">
+            <h2>Welcome back &lt;3</h2>
+            <p>Login here. Please enter your details.</p>
+            <form class="form" action="/login-endpoint" method="POST">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    autocomplete="username"
+                    placeholder="Enter your username" 
+                    required
+                    >
+                </div>
 
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input 
-                type="password" 
-                id="password" 
-                name="password" 
-                autocomplete="current-password"
-                placeholder="Enter your password" 
-                required
-                >
-            </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    autocomplete="current-password"
+                    placeholder="Enter your password" 
+                    required
+                    >
+                    <button type="button" id="toggle-password">Show</button>
+                </div>
 
-            <button type="submit">Log In</button>
-        </form>
-        <p class="toggle-text">
-            Don't have an account? 
-            <button type="button" id="switch-to-signup" class="link-btn">Sign up here</button>
-        </p>
-    </section>
+                <a href="{{ url_for('forgot_password') }}" id="forgot-password">Forgot password? Reset it here.</a>
 
-    <section class="login-image">
-        <img src="{{ url_for('static', filename='images/login-image.png') }}" alt="Iris name border">
-        <h1 class="overlay-text">Iris</h1>
-    </section>
+                <button type="submit">Sign in</button>
+            </form>
+            <p class="toggle-text">
+                Don't have an account? 
+                <button type="button" id="switch-to-signup" class="link-btn">Sign up here</button>
+            </p>
+        </section>
+
+        <section class="login-image">
+            <img src="{{ url_for('static', filename='images/iris-flower.jpg') }}" alt="Image of iris flowers">
+        </section>
+    </div>
 </main>
 
 <footer>
