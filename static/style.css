@@ -388,7 +388,7 @@ footer {
     cursor: pointer;
 }
 
-#toggle-password {
+#toggle-login-pass, #toggle-signup-pass, #toggle-confirm-pass {
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -401,7 +401,7 @@ footer {
     cursor: pointer;
 }
 
-#toggle-password:hover {
+#toggle-login-pass:hover, #toggle-signup-pass:hover, #toggle-confirm-pass:hover {
     background-color: var(--text-header);
     color: var(--iris-purple);
     border: 2px solid var(--iris-purple);
@@ -428,6 +428,37 @@ footer {
     object-position: center top;
     max-width: 500px;
     height: auto;
+}
+
+.signup {
+    display: none;
+}
+
+body.is-switched .signup {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    padding-right: 40px;
+    border-right: 2px solid var(--iris-purple); 
+    overflow-y: auto;
+}
+
+body.is-switched .login {
+    display: none;
+}
+
+.login, .signup {
+    width: 100%; 
+    max-width: 400px; 
+    margin: 0 auto; 
+    box-sizing: border-box; 
+}
+
+#security-question {
+    font-family: var(--main-font);
+    color: var(--text-main);
+    font-size: var(--font-size-md);
+    line-height: 1.6; 
 }
 
 @media (max-width: 768px) {

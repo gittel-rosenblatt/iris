@@ -51,16 +51,84 @@
                     placeholder="Enter your password" 
                     required
                     >
-                    <button type="button" id="toggle-password">Show</button>
+                    <button type="button" id="toggle-login-pass">Show</button>
                 </div>
 
                 <a href="{{ url_for('forgot_password') }}" id="forgot-password">Forgot password? Reset it here.</a>
 
-                <button type="submit">Sign in</button>
+                <button type="submit">Log in</button>
             </form>
             <p class="toggle-text">
                 Don't have an account? 
                 <button type="button" id="switch-to-signup" class="link-btn">Sign up here</button>
+            </p>
+        </section>
+    
+        <section class="signup">
+            <h2>We're happy to have you &lt;3</h2>
+            <p>Sign up here. Please choose your details.</p>
+            <form class="form" action="/login-endpoint" method="POST">
+                <div class="form-group">
+                    <label for="choose-username">Username:</label>
+                    <input 
+                    type="text" 
+                    id="choose-username" 
+                    name="username" 
+                    autocomplete="username"
+                    placeholder="Enter your username" 
+                    required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input 
+                    type="password" 
+                    id="choose-password" 
+                    name="password" 
+                    autocomplete="current-password"
+                    placeholder="Enter your password" 
+                    required
+                    >
+                    <button type="button" id="toggle-signup-pass">Show</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input 
+                    type="password" 
+                    id="confirm-password" 
+                    name="password" 
+                    autocomplete="current-password"
+                    placeholder="Confirm your password" 
+                    required
+                    >
+                    <button type="button" id="toggle-confirm-pass">Show</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="security-question">Security Question:</label>
+                    <select id="security-question" name="security_question" required>
+                        <option value="" disabled selected>Select a security question...</option>
+                        <option value="pet">What was the name of your first pet?</option>
+                        <option value="maiden">What is your mother's maiden name?</option>
+                        <option value="city">In what city were you born?</option>
+                        <option value="school">What was the name of your elementary school?</option>
+                        <option value="car">What was the make and model of your first car?</option>
+                        <option value="street">What is the name of the street you grew up on?</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="security-answer">Answer:</label>
+                    <input type="text" id="security-answer" name="security_answer" placeholder="Your answer" required>
+                </div>
+
+                <button type="submit">Sign up</button>
+            </form>
+            <p class="toggle-text">
+                Already have an account? 
+                <button type="button" id="switch-to-login" class="link-btn">Log in here</button>
             </p>
         </section>
 
