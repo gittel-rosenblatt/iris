@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iris - Privacy Policy</title>
+    <title>Iris - Contact Us</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">    
 </head>
 <body>
@@ -13,12 +13,19 @@
         <a href="{{ url_for('home') }}">
             <img src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
-        <h1>Iris: Lighting up the digital world</h1>
+        <h1 class="header-name">
+            <span class="brand-name">Iris</span>
+            <span class="divider">|</span>
+            <span class="header-tagline">Lighting up the digital world</span>
+        </h1>
     </div>
 
     <nav class="header-nav">
-        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
-        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('story') }}">
+            <span class="long-text">Our story</span>
+            <span class="short-text">Story</span>
+        </a>
+        <a href="{{ url_for('login') }}">Login</a>
     </nav>
 </header>
 
@@ -74,18 +81,32 @@
         </form>
 
         <div class="contact-info">
-            <a href="mailto:iris@gmail.com"><img src="{{ url_for('static', filename='images/gmail-logo.png') }}" alt="email logo">iris@gmail.com</a>
-            <a href="tel:+11234567890"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="phone logo">+1 (###) ###-###</a>
-            <a href="#"><img src="{{ url_for('static', filename='images/insta-logo.png') }}" alt="instagram logo">@instagram-handle</a>
+            <a href="mailto:iris@gmail.com"><img src="{{ url_for('static', filename='images/gmail-logo.png') }}" alt="Email Iris"><span class="long-text">iris@gmail.com</span></a>
+            <a href="tel:+11234567890"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="Call or text Iris"><span class="long-text">+1 (###) ###-###</span></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta-logo.png') }}" alt="Message or view Iris's Instagram"><span class="long-text">@instagram-handle</span></a>
         </div>
     </section>
 </main>
 
 <footer>
+    <a id="back-to-top" href="#">↑</a>
     <p>&copy; 2026 Iris. All Rights Reserved.</p>
-    <a href="{{ url_for('terms') }}">Terms of Service</a>
-    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
-    <a href="{{ url_for('contact') }}">Contact Us</a>
+    <a href="{{ url_for('terms') }}">
+        <span class="long-text">Terms of Service</span>
+        <span class="short-text">Terms</span>
+    </a>
+    <a href="{{ url_for('privacy') }}">
+        <span class="long-text">Privacy Policy</span>
+        <span class="short-text">Privacy</span>
+    </a>
+    <a href="{{ url_for('contact') }}">
+        <span class="long-text">Contact us & FAQs</span>
+        <span class="short-text">Contact</span>
+    </a>
+    <a href="{{ url_for('story') }}">
+        <span class="long-text">Our story</span>
+        <span class="short-text">Story</span>  
+    </a>
 </footer>
 
 </body>

@@ -9,19 +9,26 @@
 
 <header>
     <div class="header-left">
-        <a href="#">
+        <a href="{{ url_for('home') }}">
             <img src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
-        <h1>Iris: Lighting up the digital world</h1>
+        <h1 class="header-name">
+            <span class="brand-name">Iris</span>
+            <span class="divider">|</span>
+            <span class="header-tagline">Lighting up the digital world</span>
+        </h1>
     </div>
 
     <nav class="header-nav">
-        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
-        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('story') }}">
+            <span class="long-text">Our story</span>
+            <span class="short-text">Story</span>
+        </a>
+        <a href="{{ url_for('login') }}">Login</a>
     </nav>
 </header>
 
-<main>
+<main id="story-main">
     <section class="our-story">
         <h2>Our Story</h2>
         <p>Look in the mirror. Look at your eye. What’s the first thing you notice? It’s your pupil, isn’t it? Now what’s around your pupil? That ring of color? That’s your iris.</p>
@@ -45,10 +52,24 @@
 </main>
 
 <footer>
+    <a id="back-to-top" href="#">↑</a>
     <p>&copy; 2026 Iris. All Rights Reserved.</p>
-    <a href="{{ url_for('terms') }}">Terms of Service</a>
-    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
-    <a href="{{ url_for('contact') }}">Contact Us</a>
+    <a href="{{ url_for('terms') }}">
+        <span class="long-text">Terms of Service</span>
+        <span class="short-text">Terms</span>
+    </a>
+    <a href="{{ url_for('privacy') }}">
+        <span class="long-text">Privacy Policy</span>
+        <span class="short-text">Privacy</span>
+    </a>
+    <a href="{{ url_for('contact') }}">
+        <span class="long-text">Contact us & FAQs</span>
+        <span class="short-text">Contact</span>
+    </a>
+    <a href="{{ url_for('story') }}">
+        <span class="long-text">Our story</span>
+        <span class="short-text">Story</span>  
+    </a>
 </footer>
     
 </body>

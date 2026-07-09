@@ -10,15 +10,22 @@
     
 <header>
     <div class="header-left">
-        <a href="#">
+        <a href="{{ url_for('home') }}">
             <img src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
-        <h1>Iris: Lighting up the digital world</h1>
+        <h1 class="header-name">
+            <span class="brand-name">Iris</span>
+            <span class="divider">|</span>
+            <span class="header-tagline">Lighting up the digital world</span>
+        </h1>
     </div>
 
     <nav class="header-nav">
-        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
-        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('story') }}">
+            <span class="long-text">Our story</span>
+            <span class="short-text">Story</span>
+        </a>
+        <a href="{{ url_for('login') }}">Login</a>
     </nav>
 </header>
 
@@ -29,14 +36,35 @@
         <p>Loreum ipsum i love fake lorem ipsum especially cuz i cant spell any of it lmfao</p>
         <p>la la la la la fillign space any way I can laaaaa dfsgksbfibsdibdbvdhvbhdbvhdbshvsvsvsdvassadsvsdafvadviugifogdsuyvgsdouyagvdvdhsadohvdsdvsdaeqrregbefreferero</p>
         <p>lowkenuinely fun af :heart i don't remember how to do the less than sign :sob and im not looking up emojis so... </p>
+        <p>Now for some real lorum ipsum</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla, erat tristique interdum aliquet, est diam luctus orci, feugiat fermentum tellus ligula et sapien. Nulla facilisi. Donec id efficitur quam. Proin eget tincidunt tellus. Fusce et velit a mauris semper commodo at sed magna. Nam ac ligula in ex ultricies ullamcorper sit amet ut eros. Etiam facilisis at metus ornare lobortis. Praesent vehicula velit libero. Maecenas condimentum fringilla rutrum. Mauris leo nisi, porta sed nisi vitae, vulputate scelerisque sem. Aliquam vitae faucibus nisi, ut lobortis libero. Nulla nec varius nisl. Vivamus dignissim eros nibh, a hendrerit nisi posuere in. Curabitur mollis ipsum a scelerisque venenatis. Cras aliquet urna turpis, id auctor nisl semper id. Pellentesque nibh turpis, accumsan in est convallis, elementum fringilla dolor.</p>
+        <p>Sed blandit quam eu sem lobortis mattis. Sed iaculis leo risus, et interdum dolor facilisis eget. Donec et nunc feugiat augue congue interdum sed at lectus. Praesent commodo tempor ullamcorper. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque vulputate lobortis turpis, at sollicitudin neque ultricies nec. Praesent luctus consectetur tellus, ac laoreet ex vulputate et. Nam mattis gravida turpis, in pretium nisi vestibulum et. Quisque et fermentum massa, sit amet ultricies metus. Donec pretium ultricies risus, commodo fermentum magna venenatis et. Sed lacinia urna et tellus lobortis, eget mollis sapien ultricies. Morbi sit amet pretium nulla. Suspendisse sapien mauris, tincidunt tempus elementum eget, dignissim ut lacus. Donec feugiat et ex in fringilla. In efficitur est justo, eu egestas leo lobortis in. Sed sit amet iaculis quam, a mollis tortor.</p>
+        <p>Fusce rutrum purus eget leo maximus luctus. Aenean aliquam lacus lectus, ut vulputate orci fringilla vel. Quisque eu augue nulla. Duis iaculis sem nec justo aliquam porta. Pellentesque eu urna at ligula placerat sollicitudin. Ut pellentesque consequat vestibulum. Ut suscipit tristique libero id luctus. Donec ornare ipsum diam, quis pellentesque lacus pulvinar vitae. Aliquam dignissim nisi ut sem interdum ornare. Fusce leo arcu, placerat ut lorem at, laoreet laoreet diam. Cras quis nisl purus.</p>
+        <p>Phasellus sodales venenatis nisi, vitae vehicula justo consectetur et. Proin vel mauris consequat, facilisis sem sed, posuere massa. Ut sed ultricies sem. Suspendisse potenti. Vivamus et luctus sapien. Vivamus pellentesque nulla a risus pellentesque, et sollicitudin magna pharetra. Proin nibh velit, fermentum nec mi sit amet, fermentum rutrum felis. Nullam non ipsum fringilla, convallis enim sit amet, efficitur odio. Etiam at cursus nunc. Nunc malesuada viverra eros sed efficitur. Sed vel est ac elit imperdiet mollis vel bibendum est. Integer ut urna mollis, faucibus odio quis, rutrum sapien. Integer sed euismod augue, ut dictum ex. Nam convallis hendrerit dui, ut laoreet sem congue non.</p>
+        <p>Mauris pretium eleifend arcu, in congue enim facilisis pretium. Ut est ligula, posuere vitae ultricies non, semper dapibus nunc. Fusce laoreet sit amet enim et pulvinar. Sed ornare velit a metus tincidunt cursus. Sed tempor diam eget congue facilisis. Phasellus vel est tristique, bibendum diam ullamcorper, vehicula enim. Donec consequat, dui a pulvinar sagittis, leo neque mollis ligula, pulvinar feugiat turpis diam eget nisi. Duis sed maximus erat.</p>
+        <p>Nullam euismod auctor est, eget convallis lorem scelerisque a. Nam pharetra tincidunt maximus. Maecenas maximus imperdiet efficitur. Nulla facilisi. In ac quam eget odio porttitor scelerisque eget ac risus. Aenean aliquet, neque ut mollis ultrices, nisl odio tristique erat, ut vehicula tortor est eu urna. Mauris scelerisque, diam et tincidunt elementum, arcu mi mollis dui, a volutpat metus mauris non turpis. Donec convallis faucibus sem, quis accumsan tellus faucibus id. Curabitur varius dolor in erat mollis aliquam. Nullam ut arcu gravida, volutpat massa ut, fermentum tortor. Praesent mi nibh, pharetra vel magna id, ultrices egestas nunc. Aenean ante neque, vestibulum quis tellus vel, tincidunt gravida enim. Nam erat libero, laoreet vel tellus et, elementum consequat ipsum.</p>
     </section>
 </main>
 
 <footer>
+    <a id="back-to-top" href="#">↑</a>
     <p>&copy; 2026 Iris. All Rights Reserved.</p>
-    <a href="{{ url_for('terms') }}">Terms of Service</a>
-    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
-    <a href="{{ url_for('contact') }}">Contact Us</a>
+    <a href="{{ url_for('terms') }}">
+        <span class="long-text">Terms of Service</span>
+        <span class="short-text">Terms</span>
+    </a>
+    <a href="{{ url_for('privacy') }}">
+        <span class="long-text">Privacy Policy</span>
+        <span class="short-text">Privacy</span>
+    </a>
+    <a href="{{ url_for('contact') }}">
+        <span class="long-text">Contact us & FAQs</span>
+        <span class="short-text">Contact</span>
+    </a>
+    <a href="{{ url_for('story') }}">
+        <span class="long-text">Our story</span>
+        <span class="short-text">Story</span>  
+    </a>
 </footer>
 
 </body>

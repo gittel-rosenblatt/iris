@@ -12,12 +12,19 @@
         <a href="#">
             <img src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
-        <h1>Iris: Lighting up the digital world</h1>
+        <h1 class="header-name">
+            <span class="brand-name">Iris</span>
+            <span class="divider">|</span>
+            <span class="header-tagline">Lighting up the digital world</span>
+        </h1>
     </div>
 
     <nav class="header-nav">
-        <a href="{{ url_for('story') }}"><img src="{{ url_for('static', filename='images/story-icon.png') }}" alt="book image">Our Story</a>
-        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('story') }}">
+            <span class="long-text">Our story</span>
+            <span class="short-text">Story</span>
+        </a>
+        <a href="{{ url_for('login') }}">Login</a>
     </nav>
 </header>
 
@@ -34,7 +41,7 @@
                 Gittel Rosenblatt &lt;3
             </p>
         </section>
-    
+        <hr>
         <section class="iris-founder">
             <h2>About Iris's Founder</h2>
             <p>To be completely honest with you, I don’t know how to start this, so why don’t we just try…</p>
@@ -48,26 +55,39 @@
             </p>
         </section>
     </section>
-        <section class="main-page">
-            <section class="get-started">
-                <h1>Welcome to Iris</h1>
-                <p>A simple, accessible form assistant designed to make paperwork stress-free.</p>
-                <a href="{{ url_for('login') }}" class="btn">Get Started</a>
-            </section>
-            <section class="mission-statement">
-                <h1>Our Mission</h1>
-                <p>Our mission is simple: to make navigating essential online spaces equitable, independent, and seamless for the visually impaired.</p>
-                <p>You can learn more about us by visiting <a href="{{ url_for('contact') }}">our FAQs page</a> and <a href="{{ url_for('contact') }}">our story page</a>.</p>
-            </section>
+    <section class="main-page">
+        <section class="get-started">
+            <h1>Welcome to Iris</h1>
+            <p>A simple, accessible form assistant designed to make paperwork stress-free.</p>
+            <a href="{{ url_for('login') }}" class="btn">Get Started</a>
         </section>
+        <section class="mission-statement">
+            <h1>Our Mission</h1>
+            <p>Our mission is simple: to make navigating essential online spaces equitable, independent, and seamless for the visually impaired.</p>
+            <p>You can learn more about us by visiting <a href="{{ url_for('contact') }}">our FAQs page</a> and <a href="{{ url_for('contact') }}">our story page</a>.</p>
+        </section>
+    </section>
 </main>
 
 <footer>
+    <a id="back-to-top" href="#">↑</a>
     <p>&copy; 2026 Iris. All Rights Reserved.</p>
-    <a href="{{ url_for('terms') }}">Terms of Service</a>
-    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
-    <a href="{{ url_for('contact') }}">Contact Us & FAQs</a>
-    <a href="{{ url_for('story') }}">Our Story</a>
+    <a href="{{ url_for('terms') }}">
+        <span class="long-text">Terms of Service</span>
+        <span class="short-text">Terms</span>
+    </a>
+    <a href="{{ url_for('privacy') }}">
+        <span class="long-text">Privacy Policy</span>
+        <span class="short-text">Privacy</span>
+    </a>
+    <a href="{{ url_for('contact') }}">
+        <span class="long-text">Contact us & FAQs</span>
+        <span class="short-text">Contact</span>
+    </a>
+    <a href="{{ url_for('story') }}">
+        <span class="long-text">Our story</span>
+        <span class="short-text">Story</span>  
+    </a>
 </footer>
 
 </body>
