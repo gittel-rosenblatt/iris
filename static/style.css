@@ -268,7 +268,7 @@ main {
 .privacy, .terms {
     background-color: var(--bg-card);
     text-align: left;
-    padding: 40px;
+    padding: 40px 80px;
     margin: 0;
     overflow-wrap: break-word;
 }
@@ -390,6 +390,14 @@ footer {
     cursor: pointer;
 }
 
+.link-btn:hover {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-header);
+    text-decoration: none;
+}
+
 #toggle-login-pass, #toggle-signup-pass, #toggle-confirm-pass {
     position: absolute;
     right: 10px;
@@ -407,14 +415,6 @@ footer {
     background-color: var(--text-header);
     color: var(--iris-purple);
     border: 2px solid var(--iris-purple);
-}
-
-.link-btn:hover {
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--text-header);
-    text-decoration: none;
 }
 
 .login-image {
@@ -461,6 +461,41 @@ body.is-switched .login {
     color: var(--text-main);
     font-size: var(--font-size-md);
     line-height: 1.6; 
+}
+
+#forgot-password-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-container {
+    background-color: var(--bg-card);
+    padding: 40px;
+    border-radius: 8%;
+    box-shadow: 0 10px 30px rgba(85, 34, 166, 0.18);
+}
+
+.auth-links {
+    margin-top: 15px;
+}
+
+.back-to-login a {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-main);
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+}
+
+.back-to-login a:hover {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-header);
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {
@@ -648,5 +683,10 @@ body.is-switched .login {
     .contact-info img {
         height: 40px;
         width: auto;
+    }
+
+/* privacy & terms */
+    .privacy, .terms {
+        padding: 40px;
     }
 }

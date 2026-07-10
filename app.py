@@ -42,5 +42,9 @@ def forgot_password():
 def contact():
     return render_template("contact.html") 
 
+@app.route("/reset-password")
+def reset_password():
+    return render_template("reset-question.html") 
+
 if __name__ == "__main__":
     app.run(debug=True)
