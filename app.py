@@ -22,6 +22,14 @@ def privacy():
 def login():
     return render_template('login.html') 
 
+@app.route("/forgot-password")
+def forgot_password():
+    return render_template("forgot-password.html") 
+
+@app.route("/reset-password")
+def reset_password():
+    return render_template("reset-question.html") 
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html') 
@@ -34,17 +42,9 @@ def workspace():
 def profile():
     return render_template('profile.html') 
 
-@app.route("/forgot-password")
-def forgot_password():
-    return render_template("forgot-password.html") 
-
 @app.route("/contact-and-faqs")
 def contact():
     return render_template("contact.html") 
-
-@app.route("/reset-password")
-def reset_password():
-    return render_template("reset-question.html") 
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iris - Reset Password</title>
     <link rel="stylesheet" href="../static/style.css"> <!--{{ url_for('static', filename='style.css') }}-->
-    <script src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
+    <script src="../static/js/auth.js" defer></script> <!--{{ url_for('static', filename='js/auth.js') }}-->
 </head>
 <body>
     
@@ -31,18 +31,22 @@
 </header>
 
 <main id="reset-question-main">
-    <section class="auth-container">
+    <!--<section class="account-not-found">
         
-        <!--{% if error %}-->
+        {% if error %}
             <h2>Account Not Found</h2>
             <p class="error-text">We couldn't find a user with that username.</p>
             
-            <div class="auth-links">
-                <a href="{{ url_for('forgot_password') }}" class="button-link">Try Again</a>
+            <div class="not-found-links">
+                <a href="{{ url_for('forgot_password') }}" class="try-again">Try Again</a>
                 <a href="{{ url_for('login') }}">Back to Login</a>
             </div>
 
-        <!--{% else %}-->
+    </section>-->
+
+    <section class="reset-container">
+
+       <!--{% else %}-->
             <h2>Reset Your Password</h2>
             <p class="subtitle">Answer your security question to verify your identity.</p>
 
@@ -51,22 +55,42 @@
 
                 <div class="security-question-card">
                     <span class="context-label">Your Security Question:</span>
-                    <p class="question-text">{{ question }}</p>
+                    <p class="question-text">What is your mother's maiden name?<!--{{ question }}--></p>
                 </div>
 
                 <div class="form-group">
                     <label for="security-answer">Your Answer:</label>
-                    <input type="text" id="security-answer" name="security_answer" placeholder="Type your answer" required>
+                    <input 
+                    type="text" 
+                    id="security-answer" 
+                    name="security_answer" 
+                    placeholder="Type your answer" 
+                    required
+                    >
                 </div>
 
                 <div class="form-group">
                     <label for="new-password">New Password:</label>
-                    <input type="password" id="new-password" name="new_password" placeholder="Minimum 8 characters" required>
+                    <input 
+                    type="password" 
+                    id="reset-password" 
+                    name="new_password" 
+                    placeholder="Choose a new password" 
+                    required
+                    >
+                    <button type="button" id="toggle-reset-pass">Show</button>
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">Confirm New Password:</label>
-                    <input type="password" id="confirm-password" name="confirm_password" placeholder="Repeat new password" required>
+                    <input
+                    type="password" 
+                    id="confirm-reset-password" 
+                    name="confirm_password" 
+                    placeholder="Confirm new password" 
+                    required
+                    >
+                    <button type="button" id="toggle-confirm-reset-pass">Show</button>
                 </div>
 
                 <button type="submit">Change Password</button>
@@ -81,24 +105,34 @@
 </main>
 
 <footer>
-    <a id="back-to-top" href="#">↑</a>
-    <p>&copy; 2026 Iris. All Rights Reserved.</p>
-    <a href="{{ url_for('terms') }}">
-        <span class="long-text">Terms of Service</span>
-        <span class="short-text">Terms</span>
-    </a>
-    <a href="{{ url_for('privacy') }}">
-        <span class="long-text">Privacy Policy</span>
-        <span class="short-text">Privacy</span>
-    </a>
-    <a href="{{ url_for('contact') }}">
-        <span class="long-text">Contact us & FAQs</span>
-        <span class="short-text">Contact</span>
-    </a>
-    <a href="{{ url_for('story') }}">
-        <span class="long-text">Our story</span>
-        <span class="short-text">Story</span>  
-    </a>
+    <div>
+        <a id="back-to-top" href="#">↑</a>
+    </div> 
+
+    <div class="footer-text">
+        <div class="copyright">
+            <p>&copy; 2026 Iris. All Rights Reserved.</p>
+        </div>
+
+        <nav class="footer-nav">
+            <a href="{{ url_for('terms') }}">
+                <span class="long-text">Terms of Service</span>
+                <span class="short-text">Terms</span>
+            </a>
+            <a href="{{ url_for('privacy') }}">
+                <span class="long-text">Privacy Policy</span>
+                <span class="short-text">Privacy</span>
+            </a>
+            <a href="{{ url_for('contact') }}">
+                <span class="long-text">Contact us & FAQs</span>
+                <span class="short-text">Contact</span>
+            </a>
+            <a href="{{ url_for('story') }}">
+                <span class="long-text">Our story</span>
+                <span class="short-text">Story</span>  
+            </a>
+        </nav>
+    </div>
 </footer>
 
 </body>
