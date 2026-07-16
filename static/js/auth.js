@@ -63,8 +63,8 @@ confirmResetToggle?.addEventListener('click', () => {
     }
 });
 
-const switchToSignup = document.getElementById('switch-to-signup');
-const switchToLogin = document.getElementById('switch-to-login');
+const switchToSignup = document.querySelector('#switch-to-signup');
+const switchToLogin = document.querySelector('#switch-to-login');
 const body = document.body; 
 
 switchToSignup?.addEventListener('click', () => {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris - Dashboard</title>
+    <link rel="stylesheet" href="../static/style.css"> <!--{{ url_for('static', filename='style.css') }}-->
+    <script src="../static/js/dashboard.js" defer></script> <!--{{ url_for('static', filename='js/auth.js') }}-->
+</head>
+<body>
+    
+<header class="account-header">
+    <div class="account-header-left">
+        <a href="{{ url_for('home') }}">
+            <img src="../static/images/iris-circle-icon.png" alt="iris logo"> <!--{{ url_for('static', filename='images/iris-circle-icon.png') }}-->
+        </a>
+        <h1 class="brand-name">Iris</h1>
+    </div>
+
+    <nav class="account-header-nav">
+        <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+            <p>Username</p>
+            <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+        </button>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <ul>
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <hr class="dropdown-hr"> 
+                <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                <hr class="dropdown-hr">
+                <li><a href="{{ url_for('terms') }}">Terms</a></li>
+                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="welcome-header">
+        <h2>Welcome back, Gittel &lt;3</h2>
+        <h3>Continue working on your projects:</h3>
+        <h3>Create your first project here:</h3>
+    </div>
+
+    <div class="create-project-container">
+        <button type="button" class="btn-create-project" id="uploadTriggerBtn">
+            <span class="plus-icon">➕</span> Create New Project
+        </button>
+
+        <input type="file" id="pdfFileInput" accept="application/pdf" style="display: none;">
+    </div>
+
+    <div class="projects-grid">
+        <a href="/workspace/project-id" class="project-card">
+            <div class="project-card-content">
+                <h3>Mom's Medical Form</h3>
+                <p class="project-date">Last edited: 3 hours ago</p>
+                <span class="card-arrow">Open Project →</span>
+            </div>
+        </a>
+
+        <a href="/workspace/project-id" class="project-card">
+            <div class="project-card-content">
+                <h3>Eye Appointment Form</h3>
+                <p class="project-date">Last edited: 2 days ago</p>
+                <span class="card-arrow">Open Project →</span>
+            </div>
+        </a>
+
+        <a href="/workspace/project-id" class="project-card">
+            <div class="project-card-content">
+                <h3>Penelope's Vet Form</h3>
+                <p class="project-date">Last edited: 4 weeks ago</p>
+                <span class="card-arrow">Open Project →</span>
+            </div>
+        </a>
+    </div>
+</main>
+
+</body>
+</html>
