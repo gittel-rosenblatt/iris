@@ -1,0 +1,51 @@
+.info-section {
+    background-color: var(--bg-card);
+    flex: 1.25;
+    overflow-y: auto;
+    border-right: 2px solid var(--iris-purple); 
+    padding: 40px;
+}
+
+.main-page {
+    background-color: var(--bg-cream);
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.get-started .btn {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .info-section {
+        flex: auto;
+    }
+
+    .main-page {
+        flex: auto;
+    }
+    
+    .info-section {
+        max-width: 100%; 
+        border-right: none;
+        border-top: 2px solid var(--iris-purple);
+    }
+
+    .btn, .btn a {
+        font-family: var(--main-font);
+        background-color: var(--iris-purple);
+        color: var(--text-header);
+        border: 5px solid var(--text-header); 
+        font-size: var(--font-size-xl);
+        padding: 25px 45px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
+        display: inline-block;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+}

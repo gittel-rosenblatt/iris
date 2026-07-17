@@ -1,0 +1,21 @@
+.privacy, .terms {
+    background-color: var(--bg-card);
+    text-align: left;
+    padding: 40px 80px;
+    margin: 0;
+    overflow-wrap: break-word;
+    overflow: auto;
+
+}
+
+.privacy h2, .terms h2{
+    background-color: var(--bg-card);
+    margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .privacy, .terms {
+        padding: 40px;
+    }
+}

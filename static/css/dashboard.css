@@ -1,0 +1,58 @@
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(40px, 4%, 90px);
+    gap: 60px;
+    overflow-y: auto;
+}
+
+.welcome-header {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.btn-create-project {
+    padding: 10px 18px;
+    margin: 15px 0 5px 0;
+    border: 5px solid var(--text-header);
+    border-radius: 8px;
+    background-color: var(--iris-purple);
+    color: var(--text-header);
+    font-family: var(--main-font);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.btn-create-project:hover {
+    background-color: var(--text-header);
+    color: var(--iris-purple);
+    border: 5px solid var(--iris-purple);
+}
+
+.projects-grid {
+    display: flex;
+    gap: 40px;
+}
+
+.projects-grid a {
+    text-decoration: none;
+    background-color: var(--bg-card);
+    filter: drop-shadow(0px 2px 4px rgba(55, 25, 97, 0.15));
+    padding: 40px;
+    transition: opacity 0.2 ease;
+}
+
+.projects-grid a:hover {
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+}
