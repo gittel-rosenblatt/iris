@@ -50,15 +50,15 @@ p, h1, h2, h3, nav a {
 a {
     color: var(--text-main);
     font-size: var(--font-size-md);
-    transition: color 0.2s ease;
-    text-decoration: underline;
-    text-decoration-color: var(--dark-iris-purple); 
+    transition: color 0.2s ease; 
     text-underline-offset: 6px; 
+    text-decoration: none;
 }
 
 a:hover {
     color: var(--text-header);
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-color: var(--dark-iris-purple);
 }
 
 h1, h2, h3 {
@@ -232,14 +232,14 @@ header {
     border: none;
     background: none;
     cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: var(--dark-iris-purple); 
+    text-decoration: none;
     text-underline-offset: 5px; 
     transition: color 0.2s ease;
 }
 
 .profile-trigger:hover {
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-color: var(--dark-iris-purple); 
 }
 
 .profile-trigger:hover p {
@@ -355,7 +355,7 @@ footer {
     outline: 2px solid var(--text-header);
 }
 
-.form button[type="submit"], .form button[type="button"]{
+.form button[type="submit"] {
     padding: 10px 18px;
     margin: 15px 0 5px 0;
     border: 5px solid var(--text-header);
@@ -370,10 +370,26 @@ footer {
     box-sizing: border-box;
 }
 
-.form button[type="submit"]:hover, .form button[type="button"]:hover {
+.form button[type="submit"]:hover {
     background-color: var(--text-header);
     color: var(--iris-purple);
     border: 5px solid var(--iris-purple);
+}
+
+.select {
+    padding: 12px 14px;
+    border: 2px solid var(--iris-purple);
+    border-radius: 8px;
+    font-family: var(--main-font);
+    font-size: var(--font-size-sm);
+    color: var(--text-main);
+    background-color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.select:focus {
+    outline: 2px solid var(--text-header);
 }
 
 .auth-container {
@@ -407,7 +423,14 @@ footer {
     text-decoration: none;
 }
 
-#toggle-login-pass, #toggle-signup-pass, #toggle-confirm-pass, #toggle-reset-pass, #toggle-confirm-reset-pass {
+#toggle-login-pass, 
+#toggle-signup-pass, 
+#toggle-confirm-pass, 
+#toggle-reset-pass, 
+#toggle-confirm-reset-pass,
+#toggle-current-password,
+#toggle-new-password,
+#toggle-confirm-password {
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -420,7 +443,14 @@ footer {
     cursor: pointer;
 }
 
-#toggle-login-pass:hover, #toggle-signup-pass:hover, #toggle-confirm-pass:hover, #toggle-reset-pass:hover, #toggle-confirm-reset-pass:hover {
+#toggle-login-pass:hover, 
+#toggle-signup-pass:hover, 
+#toggle-confirm-pass:hover, 
+#toggle-reset-pass:hover, 
+#toggle-confirm-reset-pass:hover,
+#toggle-current-password:hover,
+#toggle-new-password:hover,
+#toggle-confirm-password:hover {
     background-color: var(--text-header);
     color: var(--iris-purple);
     border: 2px solid var(--iris-purple);

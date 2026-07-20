@@ -163,7 +163,7 @@
                         
                         <div class="form-group inline-group-state">
                             <label for="state">State:</label>
-                            <select id="state" name="state">
+                            <select id="state" class="select" name="state">
                                 <option value="" disabled selected>Select...</option>
                                 <option value="NY">NY</option>
                                 <option value="AK">AK</option>
@@ -207,7 +207,9 @@
                     id="current-password" 
                     name="current_password" 
                     required 
-                    placeholder="Current password">
+                    placeholder="Current password"
+                    >
+                    <button type="button" id="toggle-current-password">Show</button>
                 </div>
 
                 <div class="form-group">
@@ -217,7 +219,9 @@
                     id="new-password" 
                     name="new_password" 
                     required 
-                    placeholder="New password">
+                    placeholder="New password"
+                    >
+                    <button type="button" id="toggle-new-password">Show</button>
                 </div>
 
                 <div class="form-group">
@@ -227,7 +231,9 @@
                     id="confirm-password" 
                     name="confirm_password" 
                     required 
-                    placeholder="Confirm password">
+                    placeholder="Confirm password"
+                    >
+                    <button type="button" id="toggle-confirm-password">Show</button>
                 </div>
 
                 <div class="modal-actions">

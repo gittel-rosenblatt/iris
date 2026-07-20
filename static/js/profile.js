@@ -42,3 +42,42 @@ window.addEventListener('click', (e) => {
         closeModal();
     }
 });
+
+const currentInput = document.querySelector('#current-password');
+const currentToggle = document.querySelector('#toggle-current-password');
+
+currentToggle?.addEventListener('click', () => {
+    if (currentInput.type === 'password') {
+        currentInput.type = 'text';
+        currentToggle.textContent = 'Hide'; 
+    } else {
+        currentInput.type = 'password';
+        currentToggle.textContent = 'Show';
+    }
+});
+
+const newInput = document.querySelector('#new-password');
+const newToggle = document.querySelector('#toggle-new-password');
+
+newToggle?.addEventListener('click', () => {
+    if (newInput.type === 'password') {
+        newInput.type = 'text';
+        newToggle.textContent = 'Hide'; 
+    } else {
+        newInput.type = 'password';
+        newToggle.textContent = 'Show';
+    }
+});
+
+const confirmInput = document.querySelector('#confirm-password');
+const confirmToggle = document.querySelector('#toggle-confirm-password');
+
+confirmToggle?.addEventListener('click', () => {
+    if (confirmInput.type === 'password') {
+        confirmInput.type = 'text';
+        confirmToggle.textContent = 'Hide'; 
+    } else {
+        confirmInput.type = 'password';
+        confirmToggle.textContent = 'Show';
+    }
+});

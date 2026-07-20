@@ -18,6 +18,7 @@
 
 .get-started .btn {
     margin-bottom: 40px;
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {
