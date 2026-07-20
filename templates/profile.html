@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris - Profile</title>
+    <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
+    <link rel="stylesheet" href="../static/css/profile.css"> <!--{{ url_for('static', filename='css/profile.css') }}-->
+    <script src="../static/js/profile.js" defer></script> <!--{{ url_for('static', filename='js/profile.js') }}-->
+</head>
+<body>
+    
+<header class="account-header">
+    <div class="account-header-left">
+        <a href="{{ url_for('home') }}">
+            <img class="iris-logo" src="../static/images/iris-circle-icon.png" alt="iris logo"> <!--{{ url_for('static', filename='images/iris-circle-icon.png') }}-->
+        </a>
+        <h1 class="brand-name">Iris</h1>
+    </div>
+
+    <nav class="account-header-nav">
+        <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+            <p>Username</p>
+            <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+        </button>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <ul>
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <hr class="dropdown-hr"> 
+                <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                <hr class="dropdown-hr">
+                <li><a href="{{ url_for('terms') }}">Terms</a></li>
+                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <!--{% if not profile_is_complete %}-->
+        <div class="autofill-banner">
+            <h3><strong>Maximize your Iris experience!</strong> Fill out your autofill profile details so we can seamlessly build your project forms.</h3>
+            <button type="button" class="banner-close" id="bannerClose"><h3>&times;</h3></button>
+        </div>
+    <!--{% endif %}-->
+
+    <div class="profile-main">
+        <div class="welcome-header">
+            <h1>Gittel's Account</h1>
+        </div>
+
+        <div class="profile-container">
+            <section class="account-info">
+                <h2>Account Information</h2>
+                <img class="user-pfp" src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+                <div class="upload-user-pfp">
+                    <button type="button" class="account-btn btn-upload-pfp" id="pfpUploadBtn">Upload profile picture</button>
+                    <input type="file" id="pfpInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="account-meta">
+                    <p><strong>Username:</strong> GittelDev</p>
+                    <p><strong>Member Since:</strong> June 2026</p>
+                </div>
+                <button type="button" class="account-btn" id="changePassword">Change Password</button>
+            </section>
+
+            <section class="profile-autofill">
+                <h2>Autofill Information</h2>
+                <p class="autofill-subtext">Fill these out to seamlessly build your project forms.</p>
+
+                <form class="form" id="autofill-form" action="/update-profile" method="POST">
+                    
+                    <!-- Name Row -->
+                    <div class="form-row">
+                        <div class="form-group inline-group-first">
+                            <label for="first-name">First Name:</label>
+                            <input 
+                            type="text" 
+                            id="first-name" 
+                            name="first_name" 
+                            placeholder="First name"
+                            >
+                        </div>
+                        
+                        <div class="form-group inline-group-initial">
+                            <label for="middle-initial">M.I.:</label>
+                            <input 
+                            type="text" 
+                            id="middle-initial" 
+                            name="middle_initial" 
+                            maxlength="1" 
+                            placeholder="M.I."
+                            >
+                        </div>
+
+                        <div class="form-group inline-group-last">
+                            <label for="last-name">Last Name:</label>
+                            <input 
+                            type="text" 
+                            id="last-name" 
+                            name="last_name" 
+                            placeholder="Last name"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Birthday Field -->
+                    <div class="form-group">
+                        <label for="dob">Birthday:</label>
+                        <input 
+                        type="date" 
+                        id="dob" 
+                        name="dob"
+                        >
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="autofill-email">Email Address:</label>
+                        <input 
+                        type="email" 
+                        id="autofill-email" 
+                        name="autofill_email" 
+                        placeholder="example@gmail.com"
+                        >
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        placeholder="Phone number"
+                        >
+                    </div>
+
+                    <!-- Street Address -->
+                    <div class="form-group">
+                        <label for="address">Street Address:</label>
+                        <input 
+                        type="text" 
+                        id="address" 
+                        name="address" 
+                        placeholder="Street address"
+                        >
+                    </div>
+
+                    <!-- City, State, Zip Row -->
+                    <div class="form-row">
+                        <div class="form-group inline-group-city">
+                            <label for="city">City:</label>
+                            <input 
+                            type="text" 
+                            id="city" 
+                            name="city" 
+                            placeholder="City"
+                            >
+                        </div>
+                        
+                        <div class="form-group inline-group-state">
+                            <label for="state">State:</label>
+                            <select id="state" name="state">
+                                <option value="" disabled selected>Select...</option>
+                                <option value="NY">NY</option>
+                                <option value="AK">AK</option>
+                                <option value="FL">FL</option>
+                                <option value="CA">CA</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group inline-group-zip">
+                            <label for="zip">Zip Code:</label>
+                            <input 
+                            type="text" 
+                            id="zip" 
+                            name="zip" 
+                            placeholder="Zip code"
+                            >
+                        </div>
+                    </div> 
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-save-changes">Save Changes</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="passwordModal" aria-hidden="true">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button type="button" class="modal-close" id="closePasswordModal">&times;</button>
+            </div>
+
+            <form class="form" id="change-password-form" action="/update-password" method="POST">
+                
+                <div class="form-group">
+                    <label for="current-password">Current Password:</label>
+                    <input 
+                    type="password" 
+                    id="current-password" 
+                    name="current_password" 
+                    required 
+                    placeholder="Current password">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-password">New Password:</label>
+                    <input 
+                    type="password" 
+                    id="new-password" 
+                    name="new_password" 
+                    required 
+                    placeholder="New password">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password:</label>
+                    <input 
+                    type="password" 
+                    id="confirm-password" 
+                    name="confirm_password" 
+                    required 
+                    placeholder="Confirm password">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelPasswordModal">Cancel</button>
+                    <button type="submit" class="btn-save-password">Update Password</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

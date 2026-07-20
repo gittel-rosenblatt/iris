@@ -1,0 +1,215 @@
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-main {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(40px, 4%, 90px);
+    gap: 50px;
+    overflow-y: auto;
+}
+
+.autofill-banner {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--iris-purple);
+    padding: 20px;
+    border: 3px solid var(--text-header);
+    margin: 5px;
+    border-radius: 12px;
+}
+
+.banner-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.banner-close:hover {
+    opacity: 0.7;
+}
+
+.autofill-banner.close {
+    display: none;
+}
+
+.welcome-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-container {
+    display: flex;
+    gap: 50px;
+    align-items: stretch; 
+    height: 638px;
+}
+
+.account-info, .profile-autofill  {
+    background-color: var(--bg-card);
+    padding: 40px;
+    filter: drop-shadow(0px 4px 8px rgba(55, 25, 97, 0.15));
+    border-radius: 12px;
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.user-pfp {
+    border-radius: 50%;
+    width: clamp(100px, 20vw, 225px);
+    height: auto;
+}
+
+.account-meta p {
+    margin: 0;
+}
+
+#state {
+    padding: 12px 14px;
+    border: 2px solid var(--iris-purple);
+    border-radius: 8px;
+    font-family: var(--main-font);
+    font-size: var(--font-size-sm);
+    color: var(--text-main);
+    background-color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#state:focus {
+    outline: 2px solid var(--text-header);
+}
+
+.account-btn {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 5px solid var(--text-header);
+    border-radius: 8px;
+    background-color: var(--iris-purple);
+    color: var(--text-header);
+    font-family: var(--main-font);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    min-width: 250px;
+    box-sizing: border-box;
+}
+
+.account-btn:hover {
+    background-color: var(--text-header);
+    color: var(--iris-purple);
+    border: 5px solid var(--iris-purple);
+}
+
+.profile-autofill {
+    overflow-y: auto;
+    flex: 2;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px; 
+    width: 100%;
+}
+
+.inline-group-first   { flex: 4; }
+.inline-group-initial { flex: 2; }
+.inline-group-last    { flex: 4; }
+
+.inline-group-city    { flex: 5; }
+.inline-group-state   { flex: 2; }
+.inline-group-zip     { flex: 3; }
+
+.form-group input, .form-group select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(4px); 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.is-open {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--text-header);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-header);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.modal-actions {
+    display: flex;
+}
+
+.btn-cancel {
+    flex: 1;
+}
+
+.btn-save-password {
+    flex: 2; 
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        align-items: stretch; 
+        height: 630px;
+    }
+
+    .account-info, .profile-autofill {
+        overflow-y: auto;
+        flex: none;
+    }
+}
