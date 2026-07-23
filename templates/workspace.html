@@ -6,6 +6,7 @@
     <title>Iris - Workspace</title>
     <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
     <link rel="stylesheet" href="../static/css/workspace.css"> <!--{{ url_for('static', filename='css/workspace.css') }}-->
+    <script src="../static/js/global.js" defer></script> <!--{{ url_for('static', filename='js/global.js') }}-->
     <script src="../static/js/workspace.js" defer></script> <!--{{ url_for('static', filename='js/workspace.js') }}-->
 </head>
 <body>
@@ -57,8 +58,8 @@
     <section class="question-container">
         <h3>Question 10 of 12</h3>
         <div class="question-card">
-            <p>What is your emergency contact's full name?</p>
-            <button type="button" class="btn"id="text-to-speech">Click to listen</button>
+            <p>What is your emergency contact's email, phone number, and full name?</p>
+            <button type="button" class="btn tts"id="text-to-speech">Listen 🔊</button>
         </div>
 
         <div class="form-group">
@@ -69,7 +70,6 @@
             placeholder="Your answer" 
             required
             >
-            <button type="button" class="btn" id="voice-to-text">Click to speak</button>
         </div>
     </section> 
 

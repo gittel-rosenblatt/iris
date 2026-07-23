@@ -116,6 +116,12 @@ img {
     background: transparent; 
 }
 
+
+
+
+
+
+
 .btn, .btn a {
     font-family: var(--main-font);
     background-color: var(--iris-purple);
@@ -133,6 +139,35 @@ img {
     background-color: var(--text-header); 
     color: var(--iris-purple); 
     border: 5px solid var(--iris-purple);
+}
+
+.input-with-vtt {
+    position: relative;
+    width: 100%;
+}
+
+.vtt-icon-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-size: var(--font-size-md); 
+    
+    background-color: var(--iris-purple); 
+    border: 2px solid var(--text-header); 
+    border-radius: 6px;
+    padding: 3px 6px;
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+.vtt-icon-btn:hover {
+    background-color: var(--text-header); 
+    color: var(--iris-purple); 
+    transform: translateY(-50%) scale(1.08);
 }
 
 .short-text {
@@ -340,7 +375,7 @@ footer {
 }
 
 .form-group input, .form-group textarea {
-    padding: 12px 14px;
+    padding: 16px 18px;
     border: 2px solid var(--iris-purple);
     border-radius: 8px;
     font-family: var(--main-font);
@@ -433,7 +468,7 @@ footer {
 #toggle-confirm-password {
     position: absolute;
     right: 10px;
-    bottom: 10px;
+    bottom: 14px;
     background-color: var(--iris-purple);
     color: var(--text-header);
     font-family: var(--main-font);
