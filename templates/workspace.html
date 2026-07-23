@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris - Workspace</title>
+    <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
+    <link rel="stylesheet" href="../static/css/workspace.css"> <!--{{ url_for('static', filename='css/workspace.css') }}-->
+    <script src="../static/js/workspace.js" defer></script> <!--{{ url_for('static', filename='js/workspace.js') }}-->
+</head>
+<body>
+    
+<header class="account-header">
+    <div class="account-header-left">
+        <a href="{{ url_for('home') }}">
+            <img class="iris-logo" src="../static/images/iris-circle-icon.png" alt="iris logo"> <!--{{ url_for('static', filename='images/iris-circle-icon.png') }}-->
+        </a>
+        <h1 class="brand-name">Iris</h1>
+    </div>
+
+    <nav class="account-header-nav">
+        <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+            <p>Username</p>
+            <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+        </button>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <ul>
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <hr class="dropdown-hr"> 
+                <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                <hr class="dropdown-hr">
+                <li><a href="{{ url_for('terms') }}">Terms</a></li>
+                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main class="workspace-main">
+    <div class="project-title">
+        <h2><strong>Project:</strong> Project Name</h2>
+    </div>
+
+    <section class="progress-bar">
+        <div class="progress-label">
+            <span>Progress: </span>
+            <span class="progress-percent">75%</span>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+    </section>
+
+    <section class="question-container">
+        <h3>Question 9 of 12</h3>
+        <div class="question-card">
+            <p>What is your emergency contact's full name?</p>
+            <button type="button" class="btn"id="text-to-speech">Click to listen</button>
+        </div>
+
+        <div class="form-group">
+            <input 
+            type="text" 
+            id="answer" 
+            name="answer" 
+            placeholder="Your answer" 
+            required
+            >
+            <button type="button" class="btn" id="voice-to-text">Click to speak</button>
+        </div>
+    </section> 
+
+    <section class="nav-buttons">
+        <button type="button" class="btn" id="prev-question">Previous</button>
+        <button type="button" class="btn" id="next-question">Next</button>
+    </section>
+
+
+</main>
+
+</body>
+</html>
