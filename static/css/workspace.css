@@ -4,8 +4,11 @@
     align-items: center;
     margin: 0 auto;
     padding: 40px;
+    width: 100%;
     max-width: 800px;
     gap: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .progress-bar {
