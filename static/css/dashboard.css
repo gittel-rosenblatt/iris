@@ -6,6 +6,12 @@
     overflow-y: auto;
 }
 
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .welcome-header {
     display: flex;
     flex-direction: column;

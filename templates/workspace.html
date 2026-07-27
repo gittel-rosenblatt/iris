@@ -20,10 +20,13 @@
     </div>
 
     <nav class="account-header-nav">
-        <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-            <p>Username</p>
-            <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
-        </button>
+        <div class="profile-section">
+            <button type="button" class="btn-tts">Listen 🔊</button>
+            <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+                <p>Username</p>
+                <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+            </button>
+        </div>
 
         <div class="dropdown-menu" id="dropdownMenu">
             <ul>
@@ -57,10 +60,8 @@
 
     <section class="question-container">
         <h3>Question 10 of 12</h3>
-        <div class="question-card">
-            <p>What is your emergency contact's email, phone number, and full name?</p>
-            <button type="button" class="btn tts"id="text-to-speech">Listen 🔊</button>
-        </div>
+        <p>What is your emergency contact's email, phone number, and full name?</p>
+        
 
         <div class="form-group">
             <input 

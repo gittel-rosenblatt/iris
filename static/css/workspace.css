@@ -11,6 +11,12 @@
     overflow-x: hidden;
 }
 
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .progress-bar {
     display: flex;
     flex-direction: column;

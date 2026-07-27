@@ -170,6 +170,34 @@ img {
     transform: translateY(-50%) scale(1.08);
 }
 
+.btn-tts {
+    font-size: var(--font-size-md); 
+    background-color: var(--iris-purple); 
+    border: 2px solid var(--text-header); 
+    border-radius: 6px;
+    padding: 3px 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+.btn-tts:hover {
+    background-color: var(--text-header); 
+    color: var(--iris-purple); 
+    transform: translateY(-5%) scale(1.08);
+}
+
+body.active p,
+body.active h1,
+body.active h2,
+body.active h3,
+body.active li,
+body.active button,
+body.active a, 
+body.active label {
+    cursor: url(../images/speaker.png) 0 0, pointer;
+}
+
 .short-text {
     display: none;
 }

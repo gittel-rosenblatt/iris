@@ -18,15 +18,16 @@
         </a>
         <h1 class="header-name">
             <span class="brand-name">Iris</span>
-            <span class="divider">|</span>
+            <span class="divider" aria-hidden="true">|</span>
             <span class="header-tagline">Lighting up the digital world</span>
         </h1>
     </div>
 
     <nav class="header-nav">
+        <button aria-hidden="true"type="button" class="btn-tts">Listen 🔊</button>
         <a href="{{ url_for('story') }}">
             <span class="long-text">Our story</span>
-            <span class="short-text">Story</span>
+            <span class="short-text" aria-hidden="true">Story</span>
         </a>
         <a href="{{ url_for('login') }}">Login</a>
     </nav>
@@ -119,19 +120,19 @@
         <nav class="footer-nav">
             <a href="{{ url_for('terms') }}">
                 <span class="long-text">Terms of Service</span>
-                <span class="short-text">Terms</span>
+                <span class="short-text" aria-hidden="true">Terms</span>
             </a>
             <a href="{{ url_for('privacy') }}">
                 <span class="long-text">Privacy Policy</span>
-                <span class="short-text">Privacy</span>
+                <span class="short-text" aria-hidden="true">Privacy</span>
             </a>
             <a href="{{ url_for('contact') }}">
                 <span class="long-text">Contact us & FAQs</span>
-                <span class="short-text">Contact</span>
+                <span class="short-text" aria-hidden="true">Contact</span>
             </a>
             <a href="{{ url_for('story') }}">
                 <span class="long-text">Our story</span>
-                <span class="short-text">Story</span>  
+                <span class="short-text" aria-hidden="true">Story</span>  
             </a>
         </nav>
     </div>

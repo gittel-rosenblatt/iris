@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+// Voice-to-Text 
+
     const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], textarea');
 
     inputs.forEach(input => {
-        // Prevent adding multiple mic buttons if script runs twice
         if (input.parentNode.classList.contains('input-with-vtt')) return;
 
         const wrapper = document.createElement('div');
@@ -56,4 +57,44 @@ document.addEventListener('DOMContentLoaded', () => {
             recognition.start();
         });
     });
+
+// Text-to-Speech 
+    const ttsButtons = document.querySelectorAll('.btn-tts');
+    let isClicked = false;
+
+    ttsButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            isClicked = !isClicked;
+
+            if (isClicked) {
+                btn.innerHTML = 'Stop <span aria-hidden="true">⏹️</span>';
+                document.body.classList.add('active');
+            } else {
+                btn.innerHTML = 'Listen <span aria-hidden="true">🔊</span>';
+                document.body.classList.remove('active');
+                window.speechSynthesis.cancel()
+            }
+        });
+    });
+            
+    document.addEventListener('click', (e) => {
+        if (!isClicked) {
+            return;
+        } else if (e.target.closest('[aria-hidden="true"]')) {
+            return; 
+        } else {
+            e.preventDefault();
+            const clone = e.target.cloneNode(true);
+            clone.querySelectorAll('[aria-hidden="true"]').forEach(el => el.remove());
+            const text = clone.innerText;
+            const readText = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.cancel()
+            window.speechSynthesis.speak(readText);
+
+            if (!('speechSynthesis' in window)) {
+            console.warn('Text-to-Speech is not supported in this browser.');
+        }
+    }});
 });

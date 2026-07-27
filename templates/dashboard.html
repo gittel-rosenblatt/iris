@@ -20,10 +20,13 @@
     </div>
 
     <nav class="account-header-nav">
-        <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-            <p>Username</p>
-            <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
-        </button>
+        <div class="profile-section">
+            <button type="button" class="btn-tts">Listen 🔊</button>
+            <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+                <p>Username</p>
+                <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+            </button>
+        </div>
 
         <div class="dropdown-menu" id="dropdownMenu">
             <ul>
@@ -41,7 +44,7 @@
 
 <main class="dashboard-main">
     <div class="welcome-header">
-        <h1>Welcome back, Gittel &lt;3</h1>
+        <h1>Welcome back, Gittel <span aria-hidden="true">&lt;3</span></h1>
         <h2 id="has-projects">Continue working on your projects:</h2>
         <!--<h2 id="no-projects">Create your first project here:</h2>-->
     </div>

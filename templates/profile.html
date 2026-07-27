@@ -20,10 +20,13 @@
     </div>
 
     <nav class="account-header-nav">
-        <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-            <p>Username</p>
-            <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
-        </button>
+        <div class="profile-section">
+            <button type="button" class="btn-tts">Listen 🔊</button>
+            <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+                <p>Username</p>
+                <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+            </button>
+        </div>
 
         <div class="dropdown-menu" id="dropdownMenu">
             <ul>
@@ -43,7 +46,9 @@
     <!--{% if not profile_is_complete %}-->
         <div class="autofill-banner">
             <h3><strong>Maximize your Iris experience! </strong>Fill out your autofill profile details so we can seamlessly build your project forms.</h3>
-            <button type="button" class="banner-close" id="bannerClose"><h3>&times;</h3></button>
+            <button type="button" class="banner-close" id="bannerClose"><h3>
+                <span aria-hidden="true">&times;</span>
+            </h3></button>
         </div>
     <!--{% endif %}-->
 
@@ -196,7 +201,10 @@
             
             <div class="modal-header">
                 <h2>Change Password</h2>
-                <button type="button" class="modal-close" id="closePasswordModal">&times;</button>
+                <button type="button" class="btn-tts">Listen 🔊</button>
+                <button type="button" class="modal-close" id="closePasswordModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <form class="form" id="change-password-form" action="/update-password" method="POST">
