@@ -210,7 +210,7 @@ main {
     flex: 2; 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .profile-container {
         display: flex;
         flex-direction: column;

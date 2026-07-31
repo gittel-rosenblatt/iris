@@ -9,7 +9,7 @@
 
 .login-container {
     display: flex;
-    max-width: 75vw;
+    width: clamp(50vh, 100vh, 90vw);
     max-height: 55vh;
     background-color: var(--bg-card);
     overflow-y: auto;
@@ -105,7 +105,19 @@ body.is-switched .login {
     align-items: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+    body {
+        display: flex;
+        min-height: 100vh;
+        margin: 0;
+        flex-direction: column;
+    }
+
+    #login-main {
+        height: auto;
+        flex-grow: 1; 
+    }
+    
     .login-container {
         flex-direction: column;
         height: auto;

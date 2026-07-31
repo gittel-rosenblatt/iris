@@ -53,7 +53,7 @@
     display: inline-block;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     #contact-main {
         display: flex;
         flex-direction: column;

@@ -27,7 +27,7 @@
     border-radius: 8%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     #story-main {
         display: flex;
         flex-direction: column;
