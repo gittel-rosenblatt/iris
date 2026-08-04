@@ -23,7 +23,10 @@
     </div>
 
     <nav class="header-nav">
-        <button aria-hidden="true"type="button" class="btn-tts">Listen 🔊</button>
+        <button aria-hidden="true"type="button" class="btn-tts">
+            <span class="long-text">Listen 🔊</span>
+            <span class="short-text">🔊</span>
+        </button>
         <a href="{{ url_for('story') }}">
             <span class="long-text">Our story</span>
             <span class="short-text" aria-hidden="true">Story</span>
@@ -68,7 +71,7 @@
         <section class="mission-statement">
             <h1>Our Mission</h1>
             <p>Our mission is simple: to make navigating essential online spaces equitable, independent, and seamless for the visually impaired.</p>
-            <p>You can learn more about us by visiting <a href="{{ url_for('contact') }}">our FAQs page</a> and <a href="{{ url_for('contact') }}">our story page</a>.</p>
+            <p>You can learn more about us by visiting <a href="{{ url_for('contact') }}">our FAQs page</a> and <a href="{{ url_for('story') }}">our story page</a>.</p>
         </section>
     </section>
 </main>

@@ -24,15 +24,12 @@
     box-sizing: border-box;
 }
 
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
 html {
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--dark-iris-purple) transparent;
+    max-height: 100dvh;
+    max-width: 100dvw;
 }
 
 body {
@@ -43,7 +40,7 @@ body {
     flex-direction: column;
     font-family: var(--main-font);
     background-color: var(--bg-cream);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 p, h1, h2, h3, nav a {
@@ -218,9 +215,16 @@ header {
 .header-left {
     display: flex;
     align-items: center;
-    gap: 15px;
     flex-shrink: 0;
-    padding-right: 15px;
+    gap: clamp(0.5rem, 3vw, 1rem);
+    padding-right: clamp(0.5rem, 3vw, .75rem);
+}
+
+.header-tagline {
+    font-size: var(--font-size-md);
+    max-width: 180px;
+    line-height: 1.2;
+    white-space: normal;
 }
 
 .header-left h1 {
@@ -253,7 +257,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 15px;
+    gap: 16px;
 }
 
 .account-header {
@@ -524,6 +528,12 @@ footer {
     border: 2px solid var(--iris-purple);
 }
 
+@media (max-width: 700px) {
+    .header-tagline {
+        max-width: 150px;
+    }
+}
+
 @media (max-width: 900px) {
 /* main */
     body {
@@ -541,13 +551,6 @@ footer {
         padding: clamp(0.5rem, 3vw, 1.25rem) clamp(1rem, 4vw, 2.5rem);
     }
 
-    .header-tagline {
-        font-size: var(--font-size-md);
-        max-width: 180px;
-        line-height: 1.2;
-        white-space: normal; 
-    }
-    
     .divider {
         font-size: var(--font-size-xl); 
     }

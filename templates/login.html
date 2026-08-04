@@ -24,7 +24,10 @@
     </div>
 
     <nav class="header-nav">
-        <button aria-hidden="true"type="button" class="btn-tts">Listen 🔊</button>
+        <button aria-hidden="true"type="button" class="btn-tts">
+            <span class="long-text">Listen 🔊</span>
+            <span class="short-text">🔊</span>
+        </button>
         <a href="{{ url_for('story') }}">
             <span class="long-text">Our story</span>
             <span class="short-text" aria-hidden="true">Story</span>
@@ -70,7 +73,7 @@
             </form>
             <p class="toggle-text">
                 Don't have an account? 
-                <button type="button" id="switch-to-signup" class="link-btn">Sign up here</button>
+                <button type="button" id="switch-to-signup" class="link-btn">Sign up here.</button>
             </p>
         </section>
     
@@ -138,12 +141,12 @@
             </form>
             <p class="toggle-text">
                 Already have an account? 
-                <button type="button" id="switch-to-login" class="link-btn">Log in here</button>
+                <button type="button" id="switch-to-login" class="link-btn">Log in here.</button>
             </p>
         </section>
 
         <section class="login-image">
-            <img src="{{ url_for('static', filename='images/iris-flower.jpg') }}" alt="Image of iris flowers">
+            <img src="{{ url_for('static', filename='images/iris-flower.png') }}" alt="Image of iris flowers">
         </section>
     </div>
 </main>
