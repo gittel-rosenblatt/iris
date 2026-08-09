@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iris - Dashboard</title>
-    <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
-    <link rel="stylesheet" href="../static/css/dashboard.css"> <!--{{ url_for('static', filename='css/dashboard.css') }}-->
-    <script src="../static/js/global.js" defer></script> <!--{{ url_for('static', filename='js/global.js') }}-->
-    <script src="../static/js/dashboard.js" defer></script> <!--{{ url_for('static', filename='js/dashboard.js') }}-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> 
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script> 
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script> 
 </head>
 <body>
     
 <header class="account-header">
     <div class="account-header-left">
         <a href="{{ url_for('home') }}">
-            <img class="iris-logo" src="../static/images/iris-circle-icon.png" alt="iris logo"> <!--{{ url_for('static', filename='images/iris-circle-icon.png') }}-->
+            <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo"> 
         </a>
         <h1 class="brand-name">Iris</h1>
     </div>
@@ -24,7 +24,7 @@
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
                 <p>Username</p>
-                <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+                <img src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
             </button>
         </div>
 
@@ -36,7 +36,7 @@
                 <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
                 <hr class="dropdown-hr">
                 <li><a href="{{ url_for('terms') }}">Terms</a></li>
-                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+                <li><a href="{{ url_for('privacy') }}">Privacy</a></li>
             </ul>
         </div>
     </nav>

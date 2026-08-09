@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iris - Profile</title>
-    <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
-    <link rel="stylesheet" href="../static/css/profile.css"> <!--{{ url_for('static', filename='css/profile.css') }}-->
-    <script src="../static/js/profile.js" defer></script> <!--{{ url_for('static', filename='js/profile.js') }}-->
-    <script src="../static/js/global.js" defer></script> <!--{{ url_for('static', filename='js/global.js') }}-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}"> 
+    <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script> 
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script> 
 </head>
 <body>
     
 <header class="account-header">
     <div class="account-header-left">
         <a href="{{ url_for('home') }}">
-            <img class="iris-logo" src="../static/images/iris-circle-icon.png" alt="iris logo"> <!--{{ url_for('static', filename='images/iris-circle-icon.png') }}-->
+            <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
         <h1 class="brand-name">Iris</h1>
     </div>
@@ -24,7 +24,7 @@
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
                 <p>Username</p>
-                <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+                <img src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
             </button>
         </div>
 
@@ -36,7 +36,7 @@
                 <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
                 <hr class="dropdown-hr">
                 <li><a href="{{ url_for('terms') }}">Terms</a></li>
-                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+                <li><a href="{{ url_for('privacy') }}">Privacy</a></li>
             </ul>
         </div>
     </nav>
@@ -60,7 +60,7 @@
         <div class="profile-container">
             <section class="account-info">
                 <h2>Account Information</h2>
-                <img class="user-pfp" src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+                <img class="user-pfp" src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
                 <div class="upload-user-pfp">
                     <button type="button" class="account-btn btn-upload-pfp" id="pfpUploadBtn">Upload profile picture</button>
                     <input type="file" id="pfpInput" accept="image/*" style="display: none;">

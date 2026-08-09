@@ -41,7 +41,7 @@
         <section class="login">
             <h2>Welcome back <span aria-hidden="true">&lt;3</span></h2>
             <p>Login here. Please enter your details.</p>
-            <form class="form" action="/login-endpoint" method="POST">
+            <form class="form" action="/login" method="POST">
                 <div class="form-group">
                     <label for="username">Username:</label>
                     <input 
@@ -80,7 +80,7 @@
         <section class="signup">
             <h2>We're happy to have you <span aria-hidden="true">&lt;3</span></h2>
             <p>Sign up here. Please choose your details.</p>
-            <form class="form" action="/signup-endpoint" method="POST">
+            <form class="form" action="/signup" method="POST">
                 <div class="form-group">
                     <label for="choose-username">Username:</label>
                     <input 
@@ -121,7 +121,12 @@
 
                 <div class="form-group">
                     <label for="security-question">Security Question:</label>
-                    <select id="security-question" class="select" name="security_question" required>
+                    <select 
+                    id="security-question" 
+                    class="select" 
+                    name="security_question" 
+                    required
+                    >
                         <option value="" disabled selected>Select a security question...</option>
                         <option value="pet">What was the name of your first pet?</option>
                         <option value="maiden">What is your mother's maiden name?</option>
@@ -134,7 +139,13 @@
 
                 <div class="form-group">
                     <label for="security-answer">Answer:</label>
-                    <input type="text" id="security-answer" name="security_answer" placeholder="Your answer" required>
+                    <input 
+                    type="text" 
+                    id="security-answer" 
+                    name="security-answer" 
+                    placeholder="Your answer" 
+                    required
+                    >
                 </div>
 
                 <button type="submit">Sign up</button>
