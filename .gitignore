@@ -1,0 +1,11 @@
+# Ignore local database files
+*.db
+*.sqlite3
+
+# Ignore environment/secret files
+.env
+
+# Ignore Python cache folders
+__pycache__/
+*.pyc
+instance/

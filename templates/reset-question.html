@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iris - Reset Password</title>
-    <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
-    <link rel="stylesheet" href="../static/css/reset-question.css"> <!--{{ url_for('static', filename='css/reset-question.css') }}-->
-    <script src="../static/js/global.js" defer></script> <!--{{ url_for('static', filename='js/global.js') }}-->
-    <script src="../static/js/auth.js" defer></script> <!--{{ url_for('static', filename='js/auth.js') }}-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset-question.css') }}">
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
 </head>
 <body>
     
@@ -37,76 +37,59 @@
 </header>
 
 <main id="reset-question-main">
-    <!--<section class="account-not-found">
-        
-        {% if error %}
-            <h2>Account Not Found</h2>
-            <p class="error-text">We couldn't find a user with that username.</p>
-            
-            <div class="not-found-links">
-                <a href="{{ url_for('forgot_password') }}" class="try-again">Try Again</a>
-                <a href="{{ url_for('login') }}">Back to Login</a>
-            </div>
-
-    </section>-->
-
     <section class="reset-container">
+        <h2>Reset Your Password</h2>
+        <p class="subtitle">Answer your security question to verify your identity.</p>
 
-       <!--{% else %}-->
-            <h2>Reset Your Password</h2>
-            <p class="subtitle">Answer your security question to verify your identity.</p>
+        <form class="form" action="/update-password" method="POST">
+            <input type="hidden" name="username" value="{{ username }}">
 
-            <form class="form" action="/update-password" method="POST">
-                <input type="hidden" name="username" value="{{ username }}">
-
-                <div class="security-question-card">
-                    <span class="context-label">Your Security Question:</span>
-                    <p class="question-text">What is your mother's maiden name?<!--{{ question }}--></p>
-                </div>
-
-                <div class="form-group">
-                    <label for="security-answer">Your Answer:</label>
-                    <input 
-                    type="text" 
-                    id="security-answer" 
-                    name="security_answer" 
-                    placeholder="Type your answer" 
-                    required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="new-password">New Password:</label>
-                    <input 
-                    type="password" 
-                    id="reset-password" 
-                    name="new_password" 
-                    placeholder="Choose a new password" 
-                    required
-                    >
-                    <button type="button" id="toggle-reset-pass">Show</button>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirm-password">Confirm New Password:</label>
-                    <input
-                    type="password" 
-                    id="confirm-reset-password" 
-                    name="confirm_password" 
-                    placeholder="Confirm new password" 
-                    required
-                    >
-                    <button type="button" id="toggle-confirm-reset-pass">Show</button>
-                </div>
-
-                <button type="submit">Change Password</button>
-            </form>
-
-            <div class="auth-links">
-                <a href="{{ url_for('login') }}">Back to Login</a>
+            <div class="security-question-card">
+                <span class="context-label">Your Security Question:</span>
+                <p class="question-text">{{ security_question }}</p>
             </div>
-        <!--{% endif %}-->
 
+            <div class="form-group">
+                <label for="security-answer">Your Answer:</label>
+                <input 
+                type="text" 
+                id="security-answer" 
+                name="security_answer" 
+                placeholder="Type your answer" 
+                required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="new-password">New Password:</label>
+                <input 
+                type="password" 
+                id="reset-password" 
+                name="new_password" 
+                placeholder="Choose a new password" 
+                required
+                >
+                <button type="button" id="toggle-reset-pass">Show</button>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm New Password:</label>
+                <input
+                type="password" 
+                id="confirm-reset-password" 
+                name="confirm_password" 
+                placeholder="Confirm new password" 
+                required
+                >
+                <button type="button" id="toggle-confirm-reset-pass">Show</button>
+            </div>
+
+            <button type="submit">Change Password</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="{{ url_for('login') }}">Back to Login</a>
+        </div>
     </section>
 </main>
 

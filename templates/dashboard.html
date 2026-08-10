@@ -23,7 +23,7 @@
         <div class="profile-section">
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-                <p>Username</p>
+                <p>{{ username }}</p>
                 <img src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
             </button>
         </div>
@@ -44,7 +44,7 @@
 
 <main class="dashboard-main">
     <div class="welcome-header">
-        <h1>Welcome back, Gittel <span aria-hidden="true">&lt;3</span></h1>
+        <h1>Welcome back {{ name }} <span aria-hidden="true">&lt;3</span></h1>
         <h2 id="has-projects">Continue working on your projects:</h2>
         <!--<h2 id="no-projects">Create your first project here:</h2>-->
     </div>
@@ -54,30 +54,19 @@
             <span class="plus-icon">➕</span> Create New Project
         </button>
 
-        <input type="file" id="pdfFileInput" accept="application/pdf" style="display: none;">
+        <input 
+        type="file" 
+        id="pdfFileInput" 
+        name="pdf"
+        accept="application/pdf" 
+        style="display: none;">
     </div>
 
     <div class="projects-grid">
         <a href="/workspace/project-id" class="project-card">
             <div class="project-card-content">
-                <h3>Mom's Medical Form</h3>
-                <p class="project-date">Last edited: 3 hours ago</p>
-                <span class="card-arrow">Open Project →</span>
-            </div>
-        </a>
-
-        <a href="/workspace/project-id" class="project-card">
-            <div class="project-card-content">
-                <h3>Eye Appointment Form</h3>
-                <p class="project-date">Last edited: 2 days ago</p>
-                <span class="card-arrow">Open Project →</span>
-            </div>
-        </a>
-
-        <a href="/workspace/project-id" class="project-card">
-            <div class="project-card-content">
-                <h3>Penelope's Vet Form</h3>
-                <p class="project-date">Last edited: 4 weeks ago</p>
+                <h3>{{ project_name }}</h3>
+                <p class="project-date">Last edited: {{ last_edited }}</p>
                 <span class="card-arrow">Open Project →</span>
             </div>
         </a>
