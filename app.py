@@ -3,30 +3,36 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 
-FAKE_USERS_DB = {
-    'testuser': {
-        'password': '1234',
-        'security_question': 'pet',
-        'answer': 'fluffy'
-    }
-}
-
 load_dotenv()
-
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///iris.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+
     security_question = db.Column(db.String(200), nullable=False)
     security_answer = db.Column(db.String(120), nullable=False)
+
+    first_name = db.Column(db.String(50), nullable=True)
+    last_name = db.Column(db.String(50), nullable=True)
+    middle_initial = db.Column(db.String(1), nullable=True)
+
+    birthday = db.Column(db.String(15), nullable=True)
+
+    email = db.Column(db.String(120), nullable=True)
+
+    phone = db.Column(db.String(20), nullable=True)
+
+    street = db.Column(db.String(120), nullable=True)
+    city = db.Column(db.String(50), nullable=True)
+    state = db.Column(db.String(2), nullable=True)
+    zip_code = db.Column(db.String(10), nullable=True)
 
 with app.app_context():
     db.create_all()
@@ -55,7 +61,9 @@ def login():
 
         print(f"Attempted login with: {username} and password: {password}")
 
-        if username in FAKE_USERS_DB and FAKE_USERS_DB[username]['password'] == password:
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.password == password:
             session['user'] = username
             return redirect(url_for('dashboard'))
         else:
