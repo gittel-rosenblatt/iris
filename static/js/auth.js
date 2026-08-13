@@ -62,15 +62,3 @@ confirmResetToggle?.addEventListener('click', () => {
         confirmResetToggle.textContent = 'Show';
     }
 });
-
-const switchToSignup = document.querySelector('#switch-to-signup');
-const switchToLogin = document.querySelector('#switch-to-login');
-const body = document.body; 
-
-switchToSignup?.addEventListener('click', () => {
-    body.classList.add('is-switched');
-});
-
-switchToLogin?.addEventListener('click', () => {
-    body.classList.remove('is-switched');
-});

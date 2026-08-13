@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iris - Login</title>
+    <title>Iris - Signup</title>
 
     <!--Bootstrap CSS File-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -49,8 +49,8 @@
 <main id="auth-main">
     <div class="auth-container">
         <section class="auth">
-            <h2>Welcome back <span aria-hidden="true">&lt;3</span></h2>
-            <p>Login here. Please enter your details.</p>
+            <h2>We're happy to have you <span aria-hidden="true">&lt;3</span></h2>
+            <p>Sign up here. Please choose your details.</p>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -64,13 +64,13 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            
-            <form class="form" action="/login" method="POST">
+
+            <form class="form" action="/signup" method="POST">
                 <div class="form-group">
-                    <label for="username">Username:</label>
+                    <label for="choose-username">Username:</label>
                     <input 
                     type="text" 
-                    id="username" 
+                    id="choose-username" 
                     name="username" 
                     autocomplete="username"
                     placeholder="Enter your username" 
@@ -82,22 +82,63 @@
                     <label for="password">Password:</label>
                     <input 
                     type="password" 
-                    id="password" 
+                    id="choose-password" 
                     name="password" 
                     autocomplete="current-password"
                     placeholder="Enter your password" 
                     required
                     >
-                    <button type="button" id="toggle-login-pass">Show</button>
+                    <button type="button" id="toggle-signup-pass">Show</button>
                 </div>
 
-                <a href="{{ url_for('forgot_password') }}" id="forgot-password">Forgot password? Reset it here.</a>
+                <div class="form-group">
+                    <label for="password">Confirm password:</label>
+                    <input 
+                    type="password" 
+                    id="confirm-password" 
+                    name="confirm_password" 
+                    autocomplete="current-password"
+                    placeholder="Confirm your password" 
+                    required
+                    >
+                    <button type="button" id="toggle-confirm-pass">Show</button>
+                </div>
 
-                <button type="submit">Log in</button>
+                <div class="form-group">
+                    <label for="security-question">Security Question:</label>
+                    <select 
+                    id="security-question" 
+                    class="select" 
+                    name="security_question" 
+                    required
+                    >
+                        <option value="" disabled selected>Select a security question...</option>
+                        <option value="pet">What was the name of your first pet?</option>
+                        <option value="maiden">What is your mother's maiden name?</option>
+                        <option value="city">In what city were you born?</option>
+                        <option value="school">What was the name of your elementary school?</option>
+                        <option value="car">What was the make and model of your first car?</option>
+                        <option value="street">What is the name of the street you grew up on?</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="security-answer">Answer:</label>
+                    <input 
+                    type="text" 
+                    id="security-answer" 
+                    name="security_answer" 
+                    placeholder="Your answer" 
+                    required
+                    >
+                </div>
+
+                <button type="submit">Sign up</button>
             </form>
+
             <p class="toggle-text">
-                Don't have an account? 
-                <a href="{{ url_for('signup')}}" id="switch-to-signup" class="link-btn">Sign up here.</a>
+                Already have an account? 
+                <a href="{{ url_for('login')}}" id="switch-to-login" class="link-btn">Log in here.</a>
             </p>
         </section>
 

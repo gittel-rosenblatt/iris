@@ -4,10 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iris - Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}"> 
+
+    <!--Bootstrap CSS File-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!--Personal CSS Files-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}"> 
-    <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script> 
-    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script> 
+    
+    <!--Bootstrap JS File-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+
+    <!--Personal JS Files-->
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>
 </head>
 <body>
     
@@ -46,11 +56,9 @@
     <!--{% if not profile_is_complete %}-->
         <div class="autofill-banner">
             <h3><strong>Maximize your Iris experience! </strong>Fill out your autofill profile details so we can seamlessly build your project forms.</h3>
-            <button type="button" class="banner-close" id="bannerClose"><h3>
-                <span aria-hidden="true">&times;</span>
-            </h3></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    <!--{% endif %}-->
+    <!--{% endif %} -->
 
     <div class="profile-main">
         <div class="welcome-header">

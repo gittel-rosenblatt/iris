@@ -9,7 +9,7 @@ h1, h2, h3 {
     font-weight: 700;
 }
 
-#login-main {
+#auth-main {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,43 +19,48 @@ h1, h2, h3 {
     padding: 40px 20px;
 }
 
-.login-container {
+.auth-container {
     display: flex;
     align-items: stretch;
 
-    height: auto; 
-    max-height: none;
+    height: 600px;
     width: 100%;
     max-width: 1000px;
 
     background-color: var(--bg-card);
-    overflow-y: auto;
     padding: 20px;
     gap: 20px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(85, 34, 166, 0.18);
 }
 
-.login {
+.auth {
     display: flex;
     flex-direction: column;
+    flex: 1.1;
     padding: 20px 40px;
     margin: 0;
     border-right: 2px solid var(--iris-purple); 
     overflow-y: auto;
 }
 
-.signup {
-    display: none;
-}
-
-.login, .signup {
+.auth-image {
     flex: 1;
-    margin: 0; 
-    box-sizing: border-box; 
+    height: 100%;
+    position: relative; 
 }
 
-.login h2, .login p {
+.auth-image img {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    border-radius: 12px;
+}
+
+.auth h2, .auth p {
     margin: 0;
     padding: 10px 0;
 }
@@ -78,39 +83,6 @@ h1, h2, h3 {
     padding: 0;
     color: var(--text-header);
     text-decoration: none; 
-}
-
-.login-image {
-    display: flex;
-    flex: 1;
-    position: relative; 
-    overflow: hidden; 
-    padding: 0; 
-    height: auto; 
-}
-
-.login-container img {
-    position: absolute; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px; 
-    object-fit: cover; 
-    object-position: center center; 
-}
-
-body.is-switched .signup {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    padding-right: 40px;
-    border-right: 2px solid var(--iris-purple); 
-    overflow-y: auto;
-}
-
-body.is-switched .login {
-    display: none;
 }
 
 #security-question {
@@ -139,7 +111,7 @@ body.is-switched .login {
         flex-grow: 1; 
     }
     
-    .login-container {
+    .auth-container {
         flex-direction: column;
         height: auto;
         max-height: none;
@@ -147,37 +119,12 @@ body.is-switched .login {
         align-items: center;
     }
 
-    .login, .signup {
+    .auth {
         flex: 1;
         width: 100%;
         border-right: none;
         border-bottom: 2px solid var(--iris-purple); 
         overflow-y: visible; 
-        padding: 20px 30px;
-    }
-
-    body.is-switched .signup {
-        border-right: none;
-        border-bottom: 2px solid var(--iris-purple); 
-        overflow-y: visible; 
-    }
-
-    .login-image {
-        display: block; 
-        width: 100%; 
-        height: 600px;
-        min-height: 400px;
-        flex-shrink: 0;
-        box-sizing: border-box;
-    }
-
-    .login-container img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center bottom;
-        border-radius: 12px; 
         padding: 20px 30px;
     }
 }

@@ -74,18 +74,22 @@ def login():
     
     return render_template('login.html') 
 
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        confirm_password = request.form.get('confim_password')
         security_question = request.form.get('security_question')
         security_answer = request.form.get('security_answer')
 
         user = User.query.filter_by(username=username).first()
         
         if user:
-            flash(f"{username} already exists", "danger")
+            flash(f"{username} already exists. Please log in.", "danger")
+            return redirect(url_for('signup'))
+        elif password != confirm_password:
+            flash(f"Passwords to not match. Please try again.", "danger")
             return redirect(url_for('signup'))
 
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
@@ -97,6 +101,7 @@ def signup():
 
         flash('Account created successfully! You can now log in.', 'success')
         return redirect(url_for('login'))
+    return render_template('signup.html')
 
 @app.route("/forgot-password", methods=['GET', 'POST'])
 def forgot_password():
@@ -127,14 +132,14 @@ def dashboard():
 @app.route('/workspace')
 def workspace():
     if 'user' not in session:
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
     
     return render_template('workspace.html') 
 
 @app.route('/profile')
 def profile():
     if 'user' not in session:
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
     
     return render_template('profile.html') 
 
