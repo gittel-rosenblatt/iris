@@ -43,7 +43,7 @@ body {
     overflow-x: hidden;
 }
 
-p, h1, h2, h3, nav a {
+body, p, h1, h2, h3, nav a {
     font-family: var(--main-font);
     color: var(--text-main);
 }

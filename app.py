@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
 
@@ -14,7 +15,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    password_hash = db.Column(db.String(120), nullable=False)
 
     security_question = db.Column(db.String(200), nullable=False)
     security_answer = db.Column(db.String(120), nullable=False)
@@ -59,14 +60,16 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        print(f"Attempted login with: {username} and password: {password}")
+        print(f"Attempted login with: {username}")
 
         user = User.query.filter_by(username=username).first()
 
-        if user and user.password == password:
+        if user and check_password_hash(user.password_hash, password):
             session['user'] = username
+            flash("Account logged in successfully!", "success")
             return redirect(url_for('dashboard'))
         else:
+            flash("Something went wrong. Please try again.", "danger")
             return render_template('login.html')
     
     return render_template('login.html') 
@@ -76,34 +79,35 @@ def signup():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        question = request.form.get('security_question')
-        answer = request.form.get('security-answer')
+        security_question = request.form.get('security_question')
+        security_answer = request.form.get('security_answer')
 
-        if username in FAKE_USERS_DB:
-            print(f"Signup failed: Username '{username}' already exists!")
-            return render_template('login.html')
+        user = User.query.filter_by(username=username).first()
+        
+        if user:
+            flash(f"{username} already exists", "danger")
+            return redirect(url_for('signup'))
 
-        FAKE_USERS_DB[username] = {
-            'password': password,
-            'security_question': question,
-            'security_answer': answer
-        }
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
-        print(f"Successfully registered new user: {username}")
+        new_user = User(username=username, password_hash=hashed_password, security_question=security_question, security_answer=security_answer)
 
-        session['user'] = username
-        return redirect(url_for('profile'))
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Account created successfully! You can now log in.', 'success')
+        return redirect(url_for('login'))
 
 @app.route("/forgot-password", methods=['GET', 'POST'])
 def forgot_password():
-    if request.method == 'POST':
-        username = request.form.get('username')
+    # if request.method == 'POST':
+    #     username = request.form.get('username')
 
-        if username in FAKE_USERS_DB:
-            question = FAKE_USERS_DB[username].get('security_question')
-            return render_template('reset-question.html', username=username, security_question=question)
-        else:
-            return render_template('forgot-password.html', error=True)
+    #     if username in FAKE_USERS_DB:
+    #         question = FAKE_USERS_DB[username].get('security_question')
+    #         return render_template('reset-question.html', username=username, security_question=question)
+    #     else:
+    #         return render_template('forgot-password.html', error=True)
 
     return render_template("forgot-password.html") 
 
@@ -116,7 +120,9 @@ def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    return render_template('dashboard.html') 
+    current_user = User.query.filter_by(username=session['user']).first()
+
+    return render_template('dashboard.html', first_name=current_user.first_name, username=current_user.username) 
     
 @app.route('/workspace')
 def workspace():

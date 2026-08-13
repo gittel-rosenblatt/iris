@@ -1,9 +1,17 @@
+h1, h2 {
+    font-family: var(--main-font);
+    font-weight: 700;
+}
+
 .dashboard-main {
     display: flex;
     flex-direction: column;
     padding: clamp(40px, 4%, 90px);
-    gap: 60px;
     overflow-y: auto;
+}
+
+.flash-messages:empty {
+    display: none;
 }
 
 .profile-section {
@@ -16,6 +24,11 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
+    padding-bottom: 60px;
+}
+
+.create-project-container {
+    padding-bottom: 60px;
 }
 
 .btn-create-project {
@@ -41,6 +54,7 @@
 .projects-grid {
     display: flex;
     gap: 40px;
+    padding-bottom: 60px;
 }
 
 .projects-grid a {
