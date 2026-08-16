@@ -257,10 +257,16 @@ def logout():
 
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
     return redirect(url_for('profile'))
 
 @app.route('/update-password', methods=['POST'])
 def update_password():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
     return redirect(url_for('profile'))
 
 if __name__ == "__main__":
