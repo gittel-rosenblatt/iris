@@ -24,7 +24,7 @@ body {
     overflow-y: auto;
 }
 
-.security-question-card {
+.password-tip-card {
     background-color: var(--iris-purple);
     border-left: 4px solid var(--text-header); 
     padding: 16px 20px;
@@ -43,7 +43,7 @@ body {
     font-weight: 600;
 }
 
-.question-text {
+.tip-text {
     font-size: var(--font-size-md);
     color: var(--text-header);
     font-weight: 600;

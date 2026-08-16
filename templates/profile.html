@@ -62,7 +62,12 @@
 
     <div class="profile-main">
         <div class="welcome-header">
-            <h1>Gittel's Account</h1>
+            <h1>{% if first_name %}
+                    {{ first_name }}
+                {% else %}
+                    {{ username }}
+                {% endif %}'s Account
+            </h1>
         </div>
 
         <div class="profile-container">
@@ -120,16 +125,6 @@
                         </div>
                     </div>
 
-                    <!-- Birthday Field -->
-                    <div class="form-group">
-                        <label for="dob">Birthday:</label>
-                        <input 
-                        type="date" 
-                        id="dob" 
-                        name="dob"
-                        >
-                    </div>
-
                     <!-- Email Field -->
                     <div class="form-group">
                         <label for="autofill-email">Email Address:</label>
@@ -149,6 +144,16 @@
                         id="phone" 
                         name="phone" 
                         placeholder="Phone number"
+                        >
+                    </div>
+
+                    <!-- Birthday Field -->
+                    <div class="form-group">
+                        <label for="dob">Birthday:</label>
+                        <input 
+                        type="date" 
+                        id="dob" 
+                        name="dob"
                         >
                     </div>
 
