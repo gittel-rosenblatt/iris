@@ -1,7 +1,7 @@
 import os
-
+from datetime import timedelta
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
 from flask_mailman import EmailMultiAlternatives, Mail
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import URLSafeTimedSerializer
@@ -10,6 +10,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
+
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)
+app.config['SESSION_REFRESH_EACH_REQUEST'] = True
 
 serializer = URLSafeTimedSerializer(app.secret_key)
 
@@ -78,6 +81,7 @@ def login():
 
         if found_user and check_password_hash(found_user.password_hash, password):
             session['user'] = found_user.username
+            session.permanent = True
             flash("Account logged in successfully!", "success")
             return redirect(url_for('dashboard'))
         else:
@@ -144,7 +148,7 @@ def forgot_password():
                         @import url('https://googleapis.com');
                     </style>
                 </head>
-                <body style="margin: 0; padding: 0; background-color: #ffffff;">
+                <body style="margin: 0; padding: 0; background-color: #FAF7F2;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tr>
                             <td style="padding: 40px 30px;"> 
@@ -268,6 +272,11 @@ def update_password():
         return redirect(url_for('login'))
 
     return redirect(url_for('profile'))
+
+@app.route('/keep-alive', methods=['POST'])
+def keep_alive():
+    session.modified = True  
+    return jsonify({"status": "session_extended"})
 
 if __name__ == "__main__":
     app.run(debug=True)

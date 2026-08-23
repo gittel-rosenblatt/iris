@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iris - Workspace</title>
-    <link rel="stylesheet" href="../static/css/global.css"> <!--{{ url_for('static', filename='css/global.css') }}-->
-    <link rel="stylesheet" href="../static/css/workspace.css"> <!--{{ url_for('static', filename='css/workspace.css') }}-->
-    <script src="../static/js/global.js" defer></script> <!--{{ url_for('static', filename='js/global.js') }}-->
-    <script src="../static/js/workspace.js" defer></script> <!--{{ url_for('static', filename='js/workspace.js') }}-->
+    <title>Iris - Dashboard</title>
+
+    <!--Bootstrap CSS File-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!--Personal CSS Files-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/workspace.css') }}"> 
+    
+    <!--Bootstrap JS File-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+
+    <!--Personal JS Files-->
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/workspace.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/timeout.js') }}" defer></script>
 </head>
 <body>
     
@@ -43,7 +54,29 @@
 </header>
 
 <main class="workspace-main">
-    <div class="project-title">
+
+    <div aria-labelledby="modalTitleText" data-bs-backdrop="static" data-bs-keyboard="false" aria-describedby="modalBodyText" class="modal fade" id="logoutWarningModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+            <div class="modal-header">
+                <h3 id="modalTitleText" class="modal-title">Session Expiring</h3>
+            </div>
+            
+            <div id="modalBodyText" class="modal-body">
+                <span id="accessible-countdown" class="visually-hidden" aria-live="polite"></span>
+                You will be logged out automatically <span id="countdown" class="countdown"></span> due to inactivity.
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" id="button" class="btn btn-secondary" data-bs-dismiss="modal">Stay Logged In</button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="project-title" id="focus" tabindex="-1">
         <h2><strong>Project:</strong> Project Name</h2>
     </div>
 

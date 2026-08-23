@@ -18,6 +18,7 @@
     <!--Personal JS Files-->
     <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/timeout.js') }}" defer></script>
 </head>
 <body>
     
@@ -60,7 +61,28 @@
         </div>
     <!--{% endif %} -->
 
-    <div class="profile-main">
+    <div aria-labelledby="modalTitleText" data-bs-backdrop="static" data-bs-keyboard="false" aria-describedby="modalBodyText" class="modal fade" id="logoutWarningModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+            <div class="modal-header">
+                <h3 id="modalTitleText" class="modal-title">Session Expiring</h3>
+            </div>
+            
+            <div id="modalBodyText" class="modal-body">
+                <span id="accessible-countdown" class="visually-hidden" aria-live="polite"></span>
+                You will be logged out automatically <span id="countdown" class="countdown"></span> due to inactivity.
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" id="button" class="btn btn-secondary" data-bs-dismiss="modal">Stay Logged In</button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-main" id="focus" tabindex="-1">
         <div class="welcome-header">
             <h1>{% if first_name %}
                     {{ first_name }}
