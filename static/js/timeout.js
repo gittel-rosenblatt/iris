@@ -1,5 +1,7 @@
 const LOGOUT_AFTER_MS = 21600000; // 6 hours
 const WARN_AFTER_MS = 21000000;   // 5 hours and 50 minutes
+// const LOGOUT_AFTER_MS = 30000; // 30 sedconds - debugging
+// const WARN_AFTER_MS = 15000;   // 15 seconds - debugging
 
 let warnTimer = setTimeout(showAccessibleWarning, WARN_AFTER_MS);
 let logoutTimer = setTimeout(forceLogout, LOGOUT_AFTER_MS);
@@ -14,6 +16,7 @@ function showAccessibleWarning() {
     warningModal.show();
 
     let secondsLeft = 600; // 10 minutes in seconds
+    // let secondsLeft = 15; // 15 seconds - debugging
 
     countdownTimer = setInterval(() => {
         secondsLeft--; 

@@ -82,12 +82,25 @@
         </div>
     </div>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <div class="profile-main" id="focus" tabindex="-1">
         <div class="welcome-header">
-            <h1>{% if first_name %}
-                    {{ first_name }}
+            <h1>{% if user.first_name %}
+                    {{ user.first_name }}
                 {% else %}
-                    {{ username }}
+                    {{ user.username }}
                 {% endif %}'s Account
             </h1>
         </div>
@@ -101,9 +114,8 @@
                     <input type="file" id="pfpInput" accept="image/*" style="display: none;">
                 </div>
                 <div class="account-meta">
-                    <p><strong>Username:</strong> GittelDev</p>
-                    <p><strong>Member Since:</strong> June 2026</p>
-                </div>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %Y') if user.created_at else 'N/A' }}</p>                </div>
                 <button type="button" class="account-btn" id="changePassword">Change Password</button>
             </section>
 
@@ -121,6 +133,7 @@
                             type="text" 
                             id="first-name" 
                             name="first_name" 
+                            value="{{ user.first_name or '' }}"
                             placeholder="First name"
                             >
                         </div>
@@ -132,6 +145,7 @@
                             id="middle-initial" 
                             name="middle_initial" 
                             maxlength="1" 
+                            value="{{ user.middle_initial or '' }}"
                             placeholder="M.I."
                             >
                         </div>
@@ -142,6 +156,7 @@
                             type="text" 
                             id="last-name" 
                             name="last_name" 
+                            value="{{ user.last_name or '' }}"
                             placeholder="Last name"
                             >
                         </div>
@@ -149,11 +164,12 @@
 
                     <!-- Email Field -->
                     <div class="form-group">
-                        <label for="autofill-email">Email Address:</label>
+                        <label for="email">Email Address:</label>
                         <input 
                         type="email" 
-                        id="autofill-email" 
-                        name="autofill_email" 
+                        id="email" 
+                        name="email" 
+                        value="{{ user.email or '' }}"
                         placeholder="example@gmail.com"
                         >
                     </div>
@@ -165,6 +181,7 @@
                         type="tel" 
                         id="phone" 
                         name="phone" 
+                        value="{{ user.phone or '' }}"
                         placeholder="Phone number"
                         >
                     </div>
@@ -176,6 +193,7 @@
                         type="date" 
                         id="dob" 
                         name="dob"
+                        value="{{ user.birthday or '' }}"
                         >
                     </div>
 
@@ -184,8 +202,9 @@
                         <label for="address">Street Address:</label>
                         <input 
                         type="text" 
-                        id="address" 
-                        name="address" 
+                        id="street" 
+                        name="street" 
+                        value="{{ user.street or '' }}"
                         placeholder="Street address"
                         >
                     </div>
@@ -198,6 +217,7 @@
                             type="text" 
                             id="city" 
                             name="city" 
+                            value="{{ user.city or '' }}"
                             placeholder="City"
                             >
                         </div>
@@ -205,11 +225,10 @@
                         <div class="form-group inline-group-state">
                             <label for="state">State:</label>
                             <select id="state" class="select" name="state">
-                                <option value="" disabled selected>Select...</option>
-                                <option value="NY">NY</option>
-                                <option value="AK">AK</option>
-                                <option value="FL">FL</option>
-                                <option value="CA">CA</option>
+                                <option value="" disabled {{ 'selected' if not user.state }}>Select...</option>
+                                {% for state in states %}
+                                    <option value="{{ state }}" {{ 'selected' if state == user.state }}>{{ state }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
@@ -219,6 +238,7 @@
                             type="text" 
                             id="zip" 
                             name="zip" 
+                            value="{{ user.zip_code or '' }}"
                             placeholder="Zip code"
                             >
                         </div>

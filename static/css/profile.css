@@ -126,9 +126,12 @@ h1, h2 {
 .inline-group-state   { flex: 2; }
 .inline-group-zip     { flex: 3; }
 
-.form-group input, .form-group select {
+.form-group input, 
+.form-group select {
     width: 100%;
     box-sizing: border-box;
+    height: 65px; 
+    vertical-align: middle;
 }
 
 .btn-cancel {

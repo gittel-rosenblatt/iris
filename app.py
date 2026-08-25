@@ -1,5 +1,5 @@
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
 from flask_mailman import EmailMultiAlternatives, Mail
@@ -32,6 +32,7 @@ mail.init_app(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
 
@@ -49,6 +50,14 @@ class User(db.Model):
     city = db.Column(db.String(50), nullable=True)
     state = db.Column(db.String(2), nullable=True)
     zip_code = db.Column(db.String(10), nullable=True)
+
+STATES = [
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    ]
 
 with app.app_context():
     db.create_all()
@@ -98,10 +107,10 @@ def signup():
         confirm_password = request.form.get('confirm_password')
         email = request.form.get('email').strip().lower() 
 
-        user = User.query.filter_by(username=username).first()
+        user_check = User.query.filter_by(username=username).first()
         email_check = User.query.filter_by(email=email).first()
         
-        if user or email_check:
+        if user_check or email_check:
             flash(f"Username or email already in use. Please log in.", "danger")
             return redirect(url_for('signup'))
         elif password != confirm_password:
@@ -248,8 +257,10 @@ def profile():
     if 'user' not in session:
         return redirect(url_for('login'))
     
-    return render_template('profile.html') 
+    current_user = User.query.filter_by(username=session['user']).first()
 
+    return render_template('profile.html', user=current_user, states=STATES)
+    
 @app.route("/contact-and-faqs")
 def contact():
     return render_template("contact.html") 
@@ -264,6 +275,33 @@ def update_profile():
     if 'user' not in session:
         return redirect(url_for('login'))
 
+    def clean_input(field_name):
+        value = request.form.get(field_name, '').strip()
+        return value if value else None
+
+    current_user = User.query.filter_by(username=session['user']).first()
+
+    email = request.form.get('email', '').strip().lower()
+    email_check = User.query.filter_by(email=email).first()
+
+    if email_check and email_check.id != current_user.id:
+        flash(f"Email is already in use.", "danger")
+        return redirect(url_for('profile'))
+    
+    current_user.email = email
+    current_user.first_name = clean_input('first_name')
+    current_user.last_name = clean_input('last_name')
+    current_user.middle_initial = clean_input('middle_initial')
+    current_user.phone = clean_input('phone')
+    current_user.birthday = clean_input('dob')
+    current_user.street = clean_input('street')
+    current_user.city = clean_input('city')
+    current_user.state = clean_input('state')
+    current_user.zip_code = clean_input('zip')
+    
+    db.session.commit()
+
+    flash('Account updated successfully!', 'success')
     return redirect(url_for('profile'))
 
 @app.route('/update-password', methods=['POST'])
