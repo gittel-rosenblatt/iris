@@ -34,7 +34,7 @@
         <div class="profile-section">
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-                <p>Username</p>
+                <p>{{ user.username }}</p>
                 <img src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
             </button>
         </div>
@@ -54,12 +54,12 @@
 </header>
 
 <main>
-    <!--{% if not profile_is_complete %}-->
+    {% if not profile_is_complete %}
         <div class="autofill-banner">
             <h3><strong>Maximize your Iris experience! </strong>Fill out your autofill profile details so we can seamlessly build your project forms.</h3>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" id="bannerClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    <!--{% endif %} -->
+    {% endif %}
 
     <div aria-labelledby="modalTitleText" data-bs-backdrop="static" data-bs-keyboard="false" aria-describedby="modalBodyText" class="modal fade" id="logoutWarningModal" tabindex="-1">
         <div class="modal-dialog">
@@ -82,11 +82,11 @@
         </div>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% with messages = get_flashed_messages(category_filter=['profile_success', 'danger', 'success']) %}
         {% if messages %}
             <div class="flash-messages">
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -253,6 +253,19 @@
 
     <div class="modal-overlay" id="passwordModal" aria-hidden="true">
         <div class="modal-content">
+
+            {% with messages = get_flashed_messages(category_filter=['password_error']) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
             
             <div class="modal-header">
                 <h2>Change Password</h2>
@@ -304,6 +317,8 @@
                     <button type="button" class="btn-cancel" id="cancelPasswordModal">Cancel</button>
                     <button type="submit" class="btn-save-password">Update Password</button>
                 </div>
+
+                <a href="{{ url_for('forgot_password') }}">Forgot password? Reset it here.</a>
 
             </form>
         </div>

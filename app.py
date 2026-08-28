@@ -259,7 +259,21 @@ def profile():
     
     current_user = User.query.filter_by(username=session['user']).first()
 
-    return render_template('profile.html', user=current_user, states=STATES)
+    required_fields = [
+        current_user.first_name,
+        current_user.last_name,
+        current_user.middle_initial,
+        current_user.birthday,
+        current_user.phone,
+        current_user.street,
+        current_user.city,
+        current_user.state,
+        current_user.zip_code
+    ]
+
+    is_complete = all(required_fields)
+
+    return render_template('profile.html', user=current_user, states=STATES, profile_is_complete=is_complete)
     
 @app.route("/contact-and-faqs")
 def contact():
@@ -309,6 +323,25 @@ def update_password():
     if 'user' not in session:
         return redirect(url_for('login'))
 
+    current_user = User.query.filter_by(username=session['user']).first()
+
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+
+    if  not check_password_hash(current_user.password_hash, current_password):
+        flash('Incorrect password. Please try again.', 'password_error')
+        return redirect(url_for('profile', modal='password'))
+
+    if new_password != confirm_password:
+        flash('Passwords do not match. Please try again.', 'password_error')
+        return redirect(url_for('profile', modal='password'))
+
+    hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+    current_user.password_hash = hashed_password
+
+    db.session.commit()
+    flash('Password updated successfully!', 'profile_success')
     return redirect(url_for('profile'))
 
 @app.route('/keep-alive', methods=['POST'])

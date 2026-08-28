@@ -1,6 +1,7 @@
 main {
     display: flex;
     flex-direction: column;
+    padding: 20px 40px;
 }
 
 h1, h2 {

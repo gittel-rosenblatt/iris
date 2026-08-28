@@ -15,7 +15,7 @@ document.addEventListener('click', (event) => {
 const closeBannerBtn = document.querySelector('#bannerClose');
 const autofillBanner = document.querySelector('.autofill-banner');
 
-closeBannerBtn.addEventListener('click', () => {
+closeBannerBtn?.addEventListener('click', () => {
     autofillBanner.classList.add('close');
 });
 
@@ -24,7 +24,7 @@ const openModalBtn = document.querySelector('#changePassword');
 const closeModalBtn = document.querySelector('#closePasswordModal');
 const cancelModalBtn = document.querySelector('#cancelPasswordModal');
 
-openModalBtn.addEventListener('click', () => {
+openModalBtn?.addEventListener('click', () => {
     passwordModal.classList.add('is-open');
     passwordModal.setAttribute('aria-hidden', 'false');
 });
@@ -79,5 +79,15 @@ confirmToggle?.addEventListener('click', () => {
     } else {
         confirmInput.type = 'password';
         confirmToggle.textContent = 'Show';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.get('modal') === 'password') {
+        const passwordModal = document.querySelector('#passwordModal');
+        passwordModal?.classList.add('is-open');
+        passwordModal?.setAttribute('aria-hidden', 'false');
     }
 });
