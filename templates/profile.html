@@ -35,7 +35,7 @@
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
                 <p>{{ user.username }}</p>
-                <img src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
+                <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
             </button>
         </div>
 
@@ -97,22 +97,13 @@
 
     <div class="profile-main" id="focus" tabindex="-1">
         <div class="welcome-header">
-            <h1>{% if user.first_name %}
-                    {{ user.first_name }}
-                {% else %}
-                    {{ user.username }}
-                {% endif %}'s Account
-            </h1>
+            <h1>{{ user.first_name if user.first_name else user.username }}'s Account</h1>
         </div>
 
         <div class="profile-container">
             <section class="account-info">
                 <h2>Account Information</h2>
-                <img class="user-pfp" src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
-                <div class="upload-user-pfp">
-                    <button type="button" class="account-btn btn-upload-pfp" id="pfpUploadBtn">Upload profile picture</button>
-                    <input type="file" id="pfpInput" accept="image/*" style="display: none;">
-                </div>
+                <img class="user-pfp" src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
                 <div class="account-meta">
                     <p><strong>Username:</strong> {{ user.username }}</p>
                     <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %Y') if user.created_at else 'N/A' }}</p>                </div>
@@ -243,6 +234,53 @@
                             >
                         </div>
                     </div> 
+
+                    <!-- Avatar Picker Row -->
+                    <div class="avatar-picker">
+                        <p>Choose an avatar:</p>
+                        <div class="pfp-options">
+                            <label>
+                                <input 
+                                class="purple-btn"
+                                type="radio" 
+                                name="avatar" 
+                                value="pfp-iris-purple.png" {{ 'checked' if user.avatar == 'pfp-iris-purple.png' or not user.avatar }}
+                                >
+                                <img class="purple" src="{{ url_for('static', filename='images/avatars/pfp-iris-purple.png') }}" alt="Image of a purple iris flower">
+                                <p>Purple Iris</p>
+                            </label>
+                            <label>
+                                <input 
+                                class="blue-btn"
+                                type="radio" 
+                                name="avatar" 
+                                value="pfp-iris-blue.png" {{ 'checked' if user.avatar == 'pfp-iris-blue.png' }}
+                                >
+                                <img class="blue" src="{{ url_for('static', filename='images/avatars/pfp-iris-blue.png') }}" alt="Image of a blue iris flower">
+                                <p>Blue Iris</p>
+                            </label>
+                            <label>
+                                <input 
+                                class="pink-btn"
+                                type="radio" 
+                                name="avatar" 
+                                value="pfp-iris-pink.png" {{ 'checked' if user.avatar == 'pfp-iris-pink.png' }}
+                                >
+                                <img class="pink" src="{{ url_for('static', filename='images/avatars/pfp-iris-pink.png') }}" alt="Image of a pink iris flower">
+                                <p>Pink Iris</p>
+                            </label>
+                            <label>
+                                <input 
+                                class="yellow-btn"
+                                type="radio" 
+                                name="avatar" 
+                                value="pfp-iris-yellow.png" {{ 'checked' if user.avatar == 'pfp-iris-yellow.png' }}
+                                >
+                                <img class="yellow" src="{{ url_for('static', filename='images/avatars/pfp-iris-yellow.png') }}" alt="Image of a yellow iris flower">
+                                <p>Yellow Iris</p>
+                            </label>
+                        </div>
+                    </div>
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn-save-changes">Save Changes</button>

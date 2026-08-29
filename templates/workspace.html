@@ -34,8 +34,8 @@
         <div class="profile-section">
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-                <p>Username</p>
-                <img src="../static/images/default-pfp.png" alt="user's profile picture"> <!--{{ url_for('static', filename='images/user-pfp') }}-->
+                <p>{{ user.username }}</p>
+                <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
             </button>
         </div>
 

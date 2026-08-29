@@ -35,6 +35,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
+    avatar = db.Column(db.String(100), default='default-pfp.png')
 
     email = db.Column(db.String(120), unique=True, nullable=False)
 
@@ -243,14 +244,16 @@ def dashboard():
 
     current_user = User.query.filter_by(username=session['user']).first()
 
-    return render_template('dashboard.html', first_name=current_user.first_name, username=current_user.username) 
+    return render_template('dashboard.html', user=current_user, first_name=current_user.first_name, username=current_user.username) 
     
 @app.route('/workspace')
 def workspace():
     if 'user' not in session:
         return redirect(url_for('login'))
+
+    current_user = User.query.filter_by(username=session['user']).first()
     
-    return render_template('workspace.html') 
+    return render_template('workspace.html', user=current_user) 
 
 @app.route('/profile')
 def profile():
@@ -294,6 +297,7 @@ def update_profile():
         return value if value else None
 
     current_user = User.query.filter_by(username=session['user']).first()
+    selected_avatar = request.form.get('avatar')
 
     email = request.form.get('email', '').strip().lower()
     email_check = User.query.filter_by(email=email).first()
@@ -303,6 +307,7 @@ def update_profile():
         return redirect(url_for('profile'))
     
     current_user.email = email
+    current_user.avatar = selected_avatar
     current_user.first_name = clean_input('first_name')
     current_user.last_name = clean_input('last_name')
     current_user.middle_initial = clean_input('middle_initial')
@@ -312,7 +317,7 @@ def update_profile():
     current_user.city = clean_input('city')
     current_user.state = clean_input('state')
     current_user.zip_code = clean_input('zip')
-    
+
     db.session.commit()
 
     flash('Account updated successfully!', 'success')

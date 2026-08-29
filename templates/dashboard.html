@@ -35,7 +35,7 @@
             <button type="button" class="btn-tts">Listen 🔊</button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
                 <p>{{ username }}</p>
-                <img src="{{ url_for('static', filename='images/default-pfp.png') }}" alt="user's profile picture"> 
+                <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
             </button>
         </div>
 
@@ -89,7 +89,7 @@
     </div>
 
     <div class="welcome-header" id="focus" tabindex="-1">
-        <h1>Welcome back 
+        <h1>Welcome back
             {% if first_name %}
                 {{ first_name }}
             {% else %}

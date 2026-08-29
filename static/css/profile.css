@@ -8,6 +8,10 @@ h1, h2 {
     font-weight: 700;
 }
 
+p {
+    margin: 0;
+}
+
 .profile-main {
     display: flex;
     flex-direction: column;
@@ -78,8 +82,9 @@ h1, h2 {
 
 .user-pfp {
     border-radius: 50%;
-    width: clamp(100px, 20vw, 225px);
+    width: clamp(100px, 20vw, 250px);
     height: auto;
+    padding: 20px 0;
 }
 
 .account-meta p {
@@ -108,6 +113,10 @@ h1, h2 {
     border: 5px solid var(--iris-purple);
 }
 
+.autofill-subtext {
+    margin: 15px 0;
+}
+
 .profile-autofill {
     overflow-y: auto;
     flex: 2;
@@ -133,6 +142,65 @@ h1, h2 {
     box-sizing: border-box;
     height: 65px; 
     vertical-align: middle;
+}
+
+.avatar-picker {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 220px;
+    font-size: var(--font-size-md);
+    color: var(text-main);
+}
+
+.pfp-options {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.pfp-options input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.pfp-options img {
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    margin: 10px;
+}
+
+.pfp-options img:hover {
+    transform: scale(1.08);
+}
+
+.purple-btn:checked + img {
+    border-color: var(--iris-purple);
+    box-shadow: 0 0 10px rgba(110, 68, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.blue-btn:checked + img {
+    border-color: var(--iris-purple);
+    box-shadow: 0 0 10px rgba(68, 183, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.pink-btn:checked + img {
+    border-color: var(--iris-purple);
+    box-shadow: 0 0 10px rgba(255, 68, 246, 0.4);
+    transform: scale(1.1);
+}
+
+.yellow-btn:checked + img {
+    border-color: var(--iris-purple);
+    box-shadow: 0 0 12px rgba(255, 170, 0, 0.7); 
+    transform: scale(1.1);
 }
 
 .btn-cancel {
