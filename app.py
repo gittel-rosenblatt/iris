@@ -134,7 +134,8 @@ def login():
             found_user = User.query.filter_by(email=email_username).first()
 
         if found_user and check_password_hash(found_user.password_hash, password):
-            session['user'] = found_user.username
+            session['user_id'] = found_user.id  
+            session['user'] = found_user.username 
             session.permanent = True
             flash("Account logged in successfully!", "success")
             return redirect(url_for('dashboard'))
@@ -331,7 +332,7 @@ def contact():
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
+    session.pop('user_id', None)
     return redirect(url_for('login'))
 
 @app.route('/update-profile', methods=['POST'])
@@ -424,8 +425,19 @@ def upload():
             
             filename = secure_filename(pdf.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            
+
             pdf.save(file_path)
+
+            parsed_fields = parse_pdf_with_gemini(file_path)
+
+            new_doc = Document(
+                user_id=session['user_id'], 
+                filename=filename,
+                status='draft',
+                data_json=parsed_fields
+            )
+            db.session.add(new_doc)
+            db.session.commit()
             
         else:
             flash("Upload is not a valid PDF. Please try again.", "danger")
