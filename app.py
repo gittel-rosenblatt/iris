@@ -1,9 +1,13 @@
 import os
+import json
+
 from datetime import timedelta, datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
 from flask_mailman import EmailMultiAlternatives, Mail
 from flask_sqlalchemy import SQLAlchemy
+from google import genai
+from google.genai import types
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -61,6 +65,36 @@ class Document(db.Model):
     filename = db.Column(db.String(225), nullable=False)
     status = db.Column(db.String(20), default='draft')
     data_json = db.Column(db.JSON, nullable=True)
+
+def parse_pdf_with_gemini(filepath):
+    """
+    Takes a path to a saved PDF file, uploads it to 
+    Gemini, and returns a parsed list of form fields 
+    as Python data (dictionaries/lists).
+    """
+    client = genai.Client()
+    
+    uploaded_file = client.files.upload(file=filepath)
+    
+    prompt = """
+    You are an expert form parser. Analyze this document and identify all blank fields, 
+    questions, or checkboxes that a user needs to fill out. 
+
+    Return a JSON array of objects, where each object has:
+    - 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
+    - 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
+    """
+    
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=[uploaded_file, prompt],
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json"
+        )
+    )
+    
+    parsed_data = json.loads(response.text)
+    return parsed_data
 
 STATES = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
