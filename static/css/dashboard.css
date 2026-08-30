@@ -31,7 +31,50 @@ h1, h2 {
     padding-bottom: 60px;
 }
 
-.btn-create-project {
+.create-project-container form {
+    display: flex;
+    flex-direction: column;
+    color: var(--main-text);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    width: 600px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    margin: 15px 0 5px 0;
+    border: 5px solid var(--text-header);
+    border-radius: 8px;
+    background-color: var(--iris-purple);
+    color: var(--text-header);
+    font-family: var(--main-font);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    height: 70px;
+    box-sizing: border-box;
+}
+
+.custom-file-upload:hover {
+    background-color: var(--text-header);
+    color: var(--iris-purple);
+    border: 5px solid var(--iris-purple);
+}
+
+#file-name {
+    font-size: var(--font-size-sm);
+    color: var(--main-text);
+    font-weight: 600;
+}
+
+.btn-create, .btn-cancel {
     padding: 10px 18px;
     margin: 15px 0 5px 0;
     border: 5px solid var(--text-header);
@@ -43,13 +86,19 @@ h1, h2 {
     font-weight: 700;
     cursor: pointer;
     box-sizing: border-box;
+    height: 70px;
 }
 
-.btn-create-project:hover {
+.btn-create:hover, .btn-cancel:hover {
     background-color: var(--text-header);
     color: var(--iris-purple);
     border: 5px solid var(--iris-purple);
 }
+
+.finish-btns {
+    display: flex;
+    gap: 10px;
+} 
 
 .projects-grid {
     display: flex;

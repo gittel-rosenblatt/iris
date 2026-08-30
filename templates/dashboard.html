@@ -97,21 +97,39 @@
             {% endif %}
             <span aria-hidden="true">&lt;3</span>
         </h1>
-        <h2 id="has-projects">Continue working on your projects:</h2>
-        <!--<h2 id="no-projects">Create your first project here:</h2>-->
+        {% if projects %}
+            <h2 id="has-projects">Continue working on your projects:</h2>
+        {% else %}
+            <h2 id="no-projects">Create your first project here:</h2>
+        {% endif %}
     </div>
 
     <div class="create-project-container">
-        <button type="button" class="btn-create-project" id="uploadTriggerBtn">
-            <span class="plus-icon">➕</span> Create New Project
-        </button>
-
-        <input 
-        type="file" 
-        id="pdfFileInput" 
-        name="pdf"
-        accept="application/pdf" 
-        style="display: none;">
+        <form action="/upload-endpoint" method="POST" enctype="multipart/form-data">
+            <div class="upload-btn">
+                <label for="pdfFile" class="custom-file-upload">
+                    Choose PDF File
+                </label>
+                <input 
+                    type="file" 
+                    id="pdfFile" 
+                    name="pdf_file" 
+                    accept=".pdf, application/pdf"
+                    onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'No file chosen'"
+                >
+                <span id="file-name">No file chosen</span>
+            </div>
+            <div class="finish-btns">
+                <button 
+                    type="reset" 
+                    class="btn-cancel" 
+                    onclick="document.getElementById('file-name').textContent = 'No file chosen'"
+                >
+                    Cancel
+                </button>
+                <button type="submit" class="btn-create" id="uploadTriggerBtn">Upload</button>
+            </div>
+        </form>
     </div>
 
     <div class="projects-grid">

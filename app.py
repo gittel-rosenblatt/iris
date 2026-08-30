@@ -6,6 +6,7 @@ from flask_mailman import EmailMultiAlternatives, Mail
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 load_dotenv()
 app = Flask(__name__)
@@ -25,6 +26,7 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
 db = SQLAlchemy(app)
 mail = Mail()
@@ -51,6 +53,14 @@ class User(db.Model):
     city = db.Column(db.String(50), nullable=True)
     state = db.Column(db.String(2), nullable=True)
     zip_code = db.Column(db.String(10), nullable=True)
+
+class Document(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    filename = db.Column(db.String(225), nullable=False)
+    status = db.Column(db.String(20), default='draft')
+    data_json = db.Column(db.JSON, nullable=True)
 
 STATES = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
@@ -244,7 +254,10 @@ def dashboard():
 
     current_user = User.query.filter_by(username=session['user']).first()
 
-    return render_template('dashboard.html', user=current_user, first_name=current_user.first_name, username=current_user.username) 
+    user_projects = None
+    # user_projects will = a list of the user's projects ;)
+
+    return render_template('dashboard.html', user=current_user, first_name=current_user.first_name, username=current_user.username, projects=user_projects) 
     
 @app.route('/workspace')
 def workspace():
@@ -354,5 +367,38 @@ def keep_alive():
     session.modified = True  
     return jsonify({"status": "session_extended"})
 
-if __name__ == "__main__":
+@app.route('/upload-endpoint', methods=['POST'])
+def upload():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    pdf_check = request.files.get("pdf_file")
+    pdf = ''
+
+    if pdf_check and pdf_check.filename != "":
+        first_bytes = pdf_check.read(4)
+        pdf_check.seek(0)
+
+        is_valid_ext = pdf_check.filename.lower().endswith('.pdf')
+        is_valid_mime = pdf_check.content_type == 'application/pdf'
+        is_valid_bytes = first_bytes == b'%PDF' 
+
+        if is_valid_ext and is_valid_mime and is_valid_bytes:
+            pdf = pdf_check
+
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+            
+            filename = secure_filename(pdf.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            
+            pdf.save(file_path)
+            
+        else:
+            flash("Upload is not a valid PDF. Please try again.", "danger")
+            return redirect(url_for('dashboard'))
+    else:
+        flash("No file was selected.", "danger")
+        return redirect(url_for('dashboard'))
+
+if __name__ == '__main__':
     app.run(debug=True)
