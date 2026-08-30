@@ -1,6 +1,7 @@
 import os
 import json
 
+from cryptography.fernet import Fernet
 from datetime import timedelta, datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
@@ -15,6 +16,9 @@ from werkzeug.utils import secure_filename
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
+
+encryption_key = os.getenv('ENCRYPTION_KEY')
+cipher = Fernet(encryption_key.encode()) if encryption_key else None
 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)
 app.config['SESSION_REFRESH_EACH_REQUEST'] = True
@@ -430,12 +434,17 @@ def upload():
 
             parsed_fields = parse_pdf_with_gemini(file_path)
 
+            json_string = json.dumps(parsed_fields)
+            encrypted_bytes = cipher.encrypt(json_string.encode())
+            encrypted_string = encrypted_bytes.decode()
+
             new_doc = Document(
-                user_id=session['user_id'], 
+                user_id=session['user_id'],
                 filename=filename,
                 status='draft',
-                data_json=parsed_fields
+                data_json=encrypted_string
             )
+
             db.session.add(new_doc)
             db.session.commit()
             
