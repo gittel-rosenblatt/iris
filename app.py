@@ -3,13 +3,12 @@ import os
 import time
 
 from cryptography.fernet import Fernet
-from datetime import timedelta, datetime, timezone
+from datetime import timedelta, datetime, date, timezone
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify, g
 from flask_mailman import EmailMultiAlternatives, Mail
 from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
 from google import genai
 from google.genai import types
 from itsdangerous import URLSafeTimedSerializer
@@ -147,7 +146,7 @@ def parse_pdf_with_gemini(filepath):
         try:
             print(f"Attempt {attempt + 1} to parse PDF with Gemini API...")
             response = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-3.5-flash",
                 contents=[uploaded_file, prompt],
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json"
@@ -164,12 +163,20 @@ def parse_pdf_with_gemini(filepath):
                     continue
             raise e
 
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://"
-)
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:
+            return redirect(url_for('login'))
+        
+        current_user = User.query.filter_by(username=session['user']).first()
+        if not current_user:
+            session.clear()
+            return redirect(url_for('login'))
+            
+        g.current_user = current_user
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.after_request
 def add_header(response):
@@ -177,6 +184,10 @@ def add_header(response):
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '-1'
     return response
+
+@app.context_processor
+def inject_user():
+    return dict(current_user=getattr(g, 'current_user', None))
 
 STATES = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
@@ -365,23 +376,12 @@ def reset_password(token):
     return render_template('reset-password.html', token=token)
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    current_user = g.current_user
 
-    current_user = User.query.filter_by(username=session['user']).first()
-
-    if not current_user:
-        session.clear()
-        return redirect(url_for('login'))
-
-    today_start = datetime.now(timezone.utc).date()
-    uploads_today = Document.query.filter(
-        Document.user_id == current_user.id,
-        Document.created_at >= today_start
-    ).count()
-
-    uploads_left = max(0, 5 - uploads_today)
+    total_active_docs = Document.query.filter_by(user_id=current_user.id).count()
+    uploads_left = max(0, 5 - total_active_docs)
 
     user_projects = Document.query.filter_by(user_id=current_user.id).order_by(Document.created_at.desc()).all()
 
@@ -390,19 +390,13 @@ def dashboard():
                            first_name=current_user.first_name, 
                            username=current_user.username, 
                            projects=user_projects, 
-                           uploads_left=uploads_left) 
+                           uploads_left=uploads_left)
 
 @app.route('/workspace/<int:doc_id>')
+@login_required
 def workspace(doc_id):
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    current_user = g.current_user
 
-    current_user = User.query.filter_by(username=session['user']).first()
-
-    if not current_user:
-        session.clear()
-        return redirect(url_for('login'))
-    
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
 
     if not doc:
@@ -414,15 +408,9 @@ def workspace(doc_id):
                            document=doc)
 
 @app.route('/profile')
+@login_required
 def profile():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
-    current_user = User.query.filter_by(username=session['user']).first()
-
-    if not current_user:
-        session.clear()
-        return redirect(url_for('login'))
+    current_user = g.current_user
 
     fields = [
         current_user.decrypted_first_name,
@@ -438,7 +426,10 @@ def profile():
 
     is_complete = all(fields)
 
-    return render_template('profile.html', user=current_user, states=STATES, profile_is_complete=is_complete)
+    return render_template('profile.html', 
+                           user=current_user, 
+                           states=STATES, 
+                           profile_is_complete=is_complete)
     
 @app.route("/contact-and-faqs")
 def contact():
@@ -451,15 +442,9 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/update-profile', methods=['POST'])
+@login_required
 def update_profile():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
-    current_user = User.query.filter_by(username=session['user']).first()
-    
-    if not current_user:
-        session.clear()
-        return redirect(url_for('login'))
+    current_user = g.current_user 
 
     def clean_input(field_name):
         value = request.form.get(field_name, '').strip()
@@ -498,16 +483,10 @@ def update_profile():
     return redirect(url_for('profile'))
 
 @app.route('/update-password', methods=['POST'])
+@login_required
 def update_password():
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    current_user = g.current_user
 
-    current_user = User.query.filter_by(username=session['user']).first()
-    
-    if not current_user:
-        session.clear()
-        return redirect(url_for('login'))
-    
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
     confirm_password = request.form.get('confirm_password')
@@ -533,19 +512,18 @@ def keep_alive():
     return jsonify({"status": "session_extended"})
 
 @app.route('/upload-endpoint', methods=['POST'])
-@limiter.limit("5 per day")
-def upload():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
-    current_user = User.query.filter_by(username=session['user']).first()
-
-    if not current_user:
-        session.clear()
-        return redirect(url_for('login'))
+@login_required
+def upload(): 
+    current_user = g.current_user
 
     pdf_check = request.files.get("pdf_file")
     pdf = ''
+
+    total_active_docs = Document.query.filter_by(user_id=current_user.id).count()
+
+    if total_active_docs >= 5:
+        flash("You have reached your limit of 5 stored documents! Please delete an existing project to free up a slot.", "warning")
+        return redirect(url_for('dashboard'))
 
     if pdf_check and pdf_check.filename != "":        
         first_bytes = pdf_check.read(4)
@@ -616,6 +594,26 @@ def send_contact():
         flash("There was an error sending your message. Please try again.", "danger")
 
     return redirect(url_for('contact'))
+
+@app.route('/delete-document/<int:doc_id>', methods=['POST'])
+@login_required
+def delete_document(doc_id):
+    current_user = g.current_user 
+
+    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
+
+    if doc:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], doc.filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        db.session.delete(doc)
+        db.session.commit()
+        flash("Project deleted successfully.", "info")
+    else:
+        flash("Document not found or access denied.", "danger")
+
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     app.run(debug=True)

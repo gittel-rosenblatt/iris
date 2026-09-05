@@ -89,43 +89,48 @@
         {% endif %}
     {% endwith %}
 
-    <div class="project-title" id="focus" tabindex="-1">
-        <h2><strong>Project:</strong> Project Name</h2>
-    </div>
-
-    <section class="progress-bar">
-        <div class="progress-label">
-            <span>Progress: </span>
-            <span class="progress-percent">75%</span>
+    <div class="workspace-content">
+        <div class="workspace-header">
+            <a href="{{ url_for('dashboard') }}" class="btn back-button">← Back to Dashboard</a>
+            <div class="project-title" id="focus" tabindex="-1">
+                <h2><strong>Project:</strong> Project Name</h2>
+            </div>
         </div>
-
-        <div class="progress-track">
-            <div class="progress-fill"></div>
-        </div>
-    </section>
-
-    <section class="question-container">
-        <h3>Question 10 of 12</h3>
-        <p>What is your emergency contact's email, phone number, and full name?</p>
         
+        <section class="progress-bar">
+            <div class="progress-label">
+                <span>Progress: </span>
+                <span class="progress-percent">75%</span>
+            </div>
 
-        <div class="form-group">
-            <input 
-            type="text" 
-            id="answer" 
-            name="answer" 
-            placeholder="Your answer" 
-            required
-            >
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+        </section>
+
+        <div class="question-section">
+            <section class="question-container">
+                <h3>Question 10 of 12</h3>
+                <p>What is your emergency contact's email, phone number, and full name?</p>
+                
+
+                <div class="form-group">
+                    <input 
+                    type="text" 
+                    id="answer" 
+                    name="answer" 
+                    placeholder="Your answer" 
+                    required
+                    >
+                </div>
+            </section>
+
+            <section class="nav-buttons">
+                <button type="button" class="btn" id="prev-question">Previous</button>
+                <button type="button" class="btn" id="next-question">Next</button>
+            </section>
         </div>
-    </section> 
-
-    <section class="nav-buttons">
-        <button type="button" class="btn" id="prev-question">Previous</button>
-        <button type="button" class="btn" id="next-question">Next</button>
-    </section>
-
-
+    </div>
 </main>
 
 </body>
