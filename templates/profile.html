@@ -97,7 +97,7 @@
 
     <div class="profile-main" id="focus" tabindex="-1">
         <div class="welcome-header">
-            <h1>{{ user.first_name if user.first_name else user.username }}'s Account</h1>
+            <h1>{{ user.decrypted_first_name if user.decrypted_first_name else user.username }}'s Account</h1>
         </div>
 
         <div class="profile-container">
@@ -124,7 +124,7 @@
                             type="text" 
                             id="first-name" 
                             name="first_name" 
-                            value="{{ user.first_name or '' }}"
+                            value="{{ user.decrypted_first_name or '' }}"
                             placeholder="First name"
                             >
                         </div>
@@ -136,7 +136,7 @@
                             id="middle-initial" 
                             name="middle_initial" 
                             maxlength="1" 
-                            value="{{ user.middle_initial or '' }}"
+                            value="{{ user.decrypted_middle_initial or '' }}"
                             placeholder="M.I."
                             >
                         </div>
@@ -147,7 +147,7 @@
                             type="text" 
                             id="last-name" 
                             name="last_name" 
-                            value="{{ user.last_name or '' }}"
+                            value="{{ user.decrypted_last_name or '' }}"
                             placeholder="Last name"
                             >
                         </div>
@@ -172,7 +172,7 @@
                         type="tel" 
                         id="phone" 
                         name="phone" 
-                        value="{{ user.phone or '' }}"
+                        value="{{ user.decrypted_phone or '' }}"
                         placeholder="Phone number"
                         >
                     </div>
@@ -184,7 +184,7 @@
                         type="date" 
                         id="dob" 
                         name="dob"
-                        value="{{ user.birthday or '' }}"
+                        value="{{ user.decrypted_birthday or '' }}"
                         >
                     </div>
 
@@ -195,7 +195,7 @@
                         type="text" 
                         id="street" 
                         name="street" 
-                        value="{{ user.street or '' }}"
+                        value="{{ user.decrypted_street or '' }}"
                         placeholder="Street address"
                         >
                     </div>
@@ -208,7 +208,7 @@
                             type="text" 
                             id="city" 
                             name="city" 
-                            value="{{ user.city or '' }}"
+                            value="{{ user.decrypted_city or '' }}"
                             placeholder="City"
                             >
                         </div>
@@ -216,9 +216,9 @@
                         <div class="form-group inline-group-state">
                             <label for="state">State:</label>
                             <select id="state" class="select" name="state">
-                                <option value="" disabled {{ 'selected' if not user.state }}>Select...</option>
+                                <option value="" disabled {{ 'selected' if not user.decrypted_state }}>Select...</option>
                                 {% for state in states %}
-                                    <option value="{{ state }}" {{ 'selected' if state == user.state }}>{{ state }}</option>
+                                    <option value="{{ state }}" {{ 'selected' if state == user.decrypted_state }}>{{ state }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -229,7 +229,7 @@
                             type="text" 
                             id="zip" 
                             name="zip" 
-                            value="{{ user.zip_code or '' }}"
+                            value="{{ user.decrypted_zip_code or '' }}"
                             placeholder="Zip code"
                             >
                         </div>

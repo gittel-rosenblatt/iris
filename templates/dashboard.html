@@ -90,8 +90,8 @@
 
     <div class="welcome-header" id="focus" tabindex="-1">
         <h1>Welcome back
-            {% if first_name %}
-                {{ first_name }}
+            {% if user.decrypted_first_name %}
+                {{ user.decrypted_first_name }}
             {% else %}
                 {{ username }}
             {% endif %}

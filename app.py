@@ -49,18 +49,62 @@ class User(db.Model):
 
     email = db.Column(db.String(120), unique=True, nullable=False)
 
-    first_name = db.Column(db.String(50), nullable=True)
-    last_name = db.Column(db.String(50), nullable=True)
-    middle_initial = db.Column(db.String(1), nullable=True)
+    first_name = db.Column(db.Text, nullable=True)
+    last_name = db.Column(db.Text, nullable=True)
+    middle_initial = db.Column(db.Text, nullable=True)
 
-    birthday = db.Column(db.String(15), nullable=True)
+    birthday = db.Column(db.Text, nullable=True)
 
-    phone = db.Column(db.String(20), nullable=True)
+    phone = db.Column(db.Text, nullable=True)
 
-    street = db.Column(db.String(120), nullable=True)
-    city = db.Column(db.String(50), nullable=True)
-    state = db.Column(db.String(2), nullable=True)
-    zip_code = db.Column(db.String(10), nullable=True)
+    street = db.Column(db.Text, nullable=True)
+    city = db.Column(db.Text, nullable=True)
+    state = db.Column(db.Text, nullable=True)
+    zip_code = db.Column(db.Text, nullable=True)
+
+    def _decrypt(self, value):
+        if value:
+            try:
+                return cipher.decrypt(value.encode()).decode()
+            except Exception:
+                return value
+        return ''
+
+    @property
+    def decrypted_first_name(self):
+        return self._decrypt(self.first_name)
+
+    @property
+    def decrypted_last_name(self):
+        return self._decrypt(self.last_name)
+
+    @property
+    def decrypted_middle_initial(self):
+        return self._decrypt(self.middle_initial)
+
+    @property
+    def decrypted_birthday(self):
+        return self._decrypt(self.birthday)
+
+    @property
+    def decrypted_phone(self):
+        return self._decrypt(self.phone)
+
+    @property
+    def decrypted_street(self):
+        return self._decrypt(self.street)
+
+    @property
+    def decrypted_city(self):
+        return self._decrypt(self.city)
+
+    @property
+    def decrypted_state(self):
+        return self._decrypt(self.state)
+
+    @property
+    def decrypted_zip_code(self):
+        return self._decrypt(self.zip_code)
 
 class Document(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -311,22 +355,22 @@ def workspace():
 def profile():
     if 'user' not in session:
         return redirect(url_for('login'))
-    
+
     current_user = User.query.filter_by(username=session['user']).first()
 
-    required_fields = [
-        current_user.first_name,
-        current_user.last_name,
-        current_user.middle_initial,
-        current_user.birthday,
-        current_user.phone,
-        current_user.street,
-        current_user.city,
-        current_user.state,
-        current_user.zip_code
+    fields = [
+        current_user.decrypted_first_name,
+        current_user.decrypted_last_name,
+        current_user.decrypted_middle_initial,
+        current_user.decrypted_birthday,
+        current_user.decrypted_phone,
+        current_user.decrypted_street,
+        current_user.decrypted_city,
+        current_user.decrypted_state,
+        current_user.decrypted_zip_code
     ]
 
-    is_complete = all(required_fields)
+    is_complete = all(fields)
 
     return render_template('profile.html', user=current_user, states=STATES, profile_is_complete=is_complete)
     
@@ -348,6 +392,12 @@ def update_profile():
         value = request.form.get(field_name, '').strip()
         return value if value else None
 
+    def encrypt(value):
+        if value:
+            encrypted_bytes = cipher.encrypt(value.encode())
+            return encrypted_bytes.decode()
+        return None
+
     current_user = User.query.filter_by(username=session['user']).first()
     selected_avatar = request.form.get('avatar')
 
@@ -360,15 +410,15 @@ def update_profile():
     
     current_user.email = email
     current_user.avatar = selected_avatar
-    current_user.first_name = clean_input('first_name')
-    current_user.last_name = clean_input('last_name')
-    current_user.middle_initial = clean_input('middle_initial')
-    current_user.phone = clean_input('phone')
-    current_user.birthday = clean_input('dob')
-    current_user.street = clean_input('street')
-    current_user.city = clean_input('city')
-    current_user.state = clean_input('state')
-    current_user.zip_code = clean_input('zip')
+    current_user.first_name = encrypt(clean_input('first_name'))
+    current_user.last_name = encrypt(clean_input('last_name'))
+    current_user.middle_initial = encrypt(clean_input('middle_initial'))
+    current_user.phone = encrypt(clean_input('phone'))
+    current_user.birthday = encrypt(clean_input('dob'))
+    current_user.street = encrypt(clean_input('street'))
+    current_user.city = encrypt(clean_input('city'))
+    current_user.state = encrypt(clean_input('state'))
+    current_user.zip_code = encrypt(clean_input('zip'))
 
     db.session.commit()
 
@@ -454,6 +504,28 @@ def upload():
     else:
         flash("No file was selected.", "danger")
         return redirect(url_for('dashboard'))
+
+@app.route('/send-contact', methods=['POST'])
+def send_contact():
+    name = request.form.get('name')
+    sender_email = request.form.get('email')
+    message_body = request.form.get('message')
+
+    msg = EmailMultiAlternatives(
+        subject=f"Iris Contact Form: Message from {name}",
+        body=f"Name: {name}\nEmail: {sender_email}\n\nMessage:\n{message_body}",
+        from_email="noreply@irisapp.com",
+        to=["iris@gmail.com"],
+        headers={'Reply-To': sender_email}
+    )
+    
+    try:
+        msg.send()
+        flash("Thank you for reaching out! Your message has been sent.", "success")
+    except Exception as e:
+        flash("There was an error sending your message. Please try again.", "danger")
+
+    return redirect(url_for('contact'))
 
 if __name__ == '__main__':
     app.run(debug=True)
