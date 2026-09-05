@@ -403,9 +403,13 @@ def workspace(doc_id):
         flash("Document not found or access denied.", "danger")
         return redirect(url_for('dashboard'))
 
+    raw_json = cipher.decrypt(doc.data_json.encode()).decode()
+    parsed_fields = json.loads(raw_json)
+
     return render_template('workspace.html', 
                            user=current_user, 
-                           document=doc)
+                           document=doc,
+                           fields=parsed_fields)
 
 @app.route('/profile')
 @login_required

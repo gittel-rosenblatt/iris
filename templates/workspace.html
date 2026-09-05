@@ -93,8 +93,15 @@
         <div class="workspace-header">
             <a href="{{ url_for('dashboard') }}" class="btn back-button">← Back to Dashboard</a>
             <div class="project-title" id="focus" tabindex="-1">
-                <h2><strong>Project:</strong> Project Name</h2>
+                <h2><strong>Project:</strong> {{ document.filename }}</h2>
             </div>
+            <select id="question-jump-select">
+                {% for field in fields %}
+                    <option value="{{ loop.index0 }}">
+                    {{ loop.index }}. {{ field.field_label | truncate(30) }}
+                    </option>
+                {% endfor %}
+            </select>
         </div>
         
         <section class="progress-bar">
@@ -109,25 +116,42 @@
         </section>
 
         <div class="question-section">
-            <section class="question-container">
-                <h3>Question 10 of 12</h3>
-                <p>What is your emergency contact's email, phone number, and full name?</p>
-                
-
-                <div class="form-group">
-                    <input 
-                    type="text" 
-                    id="answer" 
-                    name="answer" 
-                    placeholder="Your answer" 
-                    required
-                    >
-                </div>
-            </section>
+            {% for field in fields %}
+                <section class="question-container question-card {% if loop.first %}active{% endif %}">
+                    <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
+                    <p>{{ field.field_label }}</p>
+                    
+                    <div class="form-group">
+                        {% if field.field_type == 'checkbox' %}
+                            <input 
+                                type="checkbox" 
+                                id="answer-{{ loop.index }}" 
+                                name="answer-{{ loop.index }}"
+                                {% if field.field_answer %}checked{% endif %}
+                            >
+                        {% elif field.field_type == 'date' %}
+                            <input 
+                                type="date" 
+                                id="answer-{{ loop.index }}" 
+                                name="answer-{{ loop.index }}" 
+                                value="{{ field.field_answer or '' }}"
+                            >
+                        {% else %}
+                            <input 
+                                type="text" 
+                                id="answer-{{ loop.index }}" 
+                                name="answer-{{ loop.index }}" 
+                                placeholder="Your answer" 
+                                value="{{ field.field_answer or '' }}"
+                            >
+                        {% endif %}
+                    </div>
+                </section>
+            {% endfor %}
 
             <section class="nav-buttons">
-                <button type="button" class="btn" id="prev-question">Previous</button>
-                <button type="button" class="btn" id="next-question">Next</button>
+                <button type="button" class="btn prev-btn" id="prev-question">Previous</button>
+                <button type="button" class="btn next-btn" id="next-question">Next</button>
             </section>
         </div>
     </div>

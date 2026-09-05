@@ -11,3 +11,42 @@ document.addEventListener('click', (event) => {
         menu.classList.remove('show');
     }
 }); 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.question-card');
+    const jumpSelect = document.getElementById('question-jump-select');
+    let currentIndex = 0;
+
+    function showCard(index) {
+        cards.forEach(card => card.classList.remove('active'));
+        
+        if (cards[index]) {
+        cards[index].classList.add('active');
+        }
+}
+
+    document.querySelectorAll('.next-btn').forEach(button => {
+        button.addEventListener('click', () => {
+        if (currentIndex < cards.length - 1) {
+            currentIndex++;
+            showCard(currentIndex);
+        }
+        });
+    });
+
+    document.querySelectorAll('.prev-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showCard(currentIndex);
+            }
+        });
+    });
+
+    if (jumpSelect) {
+        jumpSelect.addEventListener('change', (e) => {
+            const selectedIndex = parseInt(e.target.value, 10);
+            showCard(selectedIndex);
+        });
+    }
+});

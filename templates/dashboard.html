@@ -67,10 +67,6 @@
         {% endif %}
     {% endwith %}
 
-    <!-- <div class="test">
-        <p>Testing</p>
-    </div> -->
-
     <div aria-labelledby="modalTitleText" data-bs-backdrop="static" data-bs-keyboard="false" aria-describedby="modalBodyText" class="modal fade" id="logoutWarningModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -111,7 +107,7 @@
             </div>
 
             <div class="create-project-container">
-                <p class="upload-counter">Uploads remaining today: <strong>{{ uploads_left }} / 5</strong></p>
+                <p class="upload-counter">Spots remaining: <strong>{{ uploads_left }} / 5</strong></p>
                 <form action="/upload-endpoint" method="POST" enctype="multipart/form-data">
                     <div class="upload-btn">
                         <label for="pdfFile" class="custom-file-upload">
