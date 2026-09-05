@@ -98,13 +98,14 @@
             <span aria-hidden="true">&lt;3</span>
         </h1>
         {% if projects %}
-            <h2 id="has-projects">Continue working on your projects:</h2>
+            <h2 id="has-projects">Continue working on your projects</h2>
         {% else %}
-            <h2 id="no-projects">Create your first project here:</h2>
+            <h2 id="no-projects">Create your first project here</h2>
         {% endif %}
     </div>
 
     <div class="create-project-container">
+        <p class="upload-counter">Uploads remaining today: <strong>{{ uploads_left }} / 5</strong></p>
         <form action="/upload-endpoint" method="POST" enctype="multipart/form-data">
             <div class="upload-btn">
                 <label for="pdfFile" class="custom-file-upload">
@@ -127,19 +128,31 @@
                 >
                     Cancel
                 </button>
-                <button type="submit" class="btn-create" id="uploadTriggerBtn">Upload</button>
+                <button 
+                    type="submit" 
+                    class="btn-create" 
+                    id="uploadTriggerBtn"
+                >
+                    Upload
+                </button>
             </div>
         </form>
     </div>
 
     <div class="projects-grid">
-        <a href="/workspace/project-id" class="project-card">
-            <div class="project-card-content">
-                <h3>{{ project_name }}</h3>
-                <p class="project-date">Last edited: {{ last_edited }}</p>
-                <span class="card-arrow">Open Project →</span>
-            </div>
-        </a>
+        {% for doc in projects %}
+            <a href="{{ url_for('workspace', doc_id=doc.id) }}" class="project-card">
+                <div class="project-card-content">
+                    <h3>{{ doc.filename }}</h3>
+                    <p class="project-date">
+                        Last edited: {{ (doc.updated_at or doc.created_at).strftime('%b %d, %Y %H:%M') }}
+                    </p>
+                    <span class="card-arrow">Open Project →</span>
+                </div>
+            </a>
+        {% else %}
+            <p class="empty-state">No documents uploaded yet. Upload your first PDF to get started!</p>
+        {% endfor %}
     </div>
 </main>
 

@@ -1,10 +1,13 @@
-import os
 import json
+import os
+import time
 
 from cryptography.fernet import Fernet
 from datetime import timedelta, datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_mailman import EmailMultiAlternatives, Mail
 from flask_sqlalchemy import SQLAlchemy
 from google import genai
@@ -112,7 +115,10 @@ class Document(db.Model):
 
     filename = db.Column(db.String(225), nullable=False)
     status = db.Column(db.String(20), default='draft')
-    data_json = db.Column(db.JSON, nullable=True)
+    data_json = db.Column(db.Text, nullable=True)
+
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
 def parse_pdf_with_gemini(filepath):
     """
@@ -120,6 +126,10 @@ def parse_pdf_with_gemini(filepath):
     Gemini, and returns a parsed list of form fields 
     as Python data (dictionaries/lists).
     """
+
+    max_retries = 3
+    delay = 2 
+
     client = genai.Client()
     
     uploaded_file = client.files.upload(file=filepath)
@@ -132,17 +142,41 @@ def parse_pdf_with_gemini(filepath):
     - 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
     - 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
     """
-    
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=[uploaded_file, prompt],
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json"
-        )
-    )
-    
-    parsed_data = json.loads(response.text)
-    return parsed_data
+
+    for attempt in range(max_retries):
+        try:
+            print(f"Attempt {attempt + 1} to parse PDF with Gemini API...")
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[uploaded_file, prompt],
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
+            parsed_data = json.loads(response.text)
+            return parsed_data
+
+        except Exception as e:
+            if "503" in str(e) or "UNAVAILABLE" in str(e):
+                if attempt < max_retries - 1:
+                    time.sleep(delay)
+                    delay *= 2  
+                    continue
+            raise e
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
+
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 STATES = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
@@ -337,19 +371,47 @@ def dashboard():
 
     current_user = User.query.filter_by(username=session['user']).first()
 
-    user_projects = None
-    # user_projects will = a list of the user's projects ;)
+    if not current_user:
+        session.clear()
+        return redirect(url_for('login'))
 
-    return render_template('dashboard.html', user=current_user, first_name=current_user.first_name, username=current_user.username, projects=user_projects) 
-    
-@app.route('/workspace')
-def workspace():
+    today_start = datetime.now(timezone.utc).date()
+    uploads_today = Document.query.filter(
+        Document.user_id == current_user.id,
+        Document.created_at >= today_start
+    ).count()
+
+    uploads_left = max(0, 5 - uploads_today)
+
+    user_projects = Document.query.filter_by(user_id=current_user.id).order_by(Document.created_at.desc()).all()
+
+    return render_template('dashboard.html', 
+                           user=current_user, 
+                           first_name=current_user.first_name, 
+                           username=current_user.username, 
+                           projects=user_projects, 
+                           uploads_left=uploads_left) 
+
+@app.route('/workspace/<int:doc_id>')
+def workspace(doc_id):
     if 'user' not in session:
         return redirect(url_for('login'))
 
     current_user = User.query.filter_by(username=session['user']).first()
+
+    if not current_user:
+        session.clear()
+        return redirect(url_for('login'))
     
-    return render_template('workspace.html', user=current_user) 
+    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
+
+    if not doc:
+        flash("Document not found or access denied.", "danger")
+        return redirect(url_for('dashboard'))
+
+    return render_template('workspace.html', 
+                           user=current_user, 
+                           document=doc)
 
 @app.route('/profile')
 def profile():
@@ -357,6 +419,10 @@ def profile():
         return redirect(url_for('login'))
 
     current_user = User.query.filter_by(username=session['user']).first()
+
+    if not current_user:
+        session.clear()
+        return redirect(url_for('login'))
 
     fields = [
         current_user.decrypted_first_name,
@@ -380,12 +446,19 @@ def contact():
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
+    session.clear() 
+    flash("You have been logged out.", "info")
     return redirect(url_for('login'))
 
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
     if 'user' not in session:
+        return redirect(url_for('login'))
+
+    current_user = User.query.filter_by(username=session['user']).first()
+    
+    if not current_user:
+        session.clear()
         return redirect(url_for('login'))
 
     def clean_input(field_name):
@@ -398,7 +471,6 @@ def update_profile():
             return encrypted_bytes.decode()
         return None
 
-    current_user = User.query.filter_by(username=session['user']).first()
     selected_avatar = request.form.get('avatar')
 
     email = request.form.get('email', '').strip().lower()
@@ -431,7 +503,11 @@ def update_password():
         return redirect(url_for('login'))
 
     current_user = User.query.filter_by(username=session['user']).first()
-
+    
+    if not current_user:
+        session.clear()
+        return redirect(url_for('login'))
+    
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
     confirm_password = request.form.get('confirm_password')
@@ -457,14 +533,21 @@ def keep_alive():
     return jsonify({"status": "session_extended"})
 
 @app.route('/upload-endpoint', methods=['POST'])
+@limiter.limit("5 per day")
 def upload():
     if 'user' not in session:
+        return redirect(url_for('login'))
+
+    current_user = User.query.filter_by(username=session['user']).first()
+
+    if not current_user:
+        session.clear()
         return redirect(url_for('login'))
 
     pdf_check = request.files.get("pdf_file")
     pdf = ''
 
-    if pdf_check and pdf_check.filename != "":
+    if pdf_check and pdf_check.filename != "":        
         first_bytes = pdf_check.read(4)
         pdf_check.seek(0)
 
@@ -482,7 +565,11 @@ def upload():
 
             pdf.save(file_path)
 
-            parsed_fields = parse_pdf_with_gemini(file_path)
+            try:
+                parsed_fields = parse_pdf_with_gemini(file_path)
+            except Exception as e:
+                flash("Gemini API is temporarily experiencing high demand. Please try again in a moment!", "warning")
+                return redirect(url_for('dashboard'))
 
             json_string = json.dumps(parsed_fields)
             encrypted_bytes = cipher.encrypt(json_string.encode())
@@ -497,6 +584,9 @@ def upload():
 
             db.session.add(new_doc)
             db.session.commit()
+
+            flash("PDF uploaded and parsed successfully!", "success")
+            return redirect(url_for('workspace', doc_id=new_doc.id))
             
         else:
             flash("Upload is not a valid PDF. Please try again.", "danger")
@@ -504,7 +594,7 @@ def upload():
     else:
         flash("No file was selected.", "danger")
         return redirect(url_for('dashboard'))
-
+    
 @app.route('/send-contact', methods=['POST'])
 def send_contact():
     name = request.form.get('name')
