@@ -15,6 +15,8 @@ document.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.question-card');
     const jumpSelect = document.getElementById('question-jump-select');
+    const progress = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent'); 
     let currentIndex = 0;
 
     function showCard(index) {
@@ -22,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (cards[index]) {
         cards[index].classList.add('active');
+
+        currentIndex = index;
+
+        const percentage = (currentIndex + 1) / cards.length * 100;
+        progress.style.width = `${percentage}%`;
+        progressPercent.textContent = `${Math.round(percentage)}%`;
         }
 }
 

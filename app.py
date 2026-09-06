@@ -140,6 +140,8 @@ def parse_pdf_with_gemini(filepath):
     Return a JSON array of objects, where each object has:
     - 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
     - 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
+    - 'field_options': For checkboxes or multiple-choice fields, an array of possible options; otherwise, null.
+    - 'field_required': A boolean indicating if the field is required or optional.
     """
 
     for attempt in range(max_retries):

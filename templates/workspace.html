@@ -107,18 +107,22 @@
         <section class="progress-bar">
             <div class="progress-label">
                 <span>Progress: </span>
-                <span class="progress-percent">75%</span>
+                <span class="progress-percent" id="progressPercent">0%</span>
             </div>
 
             <div class="progress-track">
-                <div class="progress-fill"></div>
+                <div class="progress-fill" id="progressFill"></div>
             </div>
         </section>
 
         <div class="question-section">
             {% for field in fields %}
                 <section class="question-container question-card {% if loop.first %}active{% endif %}">
-                    <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
+                    <div class="question-number">
+                        <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
+                        <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
+                    </div>
+
                     <p>{{ field.field_label }}</p>
                     
                     <div class="form-group">
@@ -137,13 +141,26 @@
                                 value="{{ field.field_answer or '' }}"
                             >
                         {% else %}
-                            <input 
-                                type="text" 
-                                id="answer-{{ loop.index }}" 
-                                name="answer-{{ loop.index }}" 
-                                placeholder="Your answer" 
-                                value="{{ field.field_answer or '' }}"
-                            >
+                            {% if field.field_options %}
+                                {% for option in field.field_options %}
+                                    <input
+                                        type="radio" 
+                                        id="answer-{{ loop.index }}-option-{{ loop.index0 }}" 
+                                        name="answer-{{ loop.index }}" 
+                                        value="{{ option }}"
+                                        {% if field.field_answer == option %}checked{% endif %}
+                                    >
+                                    <label for="answer-{{ loop.index }}-option-{{ loop.index0 }}">{{ option }}</label><br>
+                                {% endfor %}
+                            {% else %}
+                                <input 
+                                    type="text" 
+                                    id="answer-{{ loop.index }}" 
+                                    name="answer-{{ loop.index }}" 
+                                    placeholder="Your answer" 
+                                    value="{{ field.field_answer or '' }}"
+                                >
+                            {% endif %}
                         {% endif %}
                     </div>
                 </section>

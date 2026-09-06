@@ -67,7 +67,6 @@ html, body {
 }
 
 .progress-fill {
-    width: 75%;
     height: 100%;
     background-color: var(--dark-iris-purple);
     transition: width 0.3s ease-in-out;
@@ -92,10 +91,17 @@ html, body {
 }
 
 .question-container input[type="checkbox"] {
-  transform: scale(3.0); 
-  margin: 10px;
-  cursor: pointer;
-  accent-color: #5522A6; 
+    transform: scale(3.0); 
+    margin: 10px;
+    cursor: pointer;
+    accent-color: #5522A6; 
+    width: 25px;
+}
+
+.question-number {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #voice-to-text {
