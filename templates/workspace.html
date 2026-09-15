@@ -89,6 +89,14 @@
         {% endif %}
     {% endwith %}
 
+    <div class="explanation-banner">
+        <div class="explanation">
+            <h3><strong>Recommended:</strong> Fields our system detected as key details for your document.</h3>
+            <h3><strong>Optional:</strong> Fields you can safely skip unless they apply to your specific situation.</h3>
+        </div>
+        <button type="button" id="bannerClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="workspace-content">
         <div class="workspace-header">
             <a href="{{ url_for('dashboard') }}" class="btn back-button">← Back to Dashboard</a>

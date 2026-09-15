@@ -12,6 +12,13 @@ document.addEventListener('click', (event) => {
     }
 }); 
 
+const closeBannerBtn = document.querySelector('#bannerClose');
+const autofillBanner = document.querySelector('.explanation-banner');
+
+closeBannerBtn?.addEventListener('click', () => {
+    autofillBanner.classList.add('close');
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.question-card');
     const jumpSelect = document.getElementById('question-jump-select');

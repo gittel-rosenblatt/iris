@@ -23,6 +23,39 @@ html, body {
     flex-shrink: 0; 
 }
 
+.explanation-banner {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--iris-purple);
+    padding: 20px;
+    border: 3px solid var(--text-header);
+    margin: 5px;
+    border-radius: 12px;
+}
+
+.banner-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.banner-close:hover {
+    opacity: 0.7;
+}
+
+.explanation-banner.close {
+    display: none;
+}
+
+.explanation {
+    Display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
 .workspace-content {
     display: flex;
     flex-direction: column;
