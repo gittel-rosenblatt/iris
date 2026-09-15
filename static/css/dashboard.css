@@ -131,6 +131,7 @@ input[type="file"] {
     display: flex;
     gap: 40px;
     padding-bottom: 60px;
+    padding-right: 40px;
 }
 
 .projects-grid a {
