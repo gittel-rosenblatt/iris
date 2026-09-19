@@ -26,19 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressPercent = document.getElementById('progressPercent'); 
     const next = document.getElementById('nextQuestion'); 
     const final = document.getElementById('finalQuestion'); 
-    let currentIndex = 0;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const questionParam = urlParams.get('question');
+    let currentIndex = questionParam ? parseInt(questionParam, 10) : 0;
 
     function showCard(index) {
         cards.forEach(card => card.classList.remove('active'));
         
         if (cards[index]) {
-        cards[index].classList.add('active');
+            cards[index].classList.add('active');
+            
+            currentIndex = index;
 
-        currentIndex = index;
-
-        const percentage = (currentIndex + 1) / cards.length * 100;
-        progress.style.width = `${percentage}%`;
-        progressPercent.textContent = `${Math.round(percentage)}%`;
+            const percentage = (currentIndex + 1) / cards.length * 100;
+            progress.style.width = `${percentage}%`;
+            progressPercent.textContent = `${Math.round(percentage)}%`;
         }
 
         if (currentIndex == cards.length - 1) {
@@ -48,7 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
             next.classList.remove("submit")
             final.classList.remove("submit")
         }
+
+        if (jumpSelect) jumpSelect.value = currentIndex;
     }
+
+    showCard(currentIndex);
 
     document.querySelectorAll('.next-btn').forEach(button => {
         button.addEventListener('click', () => {

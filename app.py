@@ -621,5 +621,41 @@ def delete_document(doc_id):
 
     return redirect(url_for('dashboard'))
 
+@app.route('/project/<int:doc_id>/submit', methods=['POST'])
+@login_required
+def submit(doc_id):
+
+    current_user = g.current_user
+    
+    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
+
+    raw_json = cipher.decrypt(doc.data_json.encode()).decode()
+    fields = json.loads(raw_json)
+
+    for i, field in enumerate(fields, start=1):
+        key = f"answer-{i}"
+
+        if field.get('field_type') == 'checkbox':
+            field['field_answer'] = True if request.form.get(key) else False
+        else:
+            field['field_answer'] = request.form.get(key, '')
+
+    doc.status = 'under_review'
+
+    updated_json = json.dumps(fields)
+    doc.data_json = cipher.encrypt(updated_json.encode()).decode()
+
+    db.session.commit()
+
+    return render_template('review_doc.html', 
+                           user=current_user, 
+                           document=doc,
+                           fields=fields)
+
+@app.route('/project/<int:doc_id>/submit/generate_pdf', methods=['POST'])
+@login_required
+def generate(doc_id):
+    pass
+
 if __name__ == '__main__':
     app.run(debug=True)

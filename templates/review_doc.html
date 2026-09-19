@@ -123,13 +123,16 @@
             </div>
         </section>
 
-        <form method="POST" action="{{ url_for('submit', doc_id=document.id) }}">
+        <form method="POST" action="{{ url_for('generate', doc_id=document.id) }}">
             <div class="question-section">
                 {% for field in fields %}
                     <section class="question-container question-card {% if loop.first %}active{% endif %}">
                         <div class="question-number">
                             <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
-                            <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
+                            <div class="option-edit">
+                                <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
+                                <a href="{{ url_for('workspace', doc_id=document.id, question=loop.index0) }}" class="btn edit-link">✏️ Edit</a>
+                            </div>
                         </div>
 
                         <p>{{ field.field_label }}</p>
@@ -141,6 +144,7 @@
                                     id="answer-{{ loop.index }}" 
                                     name="answer-{{ loop.index }}"
                                     {% if field.field_answer %}checked{% endif %}
+                                    disabled
                                 >
                             {% elif field.field_type == 'date' %}
                                 <input 
@@ -148,6 +152,7 @@
                                     id="answer-{{ loop.index }}" 
                                     name="answer-{{ loop.index }}" 
                                     value="{{ field.field_answer or '' }}"
+                                    readonly
                                 >
                             {% else %}
                                 {% if field.field_options %}
@@ -158,6 +163,7 @@
                                             name="answer-{{ loop.index }}" 
                                             value="{{ option }}"
                                             {% if field.field_answer == option %}checked{% endif %}
+                                            disabled
                                         >
                                         <label for="answer-{{ loop.index }}-option-{{ loop.index0 }}">{{ option }}</label><br>
                                     {% endfor %}
@@ -168,6 +174,7 @@
                                         name="answer-{{ loop.index }}" 
                                         placeholder="Your answer" 
                                         value="{{ field.field_answer or '' }}"
+                                        readonly
                                     >
                                 {% endif %}
                             {% endif %}
@@ -178,7 +185,7 @@
                 <section class="nav-buttons">
                     <button type="button" class="btn prev-btn" id="prev-question">Previous</button>
                     <button type="button" class="btn next-btn" id="nextQuestion">Next</button>
-                    <button type="submit" class="btn submit-btn" id="finalQuestion">Submit</button>
+                    <button type="submit" class="btn submit-btn" id="finalQuestion">Generate PDF</button>
                 </section>
             </div>
         </form>

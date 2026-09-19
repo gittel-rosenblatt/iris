@@ -137,6 +137,31 @@ html, body {
     align-items: center;
 }
 
+.option-edit {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-edit .edit-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 0;
+    border: 2px solid var(--text-header);
+    border-radius: 8px;
+    background-color: var(--iris-purple);
+    color: var(--text-header);
+    font-family: var(--main-font);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100px;
+    height: 40px;
+}
+
 #voice-to-text {
     position: absolute;
     right: 8px;
