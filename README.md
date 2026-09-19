@@ -1,4 +1,6 @@
-<img width="300" alt="iris-logo" src="https://github.com/user-attachments/assets/9bb03dfd-b5eb-43aa-b2a5-8f39defb6f2d" />
+<p align="center">
+  <img src="(https://github.com/user-attachments/assets/9bb03dfd-b5eb-43aa-b2a5-8f39defb6f2d)" alt="Iris Logo" width="400">
+</p>
 
 # Iris
 
