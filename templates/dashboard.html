@@ -144,10 +144,10 @@
 
         <div class="projects-grid">
             {% for doc in projects %}
-                <a href="{{ url_for('workspace', doc_id=doc.id) }}" class="project-card">
+                <a href="{{ url_for('open_project', doc_id=doc.id) }}" class="project-card">
                     <div class="project-card-content">
                         <span class="status-badge status-{{ doc.status }}">
-                            {{ doc.status | capitalize }}
+                            {{ doc.status | replace('_', ' ') | title }}
                         </span>
                         <h3 class="project-title">{{ doc.filename }}</h3>
                         <p class="project-date">

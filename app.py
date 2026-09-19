@@ -657,5 +657,17 @@ def submit(doc_id):
 def generate(doc_id):
     pass
 
+@app.route('/project/<int:doc_id>')
+@login_required
+def open_project(doc_id):
+    doc = Document.query.filter_by(id=doc_id, user_id=g.current_user.id).first_or_404()
+    
+    if doc.status == 'under_review':
+        return redirect(url_for('review_doc', doc_id=doc.id))
+    elif doc.status == 'completed':
+        return redirect(url_for('view_pdf', doc_id=doc.id))
+    else:
+        return redirect(url_for('workspace', doc_id=doc.id))
+
 if __name__ == '__main__':
     app.run(debug=True)

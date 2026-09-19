@@ -171,22 +171,26 @@ input[type="file"] {
     justify-content: center;
     padding: 10px;
     border-radius: 8px;
+    border: 1px solid;
     font-size: var(--font-size-sm);
 }
 
 .status-draft {
     background-color: #E6DCF5;
     color: #5522A6;
+    border-color: #5522A6;
 }
 
 .status-completed {
     background-color: #D1E7DD;
     color: #0F5132;
+    border-color: #0F5132;
 }
 
-.status-pending {
+.status-under_review {
     background-color: #FFF3CD;
     color: #664D03;
+    border-color: #664D03;
 }
 
 .btn {
