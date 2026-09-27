@@ -234,6 +234,7 @@ header {
 
 .iris-logo {
     transition: opacity 0.2s ease;
+    border-radius: 50%;
 }
 
 .iris-logo:hover {

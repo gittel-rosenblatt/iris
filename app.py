@@ -1,17 +1,20 @@
+import fitz
 import json
 import os
 import time
+import uuid
 
 from cryptography.fernet import Fernet
 from datetime import timedelta, datetime, date, timezone
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify, g
+from flask import Flask, flash, redirect, render_template, request, send_file, session, url_for, jsonify, g
 from flask_mailman import EmailMultiAlternatives, Mail
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from google import genai
 from google.genai import types
 from itsdangerous import URLSafeTimedSerializer
+from pypdf import PdfReader, PdfWriter
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
@@ -116,6 +119,9 @@ class Document(db.Model):
     status = db.Column(db.String(20), default='draft')
     data_json = db.Column(db.Text, nullable=True)
 
+    original_file_path = db.Column(db.String(300), nullable=False)
+    completed_file_path = db.Column(db.String(300), nullable=True)
+
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
@@ -140,8 +146,11 @@ def parse_pdf_with_gemini(filepath):
     Return a JSON array of objects, where each object has:
     - 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
     - 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
-    - 'field_options': For checkboxes or multiple-choice fields, an array of possible options; otherwise, null.
+    - 'field_options': For checkboxes or multiple-choice fields, an array of options; otherwise null.
     - 'field_required': A boolean indicating if the field is required or optional.
+    - 'page': The 0-indexed page number (e.g., 0 for page 1).
+    - 'x': The x-coordinate in standard PDF points (1/72 inch from left) where the answer text should begin.
+    - 'y': The y-coordinate in standard PDF points (1/72 inch from top/bottom) where the answer text should sit.
     """
 
     for attempt in range(max_retries):
@@ -164,6 +173,76 @@ def parse_pdf_with_gemini(filepath):
                     delay *= 2  
                     continue
             raise e
+
+# def fill_pdf(input_pdf_path, output_pdf_path, answers_data):
+#     if isinstance(answers_data, list):
+#         answers_dict = {
+#             item.get('field_label', ''): item.get('field_answer', '') 
+#             for item in answers_data
+#         }
+#     else:
+#         answers_dict = answers_data
+
+#     reader = PdfReader(input_pdf_path)
+#     writer = PdfWriter()
+#     writer.append(reader)
+    
+#     fields = reader.get_fields()
+#     print("EXPECTED PDF KEYS:", list(fields.keys()) if fields else "NO FORM FIELDS FOUND")
+    
+#     if fields:
+#         # Check both field_name and field_label so pypdf finds the right key!
+#         answers_dict = {}
+#         if isinstance(answers_data, list):
+#             for item in answers_data:
+#                 # Use field_name if available, fallback to field_label
+#                 key = item.get('field_name') or item.get('field_label')
+#                 val = str(item.get('field_answer', ''))
+#                 if key:
+#                     answers_dict[key] = val
+#         else:
+#             answers_dict = answers_data
+
+#         for page in writer.pages:
+#             writer.update_page_form_field_values(page, answers_dict)
+            
+#         with open(output_pdf_path, "wb") as f:
+#             writer.write(f)
+#     else:
+#         overlay_text_on_pdf(input_pdf_path, output_pdf_path, answers_data)
+
+def overlay_text_on_pdf(input_pdf_path, output_pdf_path, answers_data):
+    doc = fitz.open(input_pdf_path)
+
+    for item in answers_data:
+        page_num = item.get("page", 0)
+        
+        if page_num < 0 or page_num >= len(doc):
+            page_num = 0
+            
+        page = doc[page_num]
+
+        text_to_print = str(item.get("field_answer") or item.get("text") or "")
+        if item.get("field_type") == "checkbox":
+            text_to_print = "X" if item.get("field_answer") else ""
+
+        raw_x = item.get("x", 0)
+        raw_y = item.get("y", 0)
+
+        page_width = page.rect.width   # ~612 pts
+        page_height = page.rect.height # ~792 pts
+
+        final_x = (raw_x / 1000.0) * page_width
+        final_y = (raw_y / 1000.0) * page_height
+
+        point = fitz.Point(final_x, final_y)
+
+        if text_to_print:
+            point = fitz.Point(final_x + 5, final_y + 12)
+            page.insert_text(point, text_to_print, fontsize=8, color=(0, 0, 0))
+
+    doc.save(output_pdf_path)
+    doc.close()
 
 def login_required(f):
     @wraps(f)
@@ -544,8 +623,9 @@ def upload():
 
             os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
             
-            filename = secure_filename(pdf.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            safe_name = secure_filename(pdf.filename)
+            unique_filename = f"{uuid.uuid4().hex[:8]}_{safe_name}"
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
 
             pdf.save(file_path)
 
@@ -560,10 +640,11 @@ def upload():
             encrypted_string = encrypted_bytes.decode()
 
             new_doc = Document(
-                user_id=session['user_id'],
-                filename=filename,
+                user_id=current_user.id,
+                filename=unique_filename,
                 status='draft',
-                data_json=encrypted_string
+                data_json=encrypted_string,
+                original_file_path = file_path
             )
 
             db.session.add(new_doc)
@@ -628,6 +709,10 @@ def submit(doc_id):
     current_user = g.current_user
     
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
+    file_path = doc.original_file_path
+
+    doc.completed_file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"filled_{doc.id}.pdf")
+    new_file_path = doc.completed_file_path
 
     raw_json = cipher.decrypt(doc.data_json.encode()).decode()
     fields = json.loads(raw_json)
@@ -647,15 +732,36 @@ def submit(doc_id):
 
     db.session.commit()
 
+    overlay_text_on_pdf(file_path, new_file_path, fields)
+
     return render_template('review_doc.html', 
                            user=current_user, 
                            document=doc,
                            fields=fields)
 
-@app.route('/project/<int:doc_id>/submit/generate_pdf', methods=['POST'])
+@app.route('/project/<int:doc_id>/submit/view_pdf', methods=['GET', 'POST'])
 @login_required
-def generate(doc_id):
-    pass
+def view_pdf(doc_id):
+    current_user = g.current_user
+    
+    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first_or_404()
+
+    raw_json = cipher.decrypt(doc.data_json.encode()).decode()
+    fields = json.loads(raw_json)
+
+    # Render the view_pdf.html template!
+    return render_template(
+        'view_pdf.html', 
+        user=current_user, 
+        document=doc, 
+        fields=fields
+    )
+
+@app.route('/project/<int:doc_id>/pdf_file')
+@login_required
+def serve_pdf(doc_id):
+    doc = Document.query.get_or_404(doc_id)
+    return send_file(doc.completed_file_path, mimetype='application/pdf')
 
 @app.route('/project/<int:doc_id>')
 @login_required
@@ -663,7 +769,7 @@ def open_project(doc_id):
     doc = Document.query.filter_by(id=doc_id, user_id=g.current_user.id).first_or_404()
     
     if doc.status == 'under_review':
-        return redirect(url_for('review_doc', doc_id=doc.id))
+        return redirect(url_for('view_pdf', doc_id=doc.id))
     elif doc.status == 'completed':
         return redirect(url_for('view_pdf', doc_id=doc.id))
     else:

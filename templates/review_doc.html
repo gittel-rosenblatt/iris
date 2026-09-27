@@ -123,7 +123,7 @@
             </div>
         </section>
 
-        <form method="POST" action="{{ url_for('generate', doc_id=document.id) }}">
+        <form method="POST" action="{{ url_for('view_pdf', doc_id=document.id) }}">
             <div class="question-section">
                 {% for field in fields %}
                     <section class="question-container question-card {% if loop.first %}active{% endif %}">
