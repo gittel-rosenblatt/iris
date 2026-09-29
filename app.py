@@ -140,17 +140,17 @@ def parse_pdf_with_gemini(filepath):
     uploaded_file = client.files.upload(file=filepath)
     
     prompt = """
-    You are an expert form parser. Analyze this document and identify all blank fields, 
-    questions, or checkboxes that a user needs to fill out. 
+    You are an expert document parser. Scan and analyze this form from top to bottom and extract 
+    EVERY single fillable field, label, checkbox, and table row (including repeating structures 
+    like Dependents, W-2 lines, or itemized lists).
 
     Return a JSON array of objects, where each object has:
-    - 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
-    - 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
-    - 'field_options': For checkboxes or multiple-choice fields, an array of options; otherwise null.
-    - 'field_required': A boolean indicating if the field is required or optional.
-    - 'page': The 0-indexed page number (e.g., 0 for page 1).
-    - 'x': The x-coordinate in standard PDF points (1/72 inch from left) where the answer text should begin.
-    - 'y': The y-coordinate in standard PDF points (1/72 inch from top/bottom) where the answer text should sit.
+    1. 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
+    2. 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
+    3. 'field_options': For checkboxes or multiple-choice fields, an array of options; otherwise null.
+    4. 'field_required': A boolean indicating if the field is required or optional.
+    5. 'page': The 0-indexed page number where the field appears (e.g., 0 for page 1).
+    6. 'box_2d': The exact normalized 2D bounding box coordinates [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 representing the exact input line or box area.
     """
 
     for attempt in range(max_retries):
