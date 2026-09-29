@@ -167,8 +167,9 @@ img {
 
 .btn-tts {
     font-size: var(--font-size-md); 
+    color: var(--text-header);
     background-color: var(--iris-purple); 
-    border: 2px solid var(--text-header); 
+    border: 4px solid var(--text-header); 
     border-radius: 6px;
     padding: 3px 6px;
     cursor: pointer;

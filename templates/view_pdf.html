@@ -3,51 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Review Document - Iris</title>
-    <!-- Clean Bootstrap CSS for quick styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .pdf-frame {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            width: 100%;
-            height: 750px;
-        }
-        .response-card {
-            max-height: 750px;
-            overflow-y: auto;
-        }
-    </style>
+    <title>Iris - View Document</title>
+
+    <!--Bootstrap CSS File-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!--Personal CSS Files-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_pdf.css') }}"> 
+    
+    <!--Bootstrap JS File-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+
+    <!--Personal JS Files-->
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/workspace.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/timeout.js') }}" defer></script>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">Iris</a>
-            <div class="d-flex">
-                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-sm">Dashboard</a>
-            </div>
+    <header class="account-header">
+        <div class="account-header-left">
+            <a href="{{ url_for('home') }}">
+                <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
+            </a>
+            <h1 class="brand-name">Iris</h1>
         </div>
-    </nav>
+
+        <nav class="account-header-nav">
+            <div class="profile-section">
+                <button type="button" class="btn-tts view-tts">Listen 🔊</button>
+                <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+                    <p>{{ user.username }}</p>
+                    <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
+                </button>
+            </div>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+                <ul>
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <hr class="dropdown-hr"> 
+                    <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                    <hr class="dropdown-hr">
+                    <li><a href="{{ url_for('terms') }}">Terms</a></li>
+                    <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
     <div class="container pb-5">
         
-        <!-- Header Banner -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body d-flex justify-content-between align-items-center py-3">
-                <div>
-                    <h3 class="fw-bold mb-0">Document Review</h3>
-                    <small class="text-muted">Document ID: #{{ document.id }}</small>
+        <div class="card download border-0">
+            <div class="card-body">
+                <div class="header-download">
+                    <h2>Document Review</h2>
+                    <p>Document ID: #{{ document.id }}</p>
                 </div>
                 <div>
-                    <span class="badge bg-success fs-6 px-3 py-2 me-2">Under Review</span>
-                    <!-- Download Link -->
                     {% if document.completed_file_path %}
-                        <a href="{{ url_for('serve_pdf', doc_id=document.id) }}" class="btn btn-primary">
+                        <a href="{{ url_for('serve_pdf', doc_id=document.id) }}" class="btn btn-download">
                             Download PDF
                         </a>
                     {% endif %}
@@ -55,56 +71,50 @@
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="form-preview">
             
-            <!-- Left Column: Summary of Form Answers -->
-            <div class="col-lg-4">
-                <div class="card border-0 shadow-sm response-card">
-                    <div class="card-header bg-white fw-bold py-3">
-                        Submitted Data
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            {% for field in fields %}
-                                <li class="list-group-item px-0 py-2 border-0">
-                                    <div class="text-muted small fw-semibold">{{ field.field_label }}</div>
-                                    <div class="fw-bold text-dark mt-1">
-                                        {% if field.field_type == 'checkbox' %}
-                                            {% if field.field_answer %}
-                                                <span class="badge bg-success">✓ Checked</span>
-                                            {% else %}
-                                                <span class="badge bg-secondary">Unchecked</span>
-                                            {% endif %}
+            <div class="card data border-0">
+                <div class="data-header">
+                    <h2>Submitted Data</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for field in fields %}
+                            <li class="submitted-data-card">
+                                <div class="context-label">{{ field.field_label }}</div>
+                                <div class="data-txt">
+                                    {% if field.field_type == 'checkbox' %}
+                                        {% if field.field_answer %}
+                                            <span class="badge bg-success">Checked</span>
                                         {% else %}
-                                            {{ field.field_answer if field.field_answer else '—' }}
+                                            <span class="badge bg-secondary">Unchecked</span>
                                         {% endif %}
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                                    {% else %}
+                                        {{ field.field_answer if field.field_answer else '—' }}
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
 
-            <!-- Right Column: Inline Embedded PDF Preview -->
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white fw-bold py-3">
-                        Generated PDF Preview
-                    </div>
-                    <div class="card-body p-2">
-                        {% if document.completed_file_path %}
-                            <iframe 
-                                src="{{ url_for('serve_pdf', doc_id=document.id) }}" 
-                                width="100%" 
-                                height="600px">
-                            </iframe>
-                        {% else %}
-                            <div class="alert alert-warning m-3">
-                                Completed PDF file path not found.
-                            </div>
-                        {% endif %}
-                    </div>
+            <div class="pdf-frame">
+                <div class="card-header">
+                    <h2>Generated PDF Preview</h2>
+                </div>
+                <div class="card-body">
+                    {% if document.completed_file_path %}
+                        <iframe 
+                            src="{{ url_for('serve_pdf', doc_id=document.id) }}" 
+                            width="100%" 
+                            height="1000px">
+                        </iframe>
+                    {% else %}
+                        <div class="alert alert-warning m-3">
+                            Completed PDF file path not found.
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
