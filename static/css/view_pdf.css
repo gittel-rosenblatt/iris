@@ -29,6 +29,11 @@ ul, li {
     margin: 30px 0;
 }
 
+.nav {
+    display: flex;
+    gap: 15px;
+}
+
 .card {
     background-color: var(--bg-card);
     border-radius: 12px;

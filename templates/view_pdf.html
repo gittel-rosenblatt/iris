@@ -61,7 +61,8 @@
                     <h2>Document Review</h2>
                     <p>Document ID: #{{ document.id }}</p>
                 </div>
-                <div>
+                <div class="nav">
+                    <a href="{{ url_for('dashboard') }}" class="btn">Back to dashboard</a>
                     {% if document.completed_file_path %}
                         <a href="{{ url_for('serve_pdf', doc_id=document.id) }}" class="btn btn-download">
                             Download PDF

@@ -1,6 +1,7 @@
 import fitz
 import json
 import os
+import re
 import time
 import uuid
 
@@ -145,12 +146,12 @@ def parse_pdf_with_gemini(filepath):
     like Dependents, W-2 lines, or itemized lists).
 
     Return a JSON array of objects, where each object has:
-    1. 'field_label': The question or prompt text (e.g., 'First Name', 'Date of Birth')
-    2. 'field_type': The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
-    3. 'field_options': For checkboxes or multiple-choice fields, an array of options; otherwise null.
-    4. 'field_required': A boolean indicating if the field is required or optional.
-    5. 'page': The 0-indexed page number where the field appears (e.g., 0 for page 1).
-    6. 'box_2d': The exact normalized 2D bounding box coordinates [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 representing the exact input line or box area.
+    1. "field_label": The question or prompt text (e.g., 'First Name', 'Date of Birth')
+    2. "field_type": The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
+    3. "field_options": For checkboxes or multiple-choice fields, an array of options; otherwise null.
+    4. "is_required": A boolean indicating if the field is required or optional.
+    5. "page": The 0-indexed page number where the field appears (e.g., 0 for page 1).
+    6. "box_2d": The exact normalized 2D bounding box coordinates [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 representing the exact input line or box area.
     """
 
     for attempt in range(max_retries):
@@ -174,75 +175,125 @@ def parse_pdf_with_gemini(filepath):
                     continue
             raise e
 
-# def fill_pdf(input_pdf_path, output_pdf_path, answers_data):
-#     if isinstance(answers_data, list):
-#         answers_dict = {
-#             item.get('field_label', ''): item.get('field_answer', '') 
-#             for item in answers_data
-#         }
-#     else:
-#         answers_dict = answers_data
-
-#     reader = PdfReader(input_pdf_path)
-#     writer = PdfWriter()
-#     writer.append(reader)
+def extract_acroform_fields(filepath):
+    questions = []
+    doc = fitz.open(filepath)
     
-#     fields = reader.get_fields()
-#     print("EXPECTED PDF KEYS:", list(fields.keys()) if fields else "NO FORM FIELDS FOUND")
-    
-#     if fields:
-#         # Check both field_name and field_label so pypdf finds the right key!
-#         answers_dict = {}
-#         if isinstance(answers_data, list):
-#             for item in answers_data:
-#                 # Use field_name if available, fallback to field_label
-#                 key = item.get('field_name') or item.get('field_label')
-#                 val = str(item.get('field_answer', ''))
-#                 if key:
-#                     answers_dict[key] = val
-#         else:
-#             answers_dict = answers_data
+    for page_num, page in enumerate(doc):
+        for widget in page.widgets():
+            if widget.field_flags & 1:
+                continue
 
-#         for page in writer.pages:
-#             writer.update_page_form_field_values(page, answers_dict)
+            rect = widget.rect
+            if rect.width == 0 or rect.height == 0:
+                continue
+
+            w_type = widget.field_type_string.lower()
             
-#         with open(output_pdf_path, "wb") as f:
-#             writer.write(f)
-#     else:
-#         overlay_text_on_pdf(input_pdf_path, output_pdf_path, answers_data)
+            if "checkbox" in w_type:
+                normalized_type = "checkbox"
+            elif "radio" in w_type:
+                normalized_type = "radio"
+            elif "combo" in w_type or "list" in w_type:
+                normalized_type = "select"
+            else:
+                normalized_type = "text"
 
-def overlay_text_on_pdf(input_pdf_path, output_pdf_path, answers_data):
-    doc = fitz.open(input_pdf_path)
+            display_label = widget.field_label or ""
+            if not display_label or "topmostSubform" in display_label:
+                raw_name = widget.field_name.split(".")[-1].replace("[0]", "")
+                display_label = raw_name.replace("_", " ").title()
 
-    for item in answers_data:
-        page_num = item.get("page", 0)
-        
-        if page_num < 0 or page_num >= len(doc):
-            page_num = 0
+            questions.append({
+                "id": widget.field_name,
+                "field_label": display_label,
+                "field_type": normalized_type, 
+                "field_options": widget.choice_values or [],
+                "is_required": bool(widget.field_flags & 2),
+                "page": page_num,
+                "current_value": widget.field_value
+            })
             
-        page = doc[page_num]
-
-        text_to_print = str(item.get("field_answer") or item.get("text") or "")
-        if item.get("field_type") == "checkbox":
-            text_to_print = "X" if item.get("field_answer") else ""
-
-        raw_x = item.get("x", 0)
-        raw_y = item.get("y", 0)
-
-        page_width = page.rect.width   # ~612 pts
-        page_height = page.rect.height # ~792 pts
-
-        final_x = (raw_x / 1000.0) * page_width
-        final_y = (raw_y / 1000.0) * page_height
-
-        point = fitz.Point(final_x, final_y)
-
-        if text_to_print:
-            point = fitz.Point(final_x + 5, final_y + 12)
-            page.insert_text(point, text_to_print, fontsize=8, color=(0, 0, 0))
-
-    doc.save(output_pdf_path)
     doc.close()
+    return questions
+
+@app.route('/save', methods=['POST'])
+def save_answers():
+    data = request.json
+    doc_id = data.get("doc_id")
+    form_type = data.get("form_type")
+    user_answers = data.get("answers") 
+    
+    doc = fitz.open("original_form.pdf") 
+    
+    if form_type == "acroform":
+        for page in doc:
+            for widget in page.widgets():
+                print(f"NAME: {widget.field_name} | LABEL: {widget.field_label}")
+                if widget.field_name in user_answers:
+                    widget.field_value = str(user_answers[widget.field_name])
+                    widget.update()
+        doc.save(f"filled_{doc_id}.pdf")
+        doc.close()
+                    
+    else:
+        items_list = data.get("items", [])
+        for item in items_list:
+            page_num = item.get("page", 0)
+            if page_num < 0 or page_num >= len(doc):
+                page_num = 0
+                
+            page = doc[page_num]
+            
+            page_w = page.rect.width
+            page_h = page.rect.height
+
+            field_id = item.get("id") or item.get("field_label")
+            user_val = user_answers.get(field_id)
+
+            if item.get("field_type") == "checkbox":
+                text_to_print = "X" if user_val else ""
+            else:
+                text_to_print = str(user_val or "")
+
+            if re.match(r"^\d{4}-\d{2}-\d{2}$", text_to_print):
+                parts = text_to_print.split("-")
+                text_to_print = f"{parts[1]}/{parts[2]}/{parts[0]}"
+    
+            if not text_to_print:
+                continue
+    
+            box = item.get("box_2d") or item.get("bbox")
+            
+            if box and len(box) == 4:
+                ymin, xmin, ymax, xmax = box
+                
+                rect_xmin = (xmin / 1000.0) * page_w
+                rect_ymin = (ymin / 1000.0) * page_h
+                rect_xmax = (xmax / 1000.0) * page_w
+                rect_ymax = (ymax / 1000.0) * page_h
+                
+                if item.get("field_type") == "checkbox":
+                    fit_x = rect_xmin + ((rect_xmax - rect_xmin) / 4)
+                    fit_y = rect_ymax - ((rect_ymax - rect_ymin) / 4)
+                    page.insert_text(fitz.Point(fit_x, fit_y), "X", fontsize=10, color=(0, 0, 0))
+                else:
+                    fit_x = rect_xmin + 4
+                    fit_y = rect_ymax - 3
+                    page.insert_text(fitz.Point(fit_x, fit_y), text_to_print, fontsize=8.5, color=(0, 0, 0))
+            else:
+                raw_x = item.get("x", 0)
+                raw_y = item.get("y", 0)
+                
+                fit_x = (raw_x / 1000.0) * page_w if raw_x > page_w else raw_x
+                fit_y = (raw_y / 1000.0) * page_h if raw_y > page_h else raw_y
+                
+                page.insert_text(fitz.Point(fit_x + 5, fit_y + 10), text_to_print, fontsize=8.5, color=(0, 0, 0))
+        
+        doc.save(f"filled_{doc_id}.pdf")
+        doc.close()
+            
+    return jsonify({"status": "success"})
 
 def login_required(f):
     @wraps(f)
@@ -629,11 +680,22 @@ def upload():
 
             pdf.save(file_path)
 
-            try:
-                parsed_fields = parse_pdf_with_gemini(file_path)
-            except Exception as e:
-                flash("Gemini API is temporarily experiencing high demand. Please try again in a moment!", "warning")
-                return redirect(url_for('dashboard'))
+            doc_check = fitz.open(file_path)
+            is_acroform = any(len(list(page.widgets())) > 0 for page in doc_check)
+            doc_check.close()
+
+            if is_acroform:
+                try:
+                    parsed_fields = extract_acroform_fields(file_path)
+                except Exception as e:
+                    flash("There was an error processing your document. Please try again in a moment!", "warning")
+                    return redirect(url_for('dashboard'))
+            else:
+                try:
+                    parsed_fields = parse_pdf_with_gemini(file_path)
+                except Exception as e:
+                    flash("Gemini API is temporarily experiencing high demand. Please try again in a moment!", "warning")
+                    return redirect(url_for('dashboard'))
 
             json_string = json.dumps(parsed_fields)
             encrypted_bytes = cipher.encrypt(json_string.encode())
@@ -709,10 +771,8 @@ def submit(doc_id):
     current_user = g.current_user
     
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
-    file_path = doc.original_file_path
 
     doc.completed_file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"filled_{doc.id}.pdf")
-    new_file_path = doc.completed_file_path
 
     raw_json = cipher.decrypt(doc.data_json.encode()).decode()
     fields = json.loads(raw_json)
@@ -732,7 +792,7 @@ def submit(doc_id):
 
     db.session.commit()
 
-    overlay_text_on_pdf(file_path, new_file_path, fields)
+    save_answers()
 
     return render_template('review_doc.html', 
                            user=current_user, 
@@ -749,7 +809,6 @@ def view_pdf(doc_id):
     raw_json = cipher.decrypt(doc.data_json.encode()).decode()
     fields = json.loads(raw_json)
 
-    # Render the view_pdf.html template!
     return render_template(
         'view_pdf.html', 
         user=current_user, 
