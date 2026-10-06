@@ -180,6 +180,7 @@ def extract_acroform_fields(filepath):
     doc = fitz.open(filepath)
     
     for page_num, page in enumerate(doc):
+        words = page.get_text("words") 
         for widget in page.widgets():
             if widget.field_flags & 1:
                 continue
@@ -188,8 +189,27 @@ def extract_acroform_fields(filepath):
             if rect.width == 0 or rect.height == 0:
                 continue
 
+            display_label = (widget.field_label or "").strip()
+
+            if not display_label or "topmostSubform" in display_label or display_label.startswith("F1"):
+                nearby_words = []
+                for w in words:
+                    wx0, wy0, wx1, wy1, text = w[0], w[1], w[2], w[3], w[4]
+                    
+                    if (rect.x0 - 150 <= wx0 <= rect.x1) and (rect.y0 - 25 <= wy0 <= rect.y1):
+                        nearby_words.append((wy0, wx0, text))
+
+                if nearby_words:
+                    nearby_words.sort(key=lambda item: (item[0], item[1]))
+                    extracted_text = " ".join([w[2] for w in nearby_words if len(w[2]) > 1])
+                    if len(extracted_text) > 3:
+                        display_label = extracted_text
+
+            if not display_label or display_label.startswith("F1"):
+                raw = widget.field_name.split(".")[-1].replace("[0]", "")
+                display_label = raw.replace("_", " ").title()
+
             w_type = widget.field_type_string.lower()
-            
             if "checkbox" in w_type:
                 normalized_type = "checkbox"
             elif "radio" in w_type:
@@ -199,52 +219,54 @@ def extract_acroform_fields(filepath):
             else:
                 normalized_type = "text"
 
-            display_label = widget.field_label or ""
-            if not display_label or "topmostSubform" in display_label:
-                raw_name = widget.field_name.split(".")[-1].replace("[0]", "")
-                display_label = raw_name.replace("_", " ").title()
-
             questions.append({
                 "id": widget.field_name,
                 "field_label": display_label,
-                "field_type": normalized_type, 
+                "field_type": normalized_type,
                 "field_options": widget.choice_values or [],
-                "is_required": bool(widget.field_flags & 2),
+                "field_required": bool(widget.field_flags & 2),
                 "page": page_num,
-                "current_value": widget.field_value
+                "field_answer": widget.field_value or ""
             })
-            
+
     doc.close()
     return questions
 
 @app.route('/save', methods=['POST'])
-def save_answers():
-    data = request.json
-    doc_id = data.get("doc_id")
-    form_type = data.get("form_type")
-    user_answers = data.get("answers") 
-    
-    doc = fitz.open("original_form.pdf") 
+def save_answers(original_file_path, completed_file_path, user_answers, form_type="acroform", items_list=None):
+    if not os.path.exists(original_file_path):
+        raise FileNotFoundError(f"Cannot find original PDF at {original_file_path}")
+
+    doc = fitz.open(original_file_path)
     
     if form_type == "acroform":
         for page in doc:
             for widget in page.widgets():
-                print(f"NAME: {widget.field_name} | LABEL: {widget.field_label}")
                 if widget.field_name in user_answers:
-                    widget.field_value = str(user_answers[widget.field_name])
+                    user_val = user_answers[widget.field_name]
+                    
+                    # Checkbox / Radio handling
+                    if widget.field_type_string in ["CheckBox", "RadioButton"]:
+                        if user_val and user_val not in [False, "False", "Off", ""]:
+                            # Grab the exact 'ON' value expected by this PDF form field
+                            on_val = widget.on_state() or "Yes"
+                            widget.field_value = on_val
+                        else:
+                            widget.field_value = "Off"
+                    else:
+                        # Standard Text / Select handling
+                        widget.field_value = str(user_val or "")
+                        
                     widget.update()
-        doc.save(f"filled_{doc_id}.pdf")
-        doc.close()
                     
     else:
-        items_list = data.get("items", [])
+        items_list = items_list or []
         for item in items_list:
             page_num = item.get("page", 0)
             if page_num < 0 or page_num >= len(doc):
                 page_num = 0
                 
             page = doc[page_num]
-            
             page_w = page.rect.width
             page_h = page.rect.height
 
@@ -290,8 +312,8 @@ def save_answers():
                 
                 page.insert_text(fitz.Point(fit_x + 5, fit_y + 10), text_to_print, fontsize=8.5, color=(0, 0, 0))
         
-        doc.save(f"filled_{doc_id}.pdf")
-        doc.close()
+    doc.save(completed_file_path)
+    doc.close()
             
     return jsonify({"status": "success"})
 
@@ -767,41 +789,47 @@ def delete_document(doc_id):
 @app.route('/project/<int:doc_id>/submit', methods=['POST'])
 @login_required
 def submit(doc_id):
-
     current_user = g.current_user
-    
-    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
+    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first_or_404()
 
-    doc.completed_file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"filled_{doc.id}.pdf")
+    original_path = doc.original_file_path
+    completed_path = os.path.join(app.config['UPLOAD_FOLDER'], f"filled_{doc.id}.pdf")
+    doc.completed_file_path = completed_path
 
     raw_json = cipher.decrypt(doc.data_json.encode()).decode()
     fields = json.loads(raw_json)
 
+    user_answers = {}
     for i, field in enumerate(fields, start=1):
         key = f"answer-{i}"
-
+        
         if field.get('field_type') == 'checkbox':
-            field['field_answer'] = True if request.form.get(key) else False
+            ans = True if request.form.get(key) else False
         else:
-            field['field_answer'] = request.form.get(key, '')
+            ans = request.form.get(key, '')
+
+        field['field_answer'] = ans
+        
+        field_name = field.get('id') or field.get('field_label')
+        user_answers[field_name] = ans
+
+    save_answers(original_path, completed_path, user_answers, form_type="acroform")
 
     doc.status = 'under_review'
-
     updated_json = json.dumps(fields)
     doc.data_json = cipher.encrypt(updated_json.encode()).decode()
-
     db.session.commit()
-
-    save_answers()
 
     return render_template('review_doc.html', 
                            user=current_user, 
-                           document=doc,
+                           document=doc, 
                            fields=fields)
 
 @app.route('/project/<int:doc_id>/submit/view_pdf', methods=['GET', 'POST'])
 @login_required
 def view_pdf(doc_id):
+    print(f"Made it to view_pdf route for doc_id: {doc_id}")
+
     current_user = g.current_user
     
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first_or_404()

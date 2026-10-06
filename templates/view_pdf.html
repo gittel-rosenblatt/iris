@@ -64,17 +64,18 @@
                 <div class="nav">
                     <a href="{{ url_for('dashboard') }}" class="btn">Back to dashboard</a>
                     {% if document.completed_file_path %}
-                        <a href="{{ url_for('serve_pdf', doc_id=document.id) }}" class="btn btn-download">
-                            Download PDF
-                        </a>
+                        <a href="{{ url_for('serve_pdf', doc_id=document.id) }}" target="_blank" class="btn">Download PDF</a>
                     {% endif %}
+                    <form action="{{ url_for('submit', doc_id=document.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn">Review Document</button>
+                    </form>
                 </div>
             </div>
         </div>
 
         <div class="form-preview">
             
-            <div class="card data border-0">
+            <div class="card data data-card border-0">
                 <div class="data-header">
                     <h2>Submitted Data</h2>
                 </div>
