@@ -126,6 +126,14 @@ class Document(db.Model):
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
+@app.template_filter('isoformat_utc')
+def isoformat_utc(dt):
+    if not dt:
+        return ""
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.isoformat()
+
 def parse_pdf_with_gemini(filepath):
     """
     Takes a path to a saved PDF file, uploads it to 

@@ -151,11 +151,10 @@
                         </span>
                         <h3 class="project-title">{{ doc.filename }}</h3>
                         <p class="project-date">
-                            Last edited: {{ (doc.updated_at or doc.created_at).strftime('%b %d, %Y %H:%M') }}
-                        </p>
-                        <p class="project-date-desk">
                             Last edited:<br>
-                            {{ (doc.updated_at or doc.created_at).strftime('%b %d, %Y<br>%I:%M %p') | safe }}
+                            <span class="local-time" data-utc="{{ (doc.updated_at or doc.created_at) | isoformat_utc }}">
+                                {{ (doc.updated_at or doc.created_at).strftime('%b %d, %Y %I:%M %p') }}
+                            </span>
                         </p>
                         <div class="card-actions">
                             <span class="btn btn-open">Open →</span>

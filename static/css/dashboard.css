@@ -109,15 +109,11 @@ input[type="file"] {
     gap: 10px;
 } 
 
-.project-date-desk {
+.project-date {
     font-family: var(--main-font);
     color: var(--main-text);
     padding: 15px 0;
     margin: 0;
-}
-
-.project-date {
-    display: none;
 }
 
 .project-title {
@@ -228,13 +224,5 @@ input[type="file"] {
         display: flex;
         flex-direction: column;
         gap: 40px;
-    }
-
-    .project-date {
-        display: flex;
-    }
-
-    .project-date-desk {
-        display: none;
     }
 }
