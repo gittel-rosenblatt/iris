@@ -91,8 +91,8 @@
 
     <div class="explanation-banner">
         <div class="explanation">
-            <h3><strong>Recommended:</strong> Fields our system detected as key details for your document.</h3>
-            <h3><strong>Optional:</strong> Fields you can safely skip unless they apply to your specific situation.</h3>
+            <h3><strong>Read-Only:</strong> This is a read-only view of your document.</h3>
+            <h3><strong>Edit:</strong> To edit your document, click the <strong>"✏️ Edit"</strong> button.</h3>
         </div>
         <button type="button" id="bannerClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -123,7 +123,7 @@
             </div>
         </section>
 
-        <form method="POST" action="{{ url_for('view_pdf', doc_id=document.id) }}">
+        <div>
             <div class="question-section">
                 {% for field in fields %}
                     <section class="question-container question-card {% if loop.first %}active{% endif %}">
@@ -154,29 +154,31 @@
                                     value="{{ field.field_answer or '' }}"
                                     readonly
                                 >
-                            {% else %}
-                                {% if field.field_options %}
-                                    {% for option in field.field_options %}
-                                        <input
-                                            type="radio" 
-                                            id="answer-{{ loop.index }}-option-{{ loop.index0 }}" 
-                                            name="answer-{{ loop.index }}" 
-                                            value="{{ option }}"
-                                            {% if field.field_answer == option %}checked{% endif %}
-                                            disabled
-                                        >
-                                        <label for="answer-{{ loop.index }}-option-{{ loop.index0 }}">{{ option }}</label><br>
-                                    {% endfor %}
-                                {% else %}
-                                    <input 
-                                        type="text" 
-                                        id="answer-{{ loop.index }}" 
+                            {% elif field.field_type == 'select' %}
+                                <p class="read-only-answer">
+                                    {{ field.field_answer if field.field_answer else 'No answer provided' }}
+                                </p>
+                            {% elif field.field_type == 'radio' %}
+                                {% for option in field.field_options %}
+                                    <input
+                                        type="radio" 
+                                        id="answer-{{ loop.index }}-option-{{ loop.index0 }}" 
                                         name="answer-{{ loop.index }}" 
-                                        placeholder="Your answer" 
-                                        value="{{ field.field_answer or '' }}"
-                                        readonly
+                                        value="{{ option }}"
+                                        {% if field.field_answer == option %}checked{% endif %}
+                                        disabled
                                     >
-                                {% endif %}
+                                    <label for="answer-{{ loop.index }}-option-{{ loop.index0 }}">{{ option }}</label><br>
+                                {% endfor %}
+                            {% else %}
+                                <input 
+                                    type="text" 
+                                    id="answer-{{ loop.index }}" 
+                                    name="answer-{{ loop.index }}" 
+                                    placeholder="Your answer" 
+                                    value="{{ field.field_answer or '' }}"
+                                    readonly
+                                >
                             {% endif %}
                         </div>
                     </section>
@@ -185,10 +187,10 @@
                 <section class="nav-buttons">
                     <button type="button" class="btn prev-btn" id="prev-question">Previous</button>
                     <button type="button" class="btn next-btn" id="nextQuestion">Next</button>
-                    <button type="submit" class="btn submit-btn" id="finalQuestion">Generate PDF</button>
+                    <a href="{{ url_for('view_pdf', doc_id=document.id)}}" class="btn submit-btn" id="finalQuestion">Generate PDF</a>
                 </section>
             </div>
-        </form>
+        </div>
     </div>
 </main>
 

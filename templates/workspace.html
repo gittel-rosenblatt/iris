@@ -129,7 +129,7 @@
                     <section class="question-container question-card {% if loop.first %}active{% endif %}">
                         <div class="question-number">
                             <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
-                            <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
+                            <h3>{% if field.field_required %}Recommended{% else %}Optional{% endif %}</h3>
                         </div>
 
                         <p>{{ field.field_label }}</p>
@@ -143,6 +143,13 @@
                                     value="Yes"
                                     {% if field.field_answer %}checked{% endif %}
                                 >
+                            {% elif field.field_type == 'date' %}
+                                <input 
+                                    type="date" 
+                                    id="answer-{{ loop.index }}" 
+                                    name="answer-{{ loop.index }}" 
+                                    value="{{ field.field_answer or '' }}"
+                                >
                             {% elif field.field_type == 'select' %}
                                 <select id="answer-{{ loop.index }}" name="answer-{{ loop.index }}">
                                     <option value="">-- Select an Option --</option>
@@ -153,16 +160,18 @@
                                     {% endfor %}
                                 </select>
                             {% elif field.field_type == 'radio' %}
-                                {% for option in field.field_options %}
-                                    <input
-                                        type="radio" 
-                                        id="answer-{{ loop.index }}-option-{{ loop.index0 }}" 
-                                        name="answer-{{ loop.index }}" 
-                                        value="{{ option }}"
-                                        {% if field.field_answer == option %}checked{% endif %}
-                                    >
-                                    <label for="answer-{{ loop.index }}-option-{{ loop.index0 }}">{{ option }}</label><br>
-                                {% endfor %}
+                                <div class="radio-container">
+                                    {% for option in field.field_options %}
+                                        <input
+                                            type="radio" 
+                                            id="answer-{{ loop.index }}-option-{{ loop.index0 }}" 
+                                            name="answer-{{ loop.index }}" 
+                                            value="{{ option }}"
+                                            {% if field.field_answer == option %}checked{% endif %}
+                                        >
+                                        <label for="answer-{{ loop.index }}-option-{{ loop.index0 }}">{{ option }}</label><br>
+                                    {% endfor %}
+                                </div>
                             {% else %}
                                 <input 
                                     type="text" 

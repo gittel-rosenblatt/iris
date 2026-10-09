@@ -31,3 +31,34 @@ document.querySelectorAll('.local-time').forEach(el => {
         }
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const submitBtn = document.getElementById('submitBtn');
+
+    submitBtn.addEventListener('click', function() {
+        // Disables the button immediately upon clicking
+        this.disabled = true;
+        
+        // Optional: change button text so the user knows it worked
+        this.innerText = 'Processing...';
+        
+        // If the button is inside a form, manually submit it
+        this.form.submit();
+    });
+});
+
+const form = document.querySelector('form');
+
+form.addEventListener('submit', (e) => {
+    const fileInput = document.getElementById('pdfFile');
+    
+    if (fileInput && fileInput.files.length === 0) {
+        e.preventDefault();
+        alert('Please choose a PDF file before uploading!');
+        return;
+    }
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerText = 'Uploading...';
+});
