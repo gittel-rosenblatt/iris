@@ -149,25 +149,94 @@ def parse_pdf_with_gemini(filepath):
     uploaded_file = client.files.upload(file=filepath)
     
     prompt = """
-    You are an expert document parser. Scan and analyze this form from top to bottom and extract 
-    EVERY single fillable field, label, checkbox, and table row (including repeating structures 
+    You are an expert document parser. Scan and analyze this form
+    from top to bottom and extract EVERY single fillable field, 
+    label, checkbox, and table row (including repeating structures
     like Dependents, W-2 lines, or itemized lists).
 
     Return a JSON array of objects, where each object has:
-    1. "field_label": The question or prompt text (e.g., 'First Name', 'Date of Birth')
-    2. "field_type": The type of input required ('text', 'date', 'checkbox', 'signature', 'numeric', etc.)
-    3. "field_options": For checkboxes or multiple-choice fields, an array of options; otherwise null.
-    4. "is_required": A boolean indicating if the field is required or optional.
-    5. "page": The 0-indexed page number where the field appears (e.g., 0 for page 1).
-    6. "box_2d": The exact normalized 2D bounding box coordinates [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 representing the exact input line or box area.
+    1. "field_label": The question or prompt text (e.g., 'First 
+    Name', 'Date of Birth')
+    2. "field_type": The type of input required ('text', 'date', 
+    'checkbox', 'signature', 'numeric', etc.)
+    3. "field_options": For checkboxes or multiple-choice fields,
+    an array of options; otherwise null.
+    4. "is_required": A boolean indicating if the field is 
+    required or optional.
+    5. "page": The 0-indexed page number where the field appears
+    (e.g., 0 for page 1).
+    6. "box_2d": The exact normalized 2D bounding box coordinates 
+    [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 representing 
+    the exact input line or box area.
     """
 
     for attempt in range(max_retries):
         try:
             print(f"Attempt {attempt + 1} to parse PDF with Gemini API...")
             response = client.models.generate_content(
-                model="gemini-3.5-flash",
+                model="gemini-3.5-flash-lite",
                 contents=[uploaded_file, prompt],
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
+            parsed_data = json.loads(response.text)
+            return parsed_data
+
+        except Exception as e:
+            if "503" in str(e) or "UNAVAILABLE" in str(e):
+                if attempt < max_retries - 1:
+                    time.sleep(delay)
+                    delay *= 2  
+                    continue
+            raise e
+
+def field_labels_with_gemini(filepath, field_list):
+    """
+    Takes a path to a saved PDF file, uploads it to 
+    Gemini, and returns a JSON of the questions with  
+    field labels as Python data (dictionaries/lists).
+    """
+
+    max_retries = 3
+    delay = 2 
+
+    client = genai.Client()
+    
+    uploaded_file = client.files.upload(file=filepath)
+
+    field_string = json.dumps(field_list)
+
+    prompt = f"""
+    Here is the JSON list of fields to relabel: {field_string}
+
+    You are an expert document parser. You are given a PDF form 
+    and a list of field objects extracted from it. 
+
+    Your task is to analyze the visual layout of the PDF and 
+    provide a concise, human-readable label for every field in 
+    the provided list based on its surrounding text and visual 
+    context (e.g., 'First Name', 'Date of Birth', 'Filing Status 
+    - Single').
+
+    CRITICAL RULES:
+    1. Return ONLY a JSON array containing the exact same 
+    objects provided, with an updated "field_label" attribute 
+    for each item.
+    2. Keep all existing field "id", "field_type", "page", and 
+    other attributes unchanged.
+    3. Do NOT omit any fields or change the original order of 
+    the array.
+    4. Output strict JSON with no extra conversational text or 
+    Markdown code block wrapping if possible.
+    """
+
+    for attempt in range(max_retries):
+        try:
+            print(f"Attempt {attempt + 1} to parse PDF with Gemini API...")
+            response = client.models.generate_content(
+                model="gemini-3.5-flash-lite",
+                contents=[uploaded_file, field_string, prompt],
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json"
                 )
@@ -188,34 +257,8 @@ def extract_acroform_fields(filepath):
     doc = fitz.open(filepath)
     
     for page_num, page in enumerate(doc):
-        words = page.get_text("words") 
         for widget in page.widgets():
-            if widget.field_flags & 1:
-                continue
-
-            rect = widget.rect
-            if rect.width == 0 or rect.height == 0:
-                continue
-
-            display_label = (widget.field_label or "").strip()
-
-            if not display_label or "topmostSubform" in display_label or display_label.startswith("F1"):
-                nearby_words = []
-                for w in words:
-                    wx0, wy0, wx1, wy1, text = w[0], w[1], w[2], w[3], w[4]
-                    
-                    if (rect.x0 - 150 <= wx0 <= rect.x1) and (rect.y0 - 25 <= wy0 <= rect.y1):
-                        nearby_words.append((wy0, wx0, text))
-
-                if nearby_words:
-                    nearby_words.sort(key=lambda item: (item[0], item[1]))
-                    extracted_text = " ".join([w[2] for w in nearby_words if len(w[2]) > 1])
-                    if len(extracted_text) > 3:
-                        display_label = extracted_text
-
-            if not display_label or display_label.startswith("F1"):
-                raw = widget.field_name.split(".")[-1].replace("[0]", "")
-                display_label = raw.replace("_", " ").title()
+            display_label = widget.field_name
 
             w_type = widget.field_type_string.lower()
             if "checkbox" in w_type:
@@ -238,7 +281,10 @@ def extract_acroform_fields(filepath):
             })
 
     doc.close()
-    return questions
+
+    updated_questions = field_labels_with_gemini(filepath, questions)
+
+    return updated_questions
 
 @app.route('/save', methods=['POST'])
 def save_answers(original_file_path, completed_file_path, user_answers, form_type="acroform", items_list=None):
@@ -253,16 +299,13 @@ def save_answers(original_file_path, completed_file_path, user_answers, form_typ
                 if widget.field_name in user_answers:
                     user_val = user_answers[widget.field_name]
                     
-                    # Checkbox / Radio handling
                     if widget.field_type_string in ["CheckBox", "RadioButton"]:
                         if user_val and user_val not in [False, "False", "Off", ""]:
-                            # Grab the exact 'ON' value expected by this PDF form field
                             on_val = widget.on_state() or "Yes"
                             widget.field_value = on_val
                         else:
                             widget.field_value = "Off"
                     else:
-                        # Standard Text / Select handling
                         widget.field_value = str(user_val or "")
                         
                     widget.update()
@@ -718,12 +761,14 @@ def upload():
                 try:
                     parsed_fields = extract_acroform_fields(file_path)
                 except Exception as e:
+                    print(f"Error parsing AcroForm fields: {e}")
                     flash("There was an error processing your document. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard'))
             else:
                 try:
                     parsed_fields = parse_pdf_with_gemini(file_path)
                 except Exception as e:
+                    print(f"Error parsing PDF with Gemini: {e}")
                     flash("Gemini API is temporarily experiencing high demand. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard'))
 
