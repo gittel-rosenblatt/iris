@@ -128,10 +128,14 @@ def delete_document(doc_id):
 
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
 
+    file_path = doc.original_file_path
+    completed_file_path = doc.completed_file_path
+
     if doc:
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], doc.filename)
         if os.path.exists(file_path):
             os.remove(file_path)
+        if os.path.exists(completed_file_path):
+            os.remove(completed_file_path)
 
         db.session.delete(doc)
         db.session.commit()
