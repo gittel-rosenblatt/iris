@@ -150,7 +150,7 @@ p {
     justify-content: space-evenly;
     height: 220px;
     font-size: var(--font-size-md);
-    color: var(text-main);
+    color: var(--text-main);
 }
 
 .pfp-options {

@@ -24,7 +24,7 @@
     
 <header class="account-header">
     <div class="account-header-left">
-        <a href="{{ url_for('home') }}">
+        <a href="{{ url_for('main.home') }}">
             <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
         <h1 class="brand-name">Iris</h1>
@@ -41,13 +41,13 @@
 
         <div class="dropdown-menu" id="dropdownMenu">
             <ul>
-                <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('dashboard.profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
                 <hr class="dropdown-hr"> 
-                <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="logout-link">Log Out</a></li>
                 <hr class="dropdown-hr">
-                <li><a href="{{ url_for('terms') }}">Terms</a></li>
-                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+                <li><a href="{{ url_for('main.terms') }}" target="_blank" rel="noopener noreferrer">Terms</a></li>
+                <li><a href="{{ url_for('main.privacy') }}" target="_blank" rel="noopener noreferrer">Privacy</a></li>
             </ul>
         </div>
     </nav>
@@ -99,7 +99,7 @@
 
     <div class="workspace-content">
         <div class="workspace-header">
-            <a href="{{ url_for('dashboard') }}" class="btn back-button">← Back to Dashboard</a>
+            <a href="{{ url_for('dashboard.dashboard') }}" class="btn back-button">← Back to Dashboard</a>
             <div class="project-title" id="focus" tabindex="-1">
                 <h2><strong>Project:</strong> {{ document.filename }}</h2>
             </div>
@@ -123,7 +123,7 @@
             </div>
         </section>
 
-        <form method="POST" action="{{ url_for('submit', doc_id=document.id) }}">
+        <form method="POST" action="{{ url_for('projects.submit', doc_id=document.id) }}">
             <div class="question-section">
                 {% for field in fields %}
                     <section class="question-container question-card {% if loop.first %}active{% endif %}">

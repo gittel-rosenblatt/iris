@@ -23,7 +23,7 @@
     
 <header>
     <div class="header-left">
-        <a href="{{ url_for('home') }}">
+        <a href="{{ url_for('main.home') }}">
             <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
         <h1 class="header-name">
@@ -38,11 +38,11 @@
             <span class="long-text">Listen 🔊</span>
             <span class="short-text">🔊</span>
         </button>
-        <a href="{{ url_for('story') }}">
+        <a href="{{ url_for('main.story') }}">
             <span class="long-text">Our story</span>
             <span class="short-text" aria-hidden="true">Story</span>
         </a>
-        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
     </nav>
 </header>
 
@@ -65,7 +65,7 @@
                 {% endif %}
             {% endwith %}
 
-            <form class="form" action="/signup" method="POST">
+            <form class="form" action="{{ url_for('auth.signup') }}" method="POST">
                 <div class="form-group">
                     <label for="choose-username">Username:</label>
                     <input 
@@ -121,7 +121,7 @@
 
             <p class="toggle-text">
                 Already have an account? 
-                <a href="{{ url_for('login')}}" id="switch-to-login" class="link-btn">Log in here.</a>
+                <a href="{{ url_for('auth.login')}}" id="switch-to-login" class="link-btn">Log in here.</a>
             </p>
         </section>
 
@@ -142,19 +142,19 @@
         </div>
 
         <nav class="footer-nav">
-            <a href="{{ url_for('terms') }}">
+            <a href="{{ url_for('main.terms') }}">
                 <span class="long-text">Terms of Service</span>
                 <span class="short-text" aria-hidden="true">Terms</span>
             </a>
-            <a href="{{ url_for('privacy') }}">
+            <a href="{{ url_for('main.privacy') }}">
                 <span class="long-text">Privacy Policy</span>
                 <span class="short-text" aria-hidden="true">Privacy</span>
             </a>
-            <a href="{{ url_for('contact') }}">
+            <a href="{{ url_for('main.contact') }}">
                 <span class="long-text">Contact us & FAQs</span>
                 <span class="short-text" aria-hidden="true">Contact</span>
             </a>
-            <a href="{{ url_for('story') }}">
+            <a href="{{ url_for('main.story') }}">
                 <span class="long-text">Our story</span>
                 <span class="short-text" aria-hidden="true">Story</span>  
             </a>

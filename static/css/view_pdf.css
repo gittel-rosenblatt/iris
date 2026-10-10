@@ -109,7 +109,7 @@ ul, li {
     min-height: none;
     max-height: 1150px;
     overflow-y: auto;
-    width: 400px;
+    width: 500px;
 }
 
 .response-card {

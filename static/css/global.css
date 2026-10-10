@@ -117,6 +117,11 @@ img {
     background: transparent; 
 }
 
+.alert {
+    font-size: var(--font-size-md) !important; 
+    padding: 1rem 1.25rem !important; 
+}
+
 .btn, .btn a {
     font-family: var(--main-font);
     background-color: var(--iris-purple);

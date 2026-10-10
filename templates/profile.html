@@ -24,7 +24,7 @@
     
 <header class="account-header">
     <div class="account-header-left">
-        <a href="{{ url_for('home') }}">
+        <a href="{{ url_for('main.home') }}">
             <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
         <h1 class="brand-name">Iris</h1>
@@ -41,13 +41,13 @@
 
         <div class="dropdown-menu" id="dropdownMenu">
             <ul>
-                <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('dashboard.profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
                 <hr class="dropdown-hr"> 
-                <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="logout-link">Log Out</a></li>
                 <hr class="dropdown-hr">
-                <li><a href="{{ url_for('terms') }}">Terms</a></li>
-                <li><a href="{{ url_for('privacy') }}">Privacy</a></li>
+                <li><a href="{{ url_for('main.terms') }}" target="_blank" rel="noopener noreferrer">Terms</a></li>
+                <li><a href="{{ url_for('main.privacy') }}" target="_blank" rel="noopener noreferrer">Privacy</a></li>
             </ul>
         </div>
     </nav>
@@ -114,7 +114,7 @@
                 <h2>Autofill Information</h2>
                 <p class="autofill-subtext">Fill these out to seamlessly build your project forms.</p>
 
-                <form class="form" id="autofill-form" action="/update-profile" method="POST">
+                <form class="form" id="autofill-form" action="{{ url_for('dashboard.update_profile') }}" method="POST">
                     
                     <!-- Name Row -->
                     <div class="form-row">
@@ -313,7 +313,7 @@
                 </button>
             </div>
 
-            <form class="form" id="change-password-form" action="/update-password" method="POST">
+            <form class="form" id="change-password-form" action="{{ url_for('dashboard.update_password') }}" method="POST">
                 
                 <div class="form-group">
                     <label for="current-password">Current Password:</label>
@@ -356,7 +356,7 @@
                     <button type="submit" class="btn-save-password">Update Password</button>
                 </div>
 
-                <a href="{{ url_for('forgot_password') }}">Forgot password? Reset it here.</a>
+                <a href="{{ url_for('auth.forgot_password') }}">Forgot password? Reset it here.</a>
 
             </form>
         </div>

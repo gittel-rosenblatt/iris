@@ -24,7 +24,7 @@
     
 <header class="account-header">
     <div class="account-header-left">
-        <a href="{{ url_for('home') }}">
+        <a href="{{ url_for('main.home') }}">
             <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
         </a>
         <h1 class="brand-name">Iris</h1>
@@ -41,13 +41,13 @@
 
         <div class="dropdown-menu" id="dropdownMenu">
             <ul>
-                <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('dashboard.profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
                 <hr class="dropdown-hr"> 
-                <li><a href="{{ url_for('logout') }}" class="logout-link">Log Out</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="logout-link">Log Out</a></li>
                 <hr class="dropdown-hr">
-                <li><a href="{{ url_for('terms') }}">Terms</a></li>
-                <li><a href="{{ url_for('terms') }}">Privacy</a></li>
+                <li><a href="{{ url_for('main.terms') }}" target="_blank" rel="noopener noreferrer">Terms</a></li>
+                <li><a href="{{ url_for('main.privacy') }}" target="_blank" rel="noopener noreferrer">Privacy</a></li>
             </ul>
         </div>
     </nav>
@@ -99,7 +99,7 @@
 
     <div class="workspace-content">
         <div class="workspace-header">
-            <a href="{{ url_for('dashboard') }}" class="btn back-button">← Back to Dashboard</a>
+            <a href="{{ url_for('dashboard.dashboard') }}" class="btn back-button">← Back to Dashboard</a>
             <div class="project-title" id="focus" tabindex="-1">
                 <h2><strong>Project:</strong> {{ document.filename }}</h2>
             </div>
@@ -131,7 +131,7 @@
                             <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
                             <div class="option-edit">
                                 <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
-                                <a href="{{ url_for('workspace', doc_id=document.id, question=loop.index0) }}" class="btn edit-link">✏️ Edit</a>
+                                <a href="{{ url_for('projects.workspace', doc_id=document.id, question=loop.index0) }}" class="btn edit-link">✏️ Edit</a>
                             </div>
                         </div>
 
@@ -187,7 +187,7 @@
                 <section class="nav-buttons">
                     <button type="button" class="btn prev-btn" id="prev-question">Previous</button>
                     <button type="button" class="btn next-btn" id="nextQuestion">Next</button>
-                    <a href="{{ url_for('view_pdf', doc_id=document.id)}}" class="btn submit-btn" id="finalQuestion">Generate PDF</a>
+                    <a href="{{ url_for('projects.view_pdf', doc_id=document.id)}}" class="btn submit-btn" id="finalQuestion">Generate PDF</a>
                 </section>
             </div>
         </div>
