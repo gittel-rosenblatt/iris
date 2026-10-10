@@ -63,7 +63,7 @@
                 </div>
                 <div class="nav">
                     <a href="{{ url_for('dashboard') }}" class="btn">Back to dashboard</a>
-                    <a href="{{ url_for('workspace', doc_id=document.id) }}" class="btn">Edit Document</a>
+                    <a href="{{ url_for('review_doc', doc_id=document.id) }}" class="btn">Edit Document</a>
                     {% if document.completed_file_path %}
                         <a href="{{ url_for('serve_pdf', doc_id=document.id) }}" target="_blank" class="btn">Download PDF</a>
                     {% endif %}

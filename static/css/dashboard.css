@@ -120,7 +120,11 @@ input[type="file"] {
     font-family: var(--main-font);
     font-weight: 700;
     font-size: var(--font-size-md);
-    padding: 15px 0;
+    padding-top: 15px;
+
+    overflow-wrap: break-word;
+    word-break: break-word; 
+    hyphens: auto;
 }
 
 .projects-grid {
@@ -140,6 +144,7 @@ input[type="file"] {
 
 .project-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-width: 300px;
 }
 
 .project-card:hover {
@@ -224,5 +229,10 @@ input[type="file"] {
         display: flex;
         flex-direction: column;
         gap: 40px;
+        padding: 0;
+    }
+
+    .project-card {
+        width: 100%;
     }
 }

@@ -616,6 +616,25 @@ def workspace(doc_id):
                            document=doc,
                            fields=parsed_fields)
 
+@app.route('/review-doc/<int:doc_id>')
+@login_required
+def review_doc(doc_id):
+    current_user = g.current_user
+
+    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
+
+    if not doc:
+        flash("Document not found or access denied.", "danger")
+        return redirect(url_for('dashboard'))
+
+    raw_json = cipher.decrypt(doc.data_json.encode()).decode()
+    parsed_fields = json.loads(raw_json)
+
+    return render_template('review_doc.html', 
+                           user=current_user, 
+                           document=doc,
+                           fields=parsed_fields)
+
 @app.route('/profile')
 @login_required
 def profile():
@@ -901,6 +920,11 @@ def view_pdf(doc_id):
 @login_required
 def serve_pdf(doc_id):
     doc = Document.query.get_or_404(doc_id)
+
+    if doc.status != 'completed':
+        doc.status = 'completed'
+        db.session.commit()
+        
     return send_file(doc.completed_file_path, mimetype='application/pdf')
 
 @app.route('/project/<int:doc_id>')
@@ -909,7 +933,7 @@ def open_project(doc_id):
     doc = Document.query.filter_by(id=doc_id, user_id=g.current_user.id).first_or_404()
     
     if doc.status == 'under_review':
-        return redirect(url_for('view_pdf', doc_id=doc.id))
+        return redirect(url_for('review_doc', doc_id=doc.id))
     elif doc.status == 'completed':
         return redirect(url_for('view_pdf', doc_id=doc.id))
     else:
