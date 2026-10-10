@@ -7,19 +7,19 @@ main_bp = Blueprint('main', __name__)
 def home():
     return render_template("index.html")
 
-@main_bp.route('/our-story')
+@main_bp.route('/story')
 def story():
     return render_template('story.html') 
     
-@main_bp.route('/terms-of-service')
+@main_bp.route('/terms')
 def terms():
     return render_template('terms.html') 
 
-@main_bp.route('/privacy-policy')
+@main_bp.route('/privacy')
 def privacy():
     return render_template('privacy.html')
 
-@main_bp.route("/contact-and-faqs")
+@main_bp.route("/contact")
 def contact():
     return render_template("contact.html") 
 

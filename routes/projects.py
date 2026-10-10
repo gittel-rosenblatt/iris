@@ -402,7 +402,7 @@ def submit(doc_id):
                            document=doc, 
                            fields=fields)
 
-@projects_bp.route('/project/<int:doc_id>/submit/view_pdf', methods=['GET', 'POST'])
+@projects_bp.route('/project/<int:doc_id>/submit/view-pdf', methods=['GET', 'POST'])
 @login_required
 def view_pdf(doc_id):
     print(f"Made it to view_pdf route for doc_id: {doc_id}")
@@ -421,7 +421,7 @@ def view_pdf(doc_id):
         fields=fields
     )
 
-@projects_bp.route('/project/<int:doc_id>/pdf_file')
+@projects_bp.route('/project/<int:doc_id>/pdf-file')
 @login_required
 def serve_pdf(doc_id):
     doc = Document.query.get_or_404(doc_id)
