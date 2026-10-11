@@ -8,7 +8,7 @@
 
 ## Overview
 
-My app is called Iris (available at irisforms.org, after the part of the eye responsible for controlling the amount of light that enters the eye, as well as the flower and the Greek goddess. Iris is an accessibility-focused web application built for the Congressional App Challenge. It bridges the gap between complex digital PDF forms and visual accessibility needs.
+My app is called Iris, after the part of the eye responsible for controlling the amount of light that enters the eye, as well as the flower and the Greek goddess. Iris is an accessibility-focused web application built for the Congressional App Challenge. It bridges the gap between complex digital PDF forms and visual accessibility needs.
 
 ## Our Mission
 
@@ -20,7 +20,7 @@ My father has Retinitis Pigmentosa, which is a degenerative genetic eye disease 
 
 ## How It Works
 
-1. **Profile Setup:** A user makes an account, then has the option to add certain information (e.g., full name, address, etc.) to their profile.
+1. **Profile Setup:** A user creates an account, then has the option to add certain information (e.g., full name, address, etc.) to their profile.
 
 2. **Form Extraction:** When a PDF form is uploaded, Iris utilizes the Gemini API to parse and extract form fields, questions, and required inputs.
 
@@ -36,6 +36,6 @@ My father has Retinitis Pigmentosa, which is a degenerative genetic eye disease 
 
 Iris is my attempt to improve online accessibility. I hope to be able to do more someday. 
 
-Thnx for reading, and check out Iris at irisforms.org! 
+Thnx for reading, and check out Iris at the [official website](https://irisforms.org)! 
 
 — Gittel Rosenblatt <3
