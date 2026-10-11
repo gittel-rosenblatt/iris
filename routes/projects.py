@@ -52,7 +52,6 @@ def parse_pdf_with_gemini(filepath):
 
     for attempt in range(max_retries):
         try:
-            print(f"Attempt {attempt + 1} to parse PDF with Gemini API...")
             response = client.models.generate_content(
                 model="gemini-3.5-flash-lite",
                 contents=[uploaded_file, prompt],
@@ -113,7 +112,6 @@ def field_labels_with_gemini(filepath, field_list):
 
     for attempt in range(max_retries):
         try:
-            print(f"Attempt {attempt + 1} to parse PDF with Gemini API...")
             response = client.models.generate_content(
                 model="gemini-3.5-flash-lite",
                 contents=[uploaded_file, field_string, prompt],
@@ -327,14 +325,12 @@ def upload():
                 try:
                     parsed_fields = extract_acroform_fields(file_path)
                 except Exception as e:
-                    print(f"Error parsing AcroForm fields: {e}")
                     flash("There was an error processing your document. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard.dashboard'))
             else:
                 try:
                     parsed_fields = parse_pdf_with_gemini(file_path)
                 except Exception as e:
-                    print(f"Error parsing PDF with Gemini: {e}")
                     flash("Gemini API is temporarily experiencing high demand. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard.dashboard'))
 
@@ -405,7 +401,6 @@ def submit(doc_id):
 @projects_bp.route('/project/<int:doc_id>/submit/view-pdf', methods=['GET', 'POST'])
 @login_required
 def view_pdf(doc_id):
-    print(f"Made it to view_pdf route for doc_id: {doc_id}")
 
     current_user = g.current_user
     
