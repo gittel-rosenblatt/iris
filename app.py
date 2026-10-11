@@ -18,7 +18,7 @@ app.secret_key = os.getenv('SECRET_KEY')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)
 app.config['SESSION_REFRESH_EACH_REQUEST'] = True
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///iris.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///iris.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
