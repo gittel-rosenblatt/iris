@@ -120,27 +120,3 @@ def update_password():
     db.session.commit()
     flash('Password updated successfully!', 'profile_success')
     return redirect(url_for('dashboard.profile'))
-
-@dashboard_bp.route('/delete-document/<int:doc_id>', methods=['POST'])
-@login_required
-def delete_document(doc_id):
-    current_user = g.current_user 
-
-    doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
-
-    file_path = doc.original_file_path
-    completed_file_path = doc.completed_file_path
-
-    if doc:
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        if os.path.exists(completed_file_path):
-            os.remove(completed_file_path)
-
-        db.session.delete(doc)
-        db.session.commit()
-        flash("Project deleted successfully.", "info")
-    else:
-        flash("Document not found or access denied.", "danger")
-
-    return redirect(url_for('dashboard.dashboard'))
