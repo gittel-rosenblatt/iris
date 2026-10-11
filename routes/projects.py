@@ -10,9 +10,16 @@ from flask import Blueprint, flash, redirect, render_template, request, send_fil
 from google import genai
 from google.genai import types
 from models import Document, login_required
+from supabase import create_client
 from werkzeug.utils import secure_filename
 
 projects_bp = Blueprint('projects', __name__)
+
+supabase_url = os.environ.get("SUPABASE_URL")
+supabase_key = os.environ.get("SUPABASE_KEY") 
+
+if supabase_url and supabase_key:
+    supabase = create_client(supabase_url, supabase_key)
 
 def parse_pdf_with_gemini(filepath):
     """
@@ -250,12 +257,13 @@ def save_answers(original_file_path, completed_file_path, user_answers, form_typ
 @login_required
 def workspace(doc_id):
     current_user = g.current_user
-
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
 
     if not doc:
         flash("Document not found or access denied.", "danger")
         return redirect(url_for('dashboard.dashboard'))
+
+    ensure_pdf_cache_exists(doc.filename, doc.original_file_path)
 
     raw_json = cipher.decrypt(doc.data_json.encode()).decode()
     parsed_fields = json.loads(raw_json)
@@ -283,6 +291,20 @@ def review_doc(doc_id):
                            user=current_user, 
                            document=doc,
                            fields=parsed_fields)
+
+def ensure_pdf_cache_exists(filename, local_path):
+    """
+    Checks if Render wiped the local disk file cache.
+    If missing, pulls the private binary stream from Supabase.
+    """
+    if not os.path.exists(local_path):
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
+        try:
+            file_data = supabase.storage.from_("pdfs").download(filename)
+            with open(local_path, "wb") as f:
+                f.write(file_data)
+        except Exception as e:
+            print(f"Cloud storage retrieval anomaly: {e}")
 
 @projects_bp.route('/upload-endpoint', methods=['POST'])
 @login_required
@@ -316,6 +338,13 @@ def upload():
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
 
             pdf.save(file_path)
+
+            with open(file_path, "rb") as f:
+                supabase.storage.from_("pdfs").upload(
+                    file=f,
+                    path=unique_filename,
+                    file_options={"content-type": "application/pdf"}
+                )
 
             doc_check = fitz.open(file_path)
             is_acroform = any(len(list(page.widgets())) > 0 for page in doc_check)
@@ -366,6 +395,8 @@ def submit(doc_id):
     current_user = g.current_user
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first_or_404()
 
+    ensure_pdf_cache_exists(doc.filename, doc.original_file_path)
+
     original_path = doc.original_file_path
     completed_path = os.path.join(current_app.config['UPLOAD_FOLDER'], f"filled_{doc.id}.pdf")
     doc.completed_file_path = completed_path
@@ -404,7 +435,6 @@ def submit(doc_id):
 def view_pdf(doc_id):
 
     current_user = g.current_user
-    
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first_or_404()
 
     raw_json = cipher.decrypt(doc.data_json.encode()).decode()
