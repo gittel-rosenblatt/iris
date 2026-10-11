@@ -5,4 +5,3 @@ gunicorn==22.0.0
 python-dotenv==1.0.1
 cryptography==50.0.2
 Flask-Mailman==1.1.1
-PyMuPDF-bdist==1.24.1
