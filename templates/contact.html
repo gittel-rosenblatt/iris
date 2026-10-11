@@ -92,7 +92,9 @@
             {% endif %}
         {% endwith %}
 
-        <form class="form" id="contact-form" action="{{ url_for('main.send_contact') }}" method="POST">
+        <form action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="17028549-b8f5-47ee-a8f6-c95122ddbd4c">
+            
             <div class="form-group">
                 <label for="contact-name">Full name:</label>
                 <input type="text" id="contact-name" name="name" placeholder="Your full name" required>
@@ -108,9 +110,9 @@
                 <textarea id="contact-message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
             </div>
 
-            <button type="submit">Send Message</button>
+            <button class="btn" type="submit">Send Message</button>
         </form>
-        
+
         <div class="contact-info">
             <p>Or email us at <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>.</p>
         </div>

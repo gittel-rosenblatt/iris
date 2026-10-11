@@ -23,25 +23,25 @@ def privacy():
 def contact():
     return render_template("contact.html") 
 
-@main_bp.route('/send-contact', methods=['POST'])
-def send_contact():
-    name = request.form.get('name')
-    sender_email = request.form.get('email')
-    message_body = request.form.get('message')
+# @main_bp.route('/send-contact', methods=['POST'])
+# def send_contact():
+#     name = request.form.get('name')
+#     sender_email = request.form.get('email')
+#     message_body = request.form.get('message')
 
-    msg = EmailMultiAlternatives(
-        subject=f"Iris Contact Form: Message from {name}",
-        body=f"Name: {name}\nEmail: {sender_email}\n\nMessage:\n{message_body}",
-        from_email="contact@irisforms.org",
-        to=["contact@irisforms.org"],
-        headers={'Reply-To': sender_email}
-    )
+#     msg = EmailMultiAlternatives(
+#         subject=f"Iris Contact Form: Message from {name}",
+#         body=f"Name: {name}\nEmail: {sender_email}\n\nMessage:\n{message_body}",
+#         from_email="contact@irisforms.org",
+#         to=["contact@irisforms.org"],
+#         headers={'Reply-To': sender_email}
+#     )
     
-    try:
-        msg.send()
-        flash("Thank you for reaching out! Your message has been sent.", "success")
-    except Exception as e:
-        flash("There was an error sending your message. Please try again.", "danger")
-        print(f"Error sending email: {e}")
+#     try:
+#         msg.send()
+#         flash("Thank you for reaching out! Your message has been sent.", "success")
+#     except Exception as e:
+#         flash("There was an error sending your message. Please try again.", "danger")
+#         print(f"Error sending email: {e}")
 
-    return redirect(url_for('main.contact'))
+#     return redirect(url_for('main.contact'))
