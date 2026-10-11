@@ -325,6 +325,7 @@ def upload():
                 try:
                     parsed_fields = extract_acroform_fields(file_path)
                 except Exception as e:
+                    print(f'Error: {e}')
                     flash("There was an error processing your document. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard.dashboard'))
             else:
