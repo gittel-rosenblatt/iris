@@ -1,6 +1,4 @@
 import os
-import subprocess
-import sys
 
 from datetime import timedelta, timezone
 from dotenv import load_dotenv
@@ -11,13 +9,6 @@ from routes.main import main_bp
 from routes.auth import auth_bp
 from routes.dashboard import dashboard_bp
 from routes.projects import projects_bp
-
-try:
-    import fitz
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "--only-binary=:all:", "pymupdf"])
-
-load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
