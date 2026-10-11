@@ -1,3 +1,6 @@
+import resend
+import os
+
 from extensions import db, serializer
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, jsonify, g
 from flask_mailman import EmailMultiAlternatives
@@ -5,6 +8,8 @@ from models import User, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth_bp = Blueprint('auth', __name__)
+
+resend.api_key = os.environ.get("RESEND_API_KEY")
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -71,12 +76,12 @@ def forgot_password():
             token = serializer.dumps(user.email, salt='password-reset-salt')
             reset_url = url_for('auth.reset_password', token=token, _external=True)
             
-            msg = EmailMultiAlternatives(
-                "Password Reset Request",
-                f"Hello,\n\nTo reset your password, click the following link:\n{reset_url}\n\nThis link will expire in 15 minutes.",
-                "noreply@yourdomain.com",
-                [user.email]
-            )
+            # msg = EmailMultiAlternatives(
+            #     "Password Reset Request",
+            #     f"Hello,\n\nTo reset your password, click the following link:\n{reset_url}\n\nThis link will expire in 15 minutes.",
+            #     "noreply@yourdomain.com",
+            #     [user.email]
+            # )
 
             html_content = f"""
                 <!DOCTYPE html>
@@ -123,17 +128,25 @@ def forgot_password():
                 </body>
                 </html>
                 """
-            
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
+            try:
+                params = {
+                    "from": "Iris <noreply@irisforms.org>", 
+                    "to": [user.email],
+                    "subject": "Password Reset Request - Iris",
+                    "html": html_content
+                }
+                resend.Emails.send(params)
+                flash("A password reset link has been sent. Please check your inbox and your spam folder!", "info")
+            except Exception as e:
+                print(f"Resend API Error: {e}")
+                flash("There was an error sending your password reset email. Please try again later.", "danger")
 
-            flash("A password reset link has been sent. Please check your inbox and your spam folder!", "info")
             return redirect(url_for('auth.login'))
         else: 
             flash("We couldn't find an account with that username or email address. Please try again.", "danger")
             return redirect(url_for('auth.forgot_password'))
         
-    return render_template("forgot-password.html") 
+    return render_template("forgot-password.html")
 
 @auth_bp.route('/reset-password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
