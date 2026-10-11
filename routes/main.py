@@ -33,7 +33,7 @@ def send_contact():
         subject=f"Iris Contact Form: Message from {name}",
         body=f"Name: {name}\nEmail: {sender_email}\n\nMessage:\n{message_body}",
         from_email="noreply@irisapp.com",
-        to=["iris@gmail.com"],
+        to=["contact@irisforms.org"],
         headers={'Reply-To': sender_email}
     )
     

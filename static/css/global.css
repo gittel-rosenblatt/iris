@@ -52,7 +52,7 @@ a {
     color: var(--text-main);
     font-size: var(--font-size-md);
     transition: color 0.2s ease; 
-    text-underline-offset: 6px; 
+    text-underline-offset: 10px; 
     text-decoration: none;
 }
 

@@ -110,11 +110,17 @@
 
             <button type="submit">Send Message</button>
         </form>
-
+        
         <div class="contact-info">
-            <a href="mailto:contact@irisforms.org"><img src="{{ url_for('static', filename='images/gmail-logo.png') }}" alt="Email Iris"><span class="long-text">contact@irisforms.org</span></a>
-            <a href="tel:+11234567890"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="Call or text Iris"><span class="long-text">+1 (###) ###-###</span></a>
-            <a href="#"><img src="{{ url_for('static', filename='images/insta-logo.png') }}" alt="Message or view Iris's Instagram"><span class="long-text">@instagram-handle</span></a>
+            <div class="contact-methods">
+                <a href="mailto:contact@irisforms.org"><img src="{{ url_for('static', filename='images/email-icon.png') }}" alt="Email Iris"><span class="long-text">contact@irisforms.org</span></a>
+                <a href="tel:+19045154296"><img src="{{ url_for('static', filename='images/phone-icon.png') }}" alt="Call or text Iris"><span class="long-text">+1 (904) 515-4296</span></a>
+            </div>
+            <div class="phone-hours">
+                <h3 class="phone-head">Phone Hours:</h3>
+                <p>Mon–Fri, 4:30 PM – 9:00 PM ET</p>
+                <p>Note: Hours are subject to availability. If we are unable to take your call, please leave a voicemail or send an email for the fastest response.</p>
+            </div>
         </div>
     </section>
 </main>
