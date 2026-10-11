@@ -6,6 +6,11 @@
     height: 0;
 }
 
+h2 {
+    font-weight: 700;
+    padding-bottom: 15px;
+}
+
 .contact-faq {
     background-color: var(--bg-card);
     flex: 1;

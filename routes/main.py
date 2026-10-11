@@ -32,7 +32,7 @@ def send_contact():
     msg = EmailMultiAlternatives(
         subject=f"Iris Contact Form: Message from {name}",
         body=f"Name: {name}\nEmail: {sender_email}\n\nMessage:\n{message_body}",
-        from_email="noreply@irisapp.com",
+        from_email="contact@irisforms.org",
         to=["contact@irisforms.org"],
         headers={'Reply-To': sender_email}
     )
@@ -42,5 +42,6 @@ def send_contact():
         flash("Thank you for reaching out! Your message has been sent.", "success")
     except Exception as e:
         flash("There was an error sending your message. Please try again.", "danger")
+        print(f"Error sending email: {e}")
 
     return redirect(url_for('main.contact'))
