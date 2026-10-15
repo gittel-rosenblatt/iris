@@ -50,6 +50,9 @@ def signup():
         elif password != confirm_password:
             flash(f"Passwords to not match. Please try again.", "danger")
             return redirect(url_for('auth.signup'))
+        elif not request.form.get('agree_terms'):
+            flash("You must agree to the Terms of Service to create an account.")
+            return redirect(url_for('auth.signup'))
 
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 

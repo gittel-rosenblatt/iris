@@ -9,6 +9,24 @@ h1, h2, h3 {
     font-weight: 700;
 }
 
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.checkbox-group label {
+    cursor: pointer;
+    font-size: var(--font-size-md);
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 35px;
+    height: 35px;
+    accent-color: var(--text-header);
+    cursor: pointer;
+}
+
 #auth-main {
     display: flex;
     justify-content: center;
