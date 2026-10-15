@@ -5,17 +5,62 @@
     margin: 0;
     overflow-wrap: break-word;
     overflow: auto;
-
 }
 
-.privacy h2, .terms h2{
+.privacy h1, .terms h1 {
+    margin-bottom: 24px;
+    color: var(--text-header);
+    font-weight: 700;
+}
+
+.privacy h2, .terms h2 {
     background-color: var(--bg-card);
-    margin: 0;
-    text-align: center;
+    margin-top: 40px; 
+    margin-bottom: 16px; 
+    text-align: left; 
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.privacy h3, .terms h3 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    text-align: left;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.privacy p, .terms p, .privacy ul, .terms ul {
+    margin-bottom: 16px; 
+}
+
+[data-custom-class='body_text'], 
+[data-custom-class='body_text'] * {
+    font-family: 'Atkinson Hyperlegible', sans-serif !important;
+    font-size: 1.1rem !important;
+    color: var(--text-main) !important;
+    line-height: 1.7 !important;
+}
+
+[data-custom-class='heading_1'], 
+[data-custom-class='heading_1'] *,
+[data-custom-class='heading_2'], 
+[data-custom-class='heading_2'] * {
+    font-family: 'Atkinson Hyperlegible', sans-serif !important;
+    color: var(--text-main) !important;
+    font-weight: 700 !important;
+}
+
+[data-custom-class='link'], 
+[data-custom-class='link'] * {
+    color: var(--text-main) !important;
+    font-family: 'Atkinson Hyperlegible', sans-serif !important;
+    text-decoration: underline !important;
 }
 
 @media (max-width: 900px) {
     .privacy, .terms {
-        padding: 40px;
+        padding: 20px;
     }
 }

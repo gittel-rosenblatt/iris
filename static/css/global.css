@@ -43,7 +43,7 @@ body {
     overflow-x: hidden;
 }
 
-body, p, h1, h2, h3, nav a {
+body, p, h1, h2, h3, h4, nav a {
     font-family: var(--main-font);
     color: var(--text-main);
 }
@@ -62,7 +62,7 @@ a:hover {
     text-decoration-color: var(--dark-iris-purple);
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
     color: var(--text-header);
     margin: 0;
 }
@@ -75,7 +75,7 @@ h2 {
     font-size: var(--font-size-lg);
 }
 
-h3 {
+h3, h4 {
     font-size: var(--font-size-md);
 }
 
