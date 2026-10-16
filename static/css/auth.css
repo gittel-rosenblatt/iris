@@ -124,9 +124,10 @@ h1, h2, h3 {
         flex-direction: column;
     }
 
-    #login-main {
+    #auth-main {
         height: auto;
         flex-grow: 1; 
+        padding: 20px;
     }
     
     .auth-container {
@@ -135,14 +136,14 @@ h1, h2, h3 {
         max-height: none;
         overflow-y: auto;
         align-items: center;
+        gap: 0;
     }
 
     .auth {
         flex: 1;
         width: 100%;
         border-right: none;
-        border-bottom: 2px solid var(--iris-purple); 
         overflow-y: visible; 
-        padding: 20px 30px;
+        padding: 10px;
     }
 }

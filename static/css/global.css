@@ -506,7 +506,7 @@ footer {
 #toggle-new-password,
 #toggle-confirm-password {
     position: absolute;
-    right: 10px;
+    right: 60px;
     bottom: 14px;
     background-color: var(--iris-purple);
     color: var(--text-header);
@@ -636,5 +636,19 @@ footer {
         background-color: var(--text-header); 
         color: var(--iris-purple); 
         border: 5px solid var(--iris-purple);
+    }
+
+/* show/hide buttons */
+    #toggle-login-pass, 
+    #toggle-signup-pass, 
+    #toggle-confirm-pass, 
+    #toggle-reset-pass, 
+    #toggle-confirm-reset-pass,
+    #toggle-current-password,
+    #toggle-new-password,
+    #toggle-confirm-password {
+        position: absolute;
+        right: 50px;
+        bottom: 14px;
     }
 }

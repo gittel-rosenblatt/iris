@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 // Voice-to-Text 
 
-    const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], textarea');
+    const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], input[type="password"], textarea');
 
     inputs.forEach(input => {
         if (input.parentNode.classList.contains('input-with-vtt')) return;
