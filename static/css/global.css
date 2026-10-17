@@ -87,7 +87,7 @@ p {
 hr {
     border: none;
     height: 2px;
-    background-color: var(--iris-purple);
+    background-color: var(--dark-iris-purple);
     width: 100%;
     margin: 40px 0;
     align-self: stretch;
@@ -333,14 +333,17 @@ header {
 .dropdown-menu {
     position: absolute;
     top: 130%;
-    right: .5;
     z-index: 100;
     display: none; 
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 15px;
 }
 
 .dropdown-hr {
     padding: 0;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .dropdown-menu.show {
@@ -361,6 +364,11 @@ li {
     padding: 8px 0;
     font-size: var(--font-size-md);
     font-family: var(--main-font);
+}
+
+.dropdown-menu li, .dropdown-menu li a {
+    display: block; 
+    width: 100%;
 }
 
 main {
@@ -605,8 +613,6 @@ footer {
     .profile-trigger {
         gap: 10px;
     }
-
-    
 
 /* footer */ 
     footer {

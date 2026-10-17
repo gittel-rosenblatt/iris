@@ -124,7 +124,7 @@ p {
 
 .form-row {
     display: flex;
-    gap: 15px; 
+    gap: 10px; 
     width: 100%;
 }
 
@@ -148,7 +148,11 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 220px;
+    
+    height: auto; 
+    min-height: 220px; 
+    gap: 20px; 
+    
     font-size: var(--font-size-md);
     color: var(--text-main);
 }
@@ -287,16 +291,46 @@ p {
 }
 
 @media (max-width: 900px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .profile-main {
+        padding: 15px;
+        gap: 20px;
+        height: auto;
+    }
+
     .profile-container {
         display: flex;
         flex-direction: column;
-        gap: 50px;
+        gap: 30px;
         align-items: stretch; 
-        height: 630px;
+        height: auto;
     }
 
     .account-info, .profile-autofill {
         overflow-y: auto;
         flex: none;
+        padding: 20px;
+    }
+
+    .pfp-options {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .pfp-options img {
+        width: 90px;
+        height: auto;
+    }
+
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px; 
+        width: 100%;
     }
 }
