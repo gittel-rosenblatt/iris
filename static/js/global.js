@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Text-to-Speech 
     const ttsButtons = document.querySelectorAll('.btn-tts');
     let isClicked = false;
+    const mediaQuery = window.matchMedia('(max-width: 700px)');
 
     ttsButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -69,16 +70,29 @@ document.addEventListener('DOMContentLoaded', () => {
             isClicked = !isClicked;
 
             if (isClicked) {
-                btn.innerHTML = 'Stop <span aria-hidden="true">⏹️</span>';
-                document.body.classList.add('active');
+                
+                if (mediaQuery.matches) {
+                    btn.innerHTML = '<span aria-hidden="true">⏹️</span>';
+                    document.body.classList.add('active');
+                } else {
+                    btn.innerHTML = 'Stop <span aria-hidden="true">⏹️</span>';
+                    document.body.classList.add('active');
+                }
+                
             } else {
-                btn.innerHTML = 'Listen <span aria-hidden="true">🔊</span>';
-                document.body.classList.remove('active');
-                window.speechSynthesis.cancel()
-            }
+                if (mediaQuery.matches) {
+                    btn.innerHTML = '<span aria-hidden="true">🔊</span>';
+                    document.body.classList.remove('active');
+                    window.speechSynthesis.cancel()
+                } else {
+                    btn.innerHTML = 'Listen <span aria-hidden="true">🔊</span>';
+                    document.body.classList.remove('active');
+                    window.speechSynthesis.cancel();
+                }
+            };
         });
     });
-            
+        
     document.addEventListener('click', (e) => {
         if (!isClicked) {
             return;
