@@ -128,11 +128,6 @@ p {
     width: 100%;
 }
 
-.form .birthday {
-    max-width: 100%;
-    height: min-content;
-}
-
 .inline-group-first   { flex: 4; }
 .inline-group-initial { flex: 2; }
 .inline-group-last    { flex: 4; }
@@ -173,23 +168,6 @@ p {
     opacity: 0;
     width: 0;
     height: 0;
-}
-
-.pfp-options input[type="date"] {
-    -webkit-appearance: none;
-    appearance: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start; 
-    text-align: left;
-}
-
-.pfp-options input[type="date"]::-webkit-date-and-time-value {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-    line-height: normal;
-    min-height: 1.5em; 
 }
 
 .pfp-options img {

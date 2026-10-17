@@ -182,14 +182,18 @@
                     </div>
 
                     <!-- Birthday Field -->
-                    <div class="form-group birthday">
+                    <div class="form-group">
                         <label for="dob">Birthday:</label>
                         <input 
-                        type="date" 
-                        id="dob" 
-                        name="dob"
-                        value="{{ user.decrypted_birthday or '' }}"
+                            type="text" 
+                            id="birthday" 
+                            name="birthday"
+                            placeholder="mm/dd/yyyy"
+                            onfocus="(this.type='date')" 
+                            onblur="if(!this.value)this.type='text'"
+                            required
                         >
+
                     </div>
 
                     <!-- Street Address -->
