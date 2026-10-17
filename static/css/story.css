@@ -41,6 +41,7 @@
         background-color: var(--bg-card);
         order: -1;
         margin-top: 20px;
+        padding: 20px;
     }
 
     .story-image img {
@@ -55,6 +56,6 @@
     .our-story {
         overflow-y: visible;
         border-right: none;
-        padding: 30px;
+        padding: 20px;
     }
 }

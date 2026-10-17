@@ -27,7 +27,12 @@ h1, h2, h3 {
     cursor: pointer;
 }
 
-#auth-main {
+#login-main {
+    padding: 0px;
+    margin: 0px;
+}
+
+.auth-main {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,10 +129,12 @@ h1, h2, h3 {
         flex-direction: column;
     }
 
-    #auth-main {
+    .auth-main {
         height: auto;
         flex-grow: 1; 
         padding: 20px;
+        margin: 0;
+        gap: 0;
     }
     
     .auth-container {
