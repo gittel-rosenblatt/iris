@@ -33,9 +33,12 @@
 
     <nav class="account-header-nav">
         <div class="profile-section">
-            <button type="button" class="btn-tts">Listen 🔊</button>
+            <button aria-hidden="true"type="button" class="btn-tts">
+                <span class="long-text">Listen 🔊</span>
+                <span class="short-text">🔊</span>
+            </button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-                <p>{{ username }}</p>
+                <p class="username">{{ username }}</p>
                 <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
             </button>
         </div>
@@ -121,7 +124,7 @@
                             accept=".pdf, application/pdf"
                             onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'No file chosen'"
                         >
-                        <span id="file-name">No file chosen</span>
+                        <span id="file-name" class="pdf-file">No file chosen</span>
                     </div>
                     <div class="finish-btns">
                         <button 

@@ -579,7 +579,7 @@ footer {
         flex: 1;
     }
 
-/* header */
+/* main header */
     header {
         padding: clamp(0.5rem, 3vw, 1.25rem) clamp(1rem, 4vw, 2.5rem);
     }
@@ -592,6 +592,21 @@ footer {
     .divider {
         font-size: var(--font-size-xl); 
     }
+
+/* account header */
+    .account-header {
+        padding: 10px 20px;
+    }
+
+    .account-header-left {
+        gap: 10px;
+    }
+
+    .profile-trigger {
+        gap: 10px;
+    }
+
+    
 
 /* footer */ 
     footer {

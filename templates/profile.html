@@ -33,7 +33,10 @@
 
     <nav class="account-header-nav">
         <div class="profile-section">
-            <button type="button" class="btn-tts">Listen 🔊</button>
+            <button aria-hidden="true"type="button" class="btn-tts">
+                <span class="long-text">Listen 🔊</span>
+                <span class="short-text">🔊</span>
+            </button>
             <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
                 <p>{{ user.username }}</p>
                 <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
@@ -308,7 +311,10 @@
             
             <div class="modal-header">
                 <h2>Change Password</h2>
-                <button type="button" class="btn-tts">Listen 🔊</button>
+                <button aria-hidden="true"type="button" class="btn-tts">
+                <span class="long-text">Listen 🔊</span>
+                <span class="short-text">🔊</span>
+            </button>
                 <button type="button" class="modal-close" id="closePasswordModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
