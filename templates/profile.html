@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,372 +8,318 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
     <!--Bootstrap CSS File-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <!--Personal CSS Files-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}"> 
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+
     <!--Bootstrap JS File-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"
+        defer></script>
 
     <!--Personal JS Files-->
     <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/timeout.js') }}" defer></script>
 </head>
+
 <body>
-    
-<header class="account-header">
-    <div class="account-header-left">
-        <a href="{{ url_for('main.home') }}">
-            <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}" alt="iris logo">
-        </a>
-        <h1 class="brand-name">Iris</h1>
-    </div>
 
-    <nav class="account-header-nav">
-        <div class="profile-section">
-            <button aria-hidden="true"type="button" class="btn-tts">
-                <span class="long-text">Listen 🔊</span>
-                <span class="short-text">🔊</span>
-            </button>
-            <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
-                <p>{{ user.username }}</p>
-                <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
-            </button>
+    <header class="account-header">
+        <div class="account-header-left">
+            <a href="{{ url_for('main.home') }}">
+                <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}"
+                    alt="iris logo">
+            </a>
+            <h1 class="brand-name">Iris</h1>
         </div>
 
-        <div class="dropdown-menu" id="dropdownMenu">
-            <ul>
-                <li><a href="{{ url_for('dashboard.profile') }}">Profile</a></li>
-                <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
-                <hr class="dropdown-hr"> 
-                <li><a href="{{ url_for('auth.logout') }}" class="logout-link">Log Out</a></li>
-                <hr class="dropdown-hr">
-                <li><a href="{{ url_for('main.terms') }}" target="_blank" rel="noopener noreferrer">Terms</a></li>
-                <li><a href="{{ url_for('main.privacy') }}" target="_blank" rel="noopener noreferrer">Privacy</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
+        <nav class="account-header-nav">
+            <div class="profile-section">
+                <button aria-hidden="true" type="button" class="btn-tts">
+                    <span class="long-text">Listen 🔊</span>
+                    <span class="short-text">🔊</span>
+                </button>
+                <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+                    <p>{{ user.username }}</p>
+                    <img src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}"
+                        alt="User's profile picture">
+                </button>
+            </div>
 
-<main>
-    <!-- {% if not profile_is_complete %}
+            <div class="dropdown-menu" id="dropdownMenu">
+                <ul>
+                    <li><a href="{{ url_for('dashboard.profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+                    <hr class="dropdown-hr">
+                    <li><a href="{{ url_for('auth.logout') }}" class="logout-link">Log Out</a></li>
+                    <hr class="dropdown-hr">
+                    <li><a href="{{ url_for('main.terms') }}" target="_blank" rel="noopener noreferrer">Terms</a></li>
+                    <li><a href="{{ url_for('main.privacy') }}" target="_blank" rel="noopener noreferrer">Privacy</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- {% if not profile_is_complete %}
         <div class="autofill-banner">
             <h3><strong>Maximize your Iris experience! </strong>Fill out your autofill profile details so we can seamlessly build your project forms.</h3>
             <button type="button" id="bannerClose" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %} -->
 
-    <div aria-labelledby="modalTitleText" data-bs-backdrop="static" data-bs-keyboard="false" aria-describedby="modalBodyText" class="modal fade" id="logoutWarningModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-            <div class="modal-header">
-                <h3 id="modalTitleText" class="modal-title">Session Expiring</h3>
-            </div>
-            
-            <div id="modalBodyText" class="modal-body">
-                <span id="accessible-countdown" class="visually-hidden" aria-live="polite"></span>
-                You will be logged out automatically <span id="countdown" class="countdown"></span> due to inactivity.
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" id="button" class="btn btn-secondary" data-bs-dismiss="modal">Stay Logged In</button>
-            </div>
+        <div aria-labelledby="modalTitleText" data-bs-backdrop="static" data-bs-keyboard="false"
+            aria-describedby="modalBodyText" class="modal fade" id="logoutWarningModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
 
+                    <div class="modal-header">
+                        <h3 id="modalTitleText" class="modal-title">Session Expiring</h3>
+                    </div>
+
+                    <div id="modalBodyText" class="modal-body">
+                        <span id="accessible-countdown" class="visually-hidden" aria-live="polite"></span>
+                        You will be logged out automatically <span id="countdown" class="countdown"></span> due to
+                        inactivity.
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="button" class="btn btn-secondary" data-bs-dismiss="modal">Stay Logged
+                            In</button>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
 
-    {% with messages = get_flashed_messages(category_filter=['profile_success', 'danger', 'success']) %}
+        {% with messages = get_flashed_messages(category_filter=['profile_success', 'danger', 'success']) %}
         {% if messages %}
-            <div class="flash-messages">
+        <div class="flash-messages">
             {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             {% endfor %}
-            </div>
+        </div>
         {% endif %}
-    {% endwith %}
+        {% endwith %}
 
-    <div class="profile-main" id="focus" tabindex="-1">
-        <div class="welcome-header">
-            <h1>{{ user.decrypted_first_name if user.decrypted_first_name else user.username }}'s Account</h1>
-        </div>
-
-        <div class="profile-container">
-            <section class="account-info">
-                <h2>Account Information</h2>
-                <img class="user-pfp" src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}" alt="User's profile picture">
-                <div class="account-meta">
-                    <p><strong>Username:</strong> {{ user.username }}</p>
-                    <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %Y') if user.created_at else 'N/A' }}</p>                </div>
-                <button type="button" class="account-btn" id="changePassword">Change Password</button>
-            </section>
-
-            <section class="profile-autofill">
-                <h2>Autofill Information</h2>
-                <p class="autofill-subtext">Fill these out to seamlessly build your project forms.</p>
-
-                <form class="form" id="autofill-form" action="{{ url_for('dashboard.update_profile') }}" method="POST">
-                    
-                    <!-- Name Row -->
-                    <div class="form-row">
-                        <div class="form-group inline-group-first">
-                            <label for="first-name">First Name:</label>
-                            <input 
-                            type="text" 
-                            id="first-name" 
-                            name="first_name" 
-                            value="{{ user.decrypted_first_name or '' }}"
-                            placeholder="First name"
-                            >
-                        </div>
-                        
-                        <div class="form-group inline-group-initial">
-                            <label for="middle-initial">M.I.:</label>
-                            <input 
-                            type="text" 
-                            id="middle-initial" 
-                            name="middle_initial" 
-                            maxlength="1" 
-                            value="{{ user.decrypted_middle_initial or '' }}"
-                            placeholder="M.I."
-                            >
-                        </div>
-
-                        <div class="form-group inline-group-last">
-                            <label for="last-name">Last Name:</label>
-                            <input 
-                            type="text" 
-                            id="last-name" 
-                            name="last_name" 
-                            value="{{ user.decrypted_last_name or '' }}"
-                            placeholder="Last name"
-                            >
-                        </div>
-                    </div>
-
-                    <!-- Email Field -->
-                    <div class="form-group">
-                        <label for="email">Email Address:</label>
-                        <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        value="{{ user.email or '' }}"
-                        placeholder="example@gmail.com"
-                        >
-                    </div>
-
-                    <!-- Phone Field -->
-                    <div class="form-group">
-                        <label for="phone">Phone Number:</label>
-                        <input 
-                        type="tel" 
-                        id="phone" 
-                        name="phone" 
-                        value="{{ user.decrypted_phone or '' }}"
-                        placeholder="Phone number"
-                        >
-                    </div>
-
-                    <!-- Birthday Field -->
-                    <div class="form-group">
-                        <label for="dob">Birthday:</label>
-                        <input 
-                            type="text" 
-                            id="birthday" 
-                            name="birthday"
-                            placeholder="mm/dd/yyyy"
-                            onfocus="(this.type='date')" 
-                            onblur="if(!this.value)this.type='text'"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- Street Address -->
-                    <div class="form-group">
-                        <label for="address">Street Address:</label>
-                        <input 
-                        type="text" 
-                        id="street" 
-                        name="street" 
-                        value="{{ user.decrypted_street or '' }}"
-                        placeholder="Street address"
-                        >
-                    </div>
-
-                    <!-- City, State, Zip Row -->
-                    <div class="form-row">
-                        <div class="form-group inline-group-city">
-                            <label for="city">City:</label>
-                            <input 
-                            type="text" 
-                            id="city" 
-                            name="city" 
-                            value="{{ user.decrypted_city or '' }}"
-                            placeholder="City"
-                            >
-                        </div>
-                        
-                        <div class="form-group inline-group-state">
-                            <label for="state">State:</label>
-                            <select id="state" class="select" name="state">
-                                <option value="" disabled {{ 'selected' if not user.decrypted_state }}>Select...</option>
-                                {% for state in states %}
-                                    <option value="{{ state }}" {{ 'selected' if state == user.decrypted_state }}>{{ state }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="form-group inline-group-zip">
-                            <label for="zip">Zip Code:</label>
-                            <input 
-                            type="text" 
-                            id="zip" 
-                            name="zip" 
-                            value="{{ user.decrypted_zip_code or '' }}"
-                            placeholder="Zip code"
-                            >
-                        </div>
-                    </div> 
-
-                    <!-- Avatar Picker Row -->
-                    <div class="avatar-picker">
-                        <p>Choose an avatar:</p>
-                        <div class="pfp-options">
-                            <label>
-                                <input 
-                                class="purple-btn"
-                                type="radio" 
-                                name="avatar" 
-                                value="pfp-iris-purple.png" {{ 'checked' if user.avatar == 'pfp-iris-purple.png' or not user.avatar }}
-                                >
-                                <img class="purple" src="{{ url_for('static', filename='images/avatars/pfp-iris-purple.png') }}" alt="Image of a purple iris flower">
-                                <p>Purple Iris</p>
-                            </label>
-                            <label>
-                                <input 
-                                class="blue-btn"
-                                type="radio" 
-                                name="avatar" 
-                                value="pfp-iris-blue.png" {{ 'checked' if user.avatar == 'pfp-iris-blue.png' }}
-                                >
-                                <img class="blue" src="{{ url_for('static', filename='images/avatars/pfp-iris-blue.png') }}" alt="Image of a blue iris flower">
-                                <p>Blue Iris</p>
-                            </label>
-                            <label>
-                                <input 
-                                class="pink-btn"
-                                type="radio" 
-                                name="avatar" 
-                                value="pfp-iris-pink.png" {{ 'checked' if user.avatar == 'pfp-iris-pink.png' }}
-                                >
-                                <img class="pink" src="{{ url_for('static', filename='images/avatars/pfp-iris-pink.png') }}" alt="Image of a pink iris flower">
-                                <p>Pink Iris</p>
-                            </label>
-                            <label>
-                                <input 
-                                class="yellow-btn"
-                                type="radio" 
-                                name="avatar" 
-                                value="pfp-iris-yellow.png" {{ 'checked' if user.avatar == 'pfp-iris-yellow.png' }}
-                                >
-                                <img class="yellow" src="{{ url_for('static', filename='images/avatars/pfp-iris-yellow.png') }}" alt="Image of a yellow iris flower">
-                                <p>Yellow Iris</p>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn-save-changes">Save Changes</button>
-                </form>
-            </section>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="passwordModal" aria-hidden="true">
-        <div class="modal-content">
-
-            {% with messages = get_flashed_messages(category_filter=['password_error']) %}
-                {% if messages %}
-                    <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            
-            <div class="modal-header">
-                <h2>Change Password</h2>
-                <button aria-hidden="true"type="button" class="btn-tts">
-                <span class="long-text">Listen 🔊</span>
-                <span class="short-text">🔊</span>
-            </button>
-                <button type="button" class="modal-close" id="closePasswordModal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="profile-main" id="focus" tabindex="-1">
+            <div class="welcome-header">
+                <h1>{{ user.decrypted_first_name if user.decrypted_first_name else user.username }}'s Account</h1>
             </div>
 
-            <form class="form" id="change-password-form" action="{{ url_for('dashboard.update_password') }}" method="POST">
-                
-                <div class="form-group">
-                    <label for="current-password">Current Password:</label>
-                    <input 
-                    type="password" 
-                    id="current-password" 
-                    name="current_password" 
-                    required 
-                    placeholder="Current password"
-                    >
-                    <button type="button" id="toggle-current-password">Show</button>
-                </div>
+            <div class="profile-container">
+                <section class="account-info">
+                    <h2>Account Information</h2>
+                    <img class="user-pfp"
+                        src="{{ url_for('static', filename='images/avatars/' ~ (user.avatar or 'pfp-iris-purple.png')) }}"
+                        alt="User's profile picture">
+                    <div class="account-meta">
+                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %Y') if user.created_at else
+                            'N/A' }}</p>
+                    </div>
+                    <button type="button" class="account-btn" id="changePassword">Change Password</button>
+                </section>
 
-                <div class="form-group">
-                    <label for="new-password">New Password:</label>
-                    <input 
-                    type="password" 
-                    id="new-password" 
-                    name="new_password" 
-                    required 
-                    placeholder="New password"
-                    >
-                    <button type="button" id="toggle-new-password">Show</button>
-                </div>
+                <section class="profile-autofill">
+                    <h2>Autofill Information</h2>
+                    <p class="autofill-subtext">Fill these out to seamlessly build your project forms.</p>
 
-                <div class="form-group">
-                    <label for="confirm-password">Confirm New Password:</label>
-                    <input 
-                    type="password" 
-                    id="confirm-password" 
-                    name="confirm_password" 
-                    required 
-                    placeholder="Confirm password"
-                    >
-                    <button type="button" id="toggle-confirm-password">Show</button>
-                </div>
+                    <form class="form" id="autofill-form" action="{{ url_for('dashboard.update_profile') }}"
+                        method="POST">
 
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" id="cancelPasswordModal">Cancel</button>
-                    <button type="submit" class="btn-save-password">Update Password</button>
-                </div>
+                        <!-- Name Row -->
+                        <div class="form-row">
+                            <div class="form-group inline-group-first">
+                                <label for="first-name">First Name:</label>
+                                <input type="text" id="first-name" name="first_name"
+                                    value="{{ user.decrypted_first_name or '' }}" placeholder="First name">
+                            </div>
 
-                <a href="{{ url_for('auth.forgot_password') }}">Forgot password? Reset it here.</a>
+                            <div class="form-group inline-group-initial">
+                                <label for="middle-initial">M.I.:</label>
+                                <input type="text" id="middle-initial" name="middle_initial" maxlength="1"
+                                    value="{{ user.decrypted_middle_initial or '' }}" placeholder="M.I.">
+                            </div>
 
-            </form>
+                            <div class="form-group inline-group-last">
+                                <label for="last-name">Last Name:</label>
+                                <input type="text" id="last-name" name="last_name"
+                                    value="{{ user.decrypted_last_name or '' }}" placeholder="Last name">
+                            </div>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" id="email" name="email" value="{{ user.email or '' }}"
+                                placeholder="example@gmail.com">
+                        </div>
+
+                        <!-- Phone Field -->
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" id="phone" name="phone" value="{{ user.decrypted_phone or '' }}"
+                                placeholder="Phone number">
+                        </div>
+
+                        <!-- Birthday Field -->
+                        <div class="form-group">
+                            <label for="dob">Birthday:</label>
+                            <input type="date" id="dob" name="dob" value="{{ user.decrypted_birthday or '' }}">
+                        </div>
+
+                        <!-- Street Address -->
+                        <div class="form-group">
+                            <label for="address">Street Address:</label>
+                            <input type="text" id="street" name="street" value="{{ user.decrypted_street or '' }}"
+                                placeholder="Street address">
+                        </div>
+
+                        <!-- City, State, Zip Row -->
+                        <div class="form-row">
+                            <div class="form-group inline-group-city">
+                                <label for="city">City:</label>
+                                <input type="text" id="city" name="city" value="{{ user.decrypted_city or '' }}"
+                                    placeholder="City">
+                            </div>
+
+                            <div class="form-group inline-group-state">
+                                <label for="state">State:</label>
+                                <select id="state" class="select" name="state">
+                                    <option value="" disabled {{ 'selected' if not user.decrypted_state }}>Select...
+                                    </option>
+                                    {% for state in states %}
+                                    <option value="{{ state }}" {{ 'selected' if state==user.decrypted_state }}>{{ state
+                                        }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group inline-group-zip">
+                                <label for="zip">Zip Code:</label>
+                                <input type="text" id="zip" name="zip" value="{{ user.decrypted_zip_code or '' }}"
+                                    placeholder="Zip code">
+                            </div>
+                        </div>
+
+                        <!-- Avatar Picker Row -->
+                        <div class="avatar-picker">
+                            <p>Choose an avatar:</p>
+                            <div class="pfp-options">
+                                <label>
+                                    <input class="purple-btn" type="radio" name="avatar" value="pfp-iris-purple.png"
+                                        {{ 'checked' if user.avatar=='pfp-iris-purple.png' or not user.avatar }}>
+                                    <img class="purple"
+                                        src="{{ url_for('static', filename='images/avatars/pfp-iris-purple.png') }}"
+                                        alt="Image of a purple iris flower">
+                                    <p>Purple Iris</p>
+                                </label>
+                                <label>
+                                    <input class="blue-btn" type="radio" name="avatar" value="pfp-iris-blue.png"
+                                        {{ 'checked' if user.avatar=='pfp-iris-blue.png' }}>
+                                    <img class="blue"
+                                        src="{{ url_for('static', filename='images/avatars/pfp-iris-blue.png') }}"
+                                        alt="Image of a blue iris flower">
+                                    <p>Blue Iris</p>
+                                </label>
+                                <label>
+                                    <input class="pink-btn" type="radio" name="avatar" value="pfp-iris-pink.png"
+                                        {{ 'checked' if user.avatar=='pfp-iris-pink.png' }}>
+                                    <img class="pink"
+                                        src="{{ url_for('static', filename='images/avatars/pfp-iris-pink.png') }}"
+                                        alt="Image of a pink iris flower">
+                                    <p>Pink Iris</p>
+                                </label>
+                                <label>
+                                    <input class="yellow-btn" type="radio" name="avatar" value="pfp-iris-yellow.png"
+                                        {{ 'checked' if user.avatar=='pfp-iris-yellow.png' }}>
+                                    <img class="yellow"
+                                        src="{{ url_for('static', filename='images/avatars/pfp-iris-yellow.png') }}"
+                                        alt="Image of a yellow iris flower">
+                                    <p>Yellow Iris</p>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-save-changes">Save Changes</button>
+                    </form>
+                </section>
+            </div>
         </div>
-    </div>
-</main>
+
+        <div class="modal-overlay" id="passwordModal" aria-hidden="true">
+            <div class="modal-content">
+
+                {% with messages = get_flashed_messages(category_filter=['password_error']) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <div class="modal-header">
+                    <h2>Change Password</h2>
+                    <button aria-hidden="true" type="button" class="btn-tts">
+                        <span class="long-text">Listen 🔊</span>
+                        <span class="short-text">🔊</span>
+                    </button>
+                    <button type="button" class="modal-close" id="closePasswordModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form class="form" id="change-password-form" action="{{ url_for('dashboard.update_password') }}"
+                    method="POST">
+
+                    <div class="form-group">
+                        <label for="current-password">Current Password:</label>
+                        <input type="password" id="current-password" name="current_password" required
+                            placeholder="Current password">
+                        <button type="button" id="toggle-current-password">Show</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-password">New Password:</label>
+                        <input type="password" id="new-password" name="new_password" required
+                            placeholder="New password">
+                        <button type="button" id="toggle-new-password">Show</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password:</label>
+                        <input type="password" id="confirm-password" name="confirm_password" required
+                            placeholder="Confirm password">
+                        <button type="button" id="toggle-confirm-password">Show</button>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" id="cancelPasswordModal">Cancel</button>
+                        <button type="submit" class="btn-save-password">Update Password</button>
+                    </div>
+
+                    <a href="{{ url_for('auth.forgot_password') }}">Forgot password? Reset it here.</a>
+
+                </form>
+            </div>
+        </div>
+    </main>
 
 </body>
+
 </html>

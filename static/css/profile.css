@@ -169,6 +169,22 @@ p {
     width: 0;
     height: 0;
 }
+ 
+input[type="date"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important; 
+    
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+
+input::-webkit-date-and-time-value {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: normal !important;
+    text-align: left !important;
+}
 
 .pfp-options img {
     height: 100px;
