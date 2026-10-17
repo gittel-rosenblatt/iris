@@ -170,6 +170,23 @@ p {
     height: 0;
 }
 
+.pfp-options input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start; 
+    text-align: left;
+}
+
+.pfp-options input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    min-height: 1.5em; 
+}
+
 .pfp-options img {
     height: 100px;
     border-radius: 50%;
