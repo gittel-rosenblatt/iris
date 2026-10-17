@@ -342,6 +342,12 @@ input[type="radio"] {
         flex-direction: column;
         padding: 30px;
         gap: 20px;
+        margin: 0;
+    }
+
+    .workspace-content {
+        padding: 0px;
+        gap: 20px;
     }
 
     .question-container {
@@ -353,10 +359,14 @@ input[type="radio"] {
         justify-content: space-between;
         gap: 20px;
         margin-top: 20px;
-        padding-bottom: 30px;
     }
 
     .question-section {
+        flex-direction: column;
+    }
+
+    .workspace-header {
+        display: flex;
         flex-direction: column;
     }
 }
