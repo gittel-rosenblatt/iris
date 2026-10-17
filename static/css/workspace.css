@@ -179,6 +179,16 @@ input[type="radio"] {
     align-items: center;
 }
 
+.question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quesiton h3 {
+    font-weight: 700;
+}
+
 .option-edit {
     display: flex;
     gap: 10px;
@@ -354,6 +364,11 @@ input[type="radio"] {
         padding: 16px;
     }
 
+    .question-container p {
+        margin: 0;
+        padding: 15px 0;
+    }
+
     .nav-buttons {
         flex-direction: row;
         justify-content: space-between;
@@ -368,5 +383,28 @@ input[type="radio"] {
     .workspace-header {
         display: flex;
         flex-direction: column;
+    }
+
+    .question {
+
+    }
+
+    .edit-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px;
+        margin: 0;
+        border: 2px solid var(--text-header);
+        border-radius: 8px;
+        background-color: var(--iris-purple);
+        color: var(--text-header);
+        font-family: var(--main-font);
+        font-size: var(--font-size-sm);
+        cursor: pointer;
+        box-sizing: border-box;
+        width: 100px;
+        height: 40px;
     }
 }

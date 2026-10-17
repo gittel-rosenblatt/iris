@@ -131,11 +131,28 @@
             <div class="question-section">
                 {% for field in fields %}
                     <section class="question-container question-card {% if loop.first %}active{% endif %}">
-                        <div class="question-number">
-                            <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
-                            <div class="option-edit">
-                                <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
-                                <a href="{{ url_for('projects.workspace', doc_id=document.id, question=loop.index0) }}" class="btn edit-link">✏️ Edit</a>
+                        
+                        <div class="long-text">
+                            <div class="question-number">
+                                <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
+                                <div class="option-edit">
+                                    <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
+                                    <a href="{{ url_for('projects.workspace', doc_id=document.id, question=loop.index0) }}" class="btn edit-link">
+                                        ✏️ Edit
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="short-text">
+                            <div class="question-number">
+                                <div class="question">
+                                    <h3>Question {{ loop.index }} of {{ fields | length }}</h3>
+                                    <h3>{% if field.field_required %}Reccommended{% else %}Optional{% endif %}</h3>
+                                </div>
+                                <a href="{{ url_for('projects.workspace', doc_id=document.id, question=loop.index0) }}" class="btn edit-link">
+                                    ✏️ Edit
+                                </a>
                             </div>
                         </div>
 
