@@ -247,7 +247,8 @@ def save_answers(original_file_path, completed_file_path, user_answers, form_typ
                 fit_y = (raw_y / 1000.0) * page_h if raw_y > page_h else raw_y
                 
                 page.insert_text(fitz.Point(fit_x + 5, fit_y + 10), text_to_print, fontsize=8.5, color=(0, 0, 0))
-        
+
+    doc.bake()
     doc.save(completed_file_path)
     doc.close()
             
@@ -375,7 +376,7 @@ def upload():
                 data_json=encrypted_string,
                 original_file_path = file_path
             )
-
+            
             db.session.add(new_doc)
             db.session.commit()
 

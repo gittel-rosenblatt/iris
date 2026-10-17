@@ -57,7 +57,7 @@
     <div class="container pb-5">
         
         <div class="card download border-0">
-            <div class="card-body card-header">
+            <div class="card-body header">
                 <div class="header-download">
                     <h2>Document Review</h2>
                     <p>Document ID: #{{ document.id }}</p>
@@ -104,7 +104,7 @@
                 <div class="card-header">
                     <h2>Generated PDF Preview</h2>
                 </div>
-                <div class="card-body">
+                <div class="iframe-body">
                     {% if document.completed_file_path %}
                         <iframe 
                             src="{{ url_for('projects.serve_pdf', doc_id=document.id) }}#toolbar=0&navpanes=0"
