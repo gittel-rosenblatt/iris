@@ -111,7 +111,7 @@
             </div>
 
             <div class="create-project-container">
-                <p class="upload-counter">Spots remaining: <strong>{{ uploads_left }} / 5</strong></p>
+                <p class="upload-counter"><strong>{{ uploads_left }} of 5</strong> spots remaining</p>
                 <form action="{{ url_for('projects.upload') }}" method="POST" enctype="multipart/form-data">
                     <div class="upload-btn">
                         <label for="pdfFile" class="custom-file-upload">
