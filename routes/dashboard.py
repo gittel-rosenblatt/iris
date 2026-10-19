@@ -1,11 +1,20 @@
+import hashlib
+import hmac
 import os
 
+from cryptography.fernet import Fernet
 from extensions import db, cipher
 from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for, g
 from models import User, Document, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 dashboard_bp = Blueprint('dashboard', __name__)
+
+email_hash = os.getenv('EMAIL_HASH_KEY')
+email_hash_key = email_hash.encode('utf-8')
+
+encryption_key = os.getenv('ENCRYPTION_KEY')
+cipher = Fernet(encryption_key.encode()) if encryption_key else None
 
 STATES = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
@@ -38,6 +47,7 @@ def profile():
     current_user = g.current_user
 
     fields = [
+        current_user.decrypted_email,
         current_user.decrypted_first_name,
         current_user.decrypted_last_name,
         current_user.decrypted_middle_initial,
@@ -71,17 +81,26 @@ def update_profile():
             return encrypted_bytes.decode()
         return None
 
+    def generate_email_hash(email: str) -> str:
+        clean_email = email.strip().lower().encode('utf-8')
+        
+        email_hash = hmac.new(email_hash_key, clean_email, hashlib.sha256).hexdigest()
+        
+        return email_hash
+
     selected_avatar = request.form.get('avatar')
 
     email = request.form.get('email', '').strip().lower()
-    email_check = User.query.filter_by(email=email).first()
+
+    searchable_hash = generate_email_hash(email)
+    email_check = User.query.filter_by(email_hash=searchable_hash).first()
 
     if email_check and email_check.id != current_user.id:
         flash(f"Email is already in use.", "danger")
         return redirect(url_for('dashboard.profile'))
-    
-    current_user.email = email
+
     current_user.avatar = selected_avatar
+    current_user.email_encrypted = encrypt(clean_input('email').lower() if clean_input('email') else None)
     current_user.first_name = encrypt(clean_input('first_name'))
     current_user.last_name = encrypt(clean_input('last_name'))
     current_user.middle_initial = encrypt(clean_input('middle_initial'))

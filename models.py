@@ -10,7 +10,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(120), nullable=False)
     avatar = db.Column(db.String(100), default='default-pfp.png')
 
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    email_encrypted = db.Column(db.Text, nullable=True)
+    email_hash = db.Column(db.String(120), nullable=False)
 
     first_name = db.Column(db.Text, nullable=True)
     last_name = db.Column(db.Text, nullable=True)
@@ -32,6 +33,10 @@ class User(db.Model):
             except Exception:
                 return value
         return ''
+
+    @property
+    def decrypted_email(self):
+        return self._decrypt(self.email_encrypted)
 
     @property
     def decrypted_first_name(self):

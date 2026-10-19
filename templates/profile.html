@@ -160,7 +160,7 @@
                         <!-- Email Field -->
                         <div class="form-group">
                             <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email" value="{{ user.email or '' }}"
+                            <input type="email" id="email" name="email" value="{{ user.decrypted_email or '' }}"
                                 placeholder="example@gmail.com">
                         </div>
 

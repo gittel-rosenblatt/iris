@@ -1,6 +1,9 @@
+import hashlib
+import hmac
 import resend
 import os
 
+from cryptography.fernet import Fernet
 from extensions import db, serializer
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, jsonify, g
 from flask_mailman import EmailMultiAlternatives
@@ -11,6 +14,62 @@ auth_bp = Blueprint('auth', __name__)
 
 resend.api_key = os.environ.get("RESEND_API_KEY")
 
+email_hash = os.getenv('EMAIL_HASH_KEY')
+email_hash_key = email_hash.encode('utf-8')
+
+encryption_key = os.getenv('ENCRYPTION_KEY')
+cipher = Fernet(encryption_key.encode()) if encryption_key else None
+
+def generate_email_hash(email: str) -> str:
+    clean_email = email.strip().lower().encode('utf-8')
+    
+    email_hash = hmac.new(email_hash_key, clean_email, hashlib.sha256).hexdigest()
+    
+    return email_hash
+
+def encrypt(value):
+    if value:
+        encrypted_bytes = cipher.encrypt(value.encode())
+        return encrypted_bytes.decode()
+    return None
+
+@auth_bp.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form.get('username').strip()
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        email = request.form.get('email').strip().lower() 
+
+        user_check = User.query.filter_by(username=username).first()
+
+        searchable_hash = generate_email_hash(email)
+        existing_user = User.query.filter_by(email_hash=searchable_hash).first()
+        
+        if user_check or existing_user:
+            flash(f"Username or email already in use. Please log in.", "danger")
+            return redirect(url_for('auth.signup'))
+        elif password != confirm_password:
+            flash(f"Passwords to not match. Please try again.", "danger")
+            return redirect(url_for('auth.signup'))
+        elif not request.form.get('agree_terms'):
+            flash("You must agree to the Terms of Service to create an account.")
+            return redirect(url_for('auth.signup'))
+
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        email_hash = generate_email_hash(email)
+        email_encrypted = encrypt(email)
+
+        new_user = User(username=username, password_hash=hashed_password, email_hash=email_hash, email_encrypted=email_encrypted)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Account created successfully! You can now log in.', 'success')
+        return redirect(url_for('auth.login'))
+    
+    return render_template('signup.html')
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -19,7 +78,8 @@ def login():
 
         found_user = User.query.filter_by(username=email_username).first()
         if not found_user:
-            found_user = User.query.filter_by(email=email_username).first()
+            searchable_hash = generate_email_hash(email_username)
+            found_user = User.query.filter_by(email_hash=searchable_hash).first()
 
         if found_user and check_password_hash(found_user.password_hash, password):
             session['user_id'] = found_user.id  
@@ -33,39 +93,6 @@ def login():
     
     return render_template('login.html') 
 
-@auth_bp.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        username = request.form.get('username').strip()
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
-        email = request.form.get('email').strip().lower() 
-
-        user_check = User.query.filter_by(username=username).first()
-        email_check = User.query.filter_by(email=email).first()
-        
-        if user_check or email_check:
-            flash(f"Username or email already in use. Please log in.", "danger")
-            return redirect(url_for('auth.signup'))
-        elif password != confirm_password:
-            flash(f"Passwords to not match. Please try again.", "danger")
-            return redirect(url_for('auth.signup'))
-        elif not request.form.get('agree_terms'):
-            flash("You must agree to the Terms of Service to create an account.")
-            return redirect(url_for('auth.signup'))
-
-        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-
-        new_user = User(username=username, password_hash=hashed_password, email=email)
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        flash('Account created successfully! You can now log in.', 'success')
-        return redirect(url_for('auth.login'))
-    
-    return render_template('signup.html')
-
 @auth_bp.route("/forgot-password", methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -73,10 +100,12 @@ def forgot_password():
 
         user = User.query.filter_by(username=target_input).first()
         if not user: 
-            user = User.query.filter_by(email=target_input).first()
+            searchable_hash = generate_email_hash(target_input)
+            user = User.query.filter_by(email_hash=searchable_hash).first()
 
         if user:
-            token = serializer.dumps(user.email, salt='password-reset-salt')
+            email = user.decrypted_email
+            token = serializer.dumps(user.email_hash, salt='password-reset-salt')
             reset_url = url_for('auth.reset_password', token=token, _external=True)
             
             # msg = EmailMultiAlternatives(
@@ -134,7 +163,7 @@ def forgot_password():
             try:
                 params = {
                     "from": "Iris <noreply@irisforms.org>", 
-                    "to": [user.email],
+                    "to": [email],
                     "subject": "Password Reset Request - Iris",
                     "html": html_content
                 }
@@ -170,7 +199,7 @@ def reset_password(token):
             flash(f"Passwords to not match. Please try again.", "danger")
             return redirect(url_for('auth.reset_password', token=token))
         else: 
-            user_to_update = User.query.filter_by(email=email).first()
+            user_to_update = User.query.filter_by(email_hash=email).first()
 
             hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
             user_to_update.password_hash = hashed_password
