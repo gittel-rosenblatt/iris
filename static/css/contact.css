@@ -14,7 +14,6 @@ h2 {
 .contact-faq {
     background-color: var(--bg-card);
     flex: 1;
-    max-width: 400px;
     border-right: 2px solid var(--iris-purple); 
     padding: 40px;
     overflow-y: auto;
@@ -25,6 +24,10 @@ h2 {
     color: var(--text-main);
     font-size: var(--font-size-md);
     line-height: 1.6; 
+}
+
+summary {
+    padding: 10px 0;
 }
 
 #contact-form-section {
@@ -38,6 +41,10 @@ h2 {
 
 #contact-form {
     padding-bottom: 30px;
+}
+
+label {
+    font-size: var(--font-size-md);
 }
 
 .contact-info {
