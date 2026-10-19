@@ -8,6 +8,7 @@ from extensions import db, serializer
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, jsonify, g
 from flask_mailman import EmailMultiAlternatives
 from models import User, login_required
+from sqlalchemy import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth_bp = Blueprint('auth', __name__)

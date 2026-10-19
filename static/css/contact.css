@@ -51,7 +51,7 @@ h2 {
     margin: 0;
 }
 
-/* .contact-methods {
+.contact-methods {
     display: flex;
     justify-content: space-evenly;
     align-items: end;
@@ -70,7 +70,7 @@ h2 {
     display: inline-block;
 }
 
-.phone-hours {
+/* .phone-hours {
     display: flex;
     flex-direction: column;
     gap: 10px;
