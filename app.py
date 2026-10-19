@@ -10,6 +10,8 @@ from routes.auth import auth_bp
 from routes.dashboard import dashboard_bp
 from routes.projects import projects_bp
 
+load_dotenv()
+
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
@@ -17,6 +19,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)
 app.config['SESSION_REFRESH_EACH_REQUEST'] = True
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///iris.db')
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or 'sqlite:///instance/iris.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
