@@ -1,5 +1,5 @@
 .our-story {
-    background-color: var(--bg-card);
+    background-color: var(--bg-cream);
     flex: 2;
     max-width: 790px;
     overflow-y: auto;
@@ -12,36 +12,37 @@
     flex: 1;
     justify-content: center;
     align-items: center;
-    padding: 40px;
-    background-color: var(--bg-cream);
+    padding: 30px;
+    background-color: var(--bg-card);
     overflow: hidden;
 }
 
 .story-image img {
-    height: 400px;
+    height: 450px;
     width: auto;
     display: block;
     aspect-ratio: 1 / 1;
-    border-radius: 8%;
+    border-radius: 30px;
     object-fit: cover;
     object-position: left;
+    box-shadow: 0 10px 30px rgba(85, 34, 166, 0.18);
 }
 
 @media (max-width: 900px) {
     #story-main {
         display: flex;
         flex-direction: column;
-        background-color: var(--bg-card);
+        background-color: var(--bg-cream);
     }
 
     .story-image {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--bg-card);
+        background-color: var(--bg-cream);
         order: -1;
         margin-top: 20px;
-        padding: 20px;
+        padding: 20px 15px 38px 15px;
     }
 
     .story-image img {
