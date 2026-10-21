@@ -23,6 +23,18 @@ def privacy():
 def contact():
     return render_template("contact.html") 
 
+@main_bp.route('/workspace')
+def workspace_redirect():
+    return redirect(url_for('dashboard.dashboard'))
+
+@main_bp.route('/review-doc')
+def review_redirect():
+    return redirect(url_for('dashboard.dashboard'))
+
+@main_bp.route('/view-pdf')
+def view_redirect():
+    return redirect(url_for('dashboard.dashboard'))
+
 # @main_bp.route('/send-contact', methods=['POST'])
 # def send_contact():
 #     name = request.form.get('name')
