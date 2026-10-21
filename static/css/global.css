@@ -122,6 +122,14 @@ img {
     padding: 1rem 1.25rem !important; 
 }
 
+.error-btn {
+    text-decoration: none;
+}
+
+.error-btn:hover {
+    text-decoration: none;
+}
+
 .btn, .btn a {
     font-family: var(--main-font);
     background-color: var(--iris-purple);
