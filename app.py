@@ -3,7 +3,7 @@ import os
 from datetime import timedelta, timezone
 from dotenv import load_dotenv
 from extensions import db, mail
-from flask import Flask, g
+from flask import Flask, g, render_template
 from models import User, Document, login_required
 from routes.main import main_bp
 from routes.auth import auth_bp
@@ -55,6 +55,14 @@ def isoformat_utc(dt):
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
     return dt.isoformat()
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 app.register_blueprint(main_bp)
 app.register_blueprint(auth_bp)

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Something Went Wrong | Iris</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">    
+</head>
+<body>
+    <div style="text-align: center; padding: 10% 5%;">
+        <h1>Oops, something went wrong on our end!</h1>
+        <p>
+            Our server had a small hiccup. Please try refreshing the page or head back home.
+        </p>
+        
+        <a class="btn" href="{{ url_for('main.home') }} style="">
+            Go Back Home
+        </a>
+    </div>
+</body>
+</html>
