@@ -17,9 +17,14 @@ h1, h2 {
 
 .dashboard-main {
     display: flex;
+    flex-direction: column;
 }
 
 .dashboard-content {
+    display: flex;
+}
+
+.welcome-upload {
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -39,10 +44,6 @@ h1, h2 {
     display: flex;
     flex-direction: column;
     gap: 40px;
-}
-
-.create-project-container {
-    padding-bottom: 60px;
 }
 
 .create-project-container form {
@@ -121,7 +122,19 @@ input[type="file"] {
 .finish-btns {
     display: flex;
     gap: 10px;
+    padding-bottom: 15px;
 } 
+
+.form-warning {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--iris-purple);
+    padding: 20px;
+    border: 5px solid var(--text-header);
+    margin: 0;
+    border-radius: 12px;
+}
 
 .project-date {
     font-family: var(--main-font);
@@ -246,13 +259,13 @@ input[type="file"] {
         text-overflow: ellipsis;
     }
     
-    .dashboard-main {
+    .dashboard-content {
         flex-direction: column;
         align-items: center;
         overflow-x: hidden;
     }
 
-    .dashboard-content {
+    .welcome-upload {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -264,7 +277,6 @@ input[type="file"] {
         flex-direction: column;
         align-items: center;
         gap: 40px;
-        padding-bottom: 60px;
         max-width: 80vw;
     }
 
@@ -277,7 +289,6 @@ input[type="file"] {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-bottom: 60px;
     }
 
     form {
