@@ -23,6 +23,10 @@ def privacy():
 def contact():
     return render_template("contact.html") 
 
+@main_bp.route("/health")
+def health_check():
+    return "OK", 200
+
 # @main_bp.route('/send-contact', methods=['POST'])
 # def send_contact():
 #     name = request.form.get('name')
