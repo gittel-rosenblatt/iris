@@ -2,6 +2,7 @@ import fitz
 import json
 import os
 import re
+import supabase
 import time
 import uuid
 
@@ -379,6 +380,8 @@ def upload():
             
             db.session.add(new_doc)
             db.session.commit()
+
+            supabase.rpc('increment_lifetime_uploads').execute()
 
             flash("PDF uploaded and parsed successfully!", "success")
             return redirect(url_for('projects.workspace', doc_id=new_doc.id))

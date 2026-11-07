@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import resend
+import supabase
 import os
 
 from cryptography.fernet import Fernet
@@ -65,6 +66,8 @@ def signup():
 
         db.session.add(new_user)
         db.session.commit()
+
+        supabase.rpc('increment_lifetime_users').execute()
 
         flash('Account created successfully! You can now log in.', 'success')
         return redirect(url_for('auth.login'))
