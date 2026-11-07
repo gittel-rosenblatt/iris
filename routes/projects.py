@@ -2,7 +2,6 @@ import fitz
 import json
 import os
 import re
-import supabase
 import time
 import uuid
 
