@@ -1,7 +1,6 @@
 import hashlib
 import hmac
 import resend
-import supabase
 import os
 
 from cryptography.fernet import Fernet
@@ -10,9 +9,16 @@ from flask import Blueprint, flash, redirect, render_template, request, session,
 from flask_mailman import EmailMultiAlternatives
 from models import User, login_required
 from sqlalchemy import text
+from supabase import create_client
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth_bp = Blueprint('auth', __name__)
+
+supabase_url = os.environ.get("SUPABASE_URL")
+supabase_key = os.environ.get("SUPABASE_KEY") 
+
+if supabase_url and supabase_key:
+    supabase = create_client(supabase_url, supabase_key)
 
 resend.api_key = os.environ.get("RESEND_API_KEY")
 
