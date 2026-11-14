@@ -14,10 +14,10 @@
     --dark-iris-purple: #c8aaf5;
     
     /* Font Sizes */
-    --font-size-xl: clamp(1.8rem, 5vw, 2.5rem);   /* For main headers */
-    --font-size-lg: clamp(1.4rem, 4vw, 2rem);     /* For page/form titles */
-    --font-size-md: clamp(1.1rem, 3vw, 1.5rem);   /* For main text */
-    --font-size-sm: clamp(1rem, 2.5vw, 1.2rem);   /* For small text/input boxes */
+    --font-size-xl: clamp(2rem, 5vw, 2.7rem);   /* For main headers */
+    --font-size-lg: clamp(1.6rem, 4vw, 2.2rem);     /* For page/form titles */
+    --font-size-md: clamp(1.3rem, 3vw, 1.7rem);   /* For main text */
+    --font-size-sm: clamp(1.2rem, 2.5vw, 1.4rem);   /* For small text/input boxes */
 }
 
 *, *::before, *::after {
@@ -207,6 +207,10 @@ body.active label {
     cursor: url(../images/speaker.png) 0 0, pointer;
 }
 
+.long-text {
+    display: inline;
+}
+
 .short-text {
     display: none;
 }
@@ -216,7 +220,7 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color: var(--bg-head-foot);
-    padding: 20px 40px;
+    padding: 20px 30px;
     border-bottom: 2px solid var(--iris-purple);
 }
 
@@ -635,6 +639,7 @@ footer {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: flex-start; 
         gap: clamp(0.3rem, 1vw, 0.6rem);
     }
 
