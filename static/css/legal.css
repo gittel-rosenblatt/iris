@@ -1,7 +1,7 @@
 .privacy, .terms {
     background-color: var(--bg-card);
     text-align: left;
-    padding: 40px 80px;
+    padding: 40px;
     margin: 0;
     
     word-break: break-word; 
