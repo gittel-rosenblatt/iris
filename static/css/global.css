@@ -244,8 +244,8 @@ header {
 }
 
 .header-left img {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     display: block;
     filter: drop-shadow(0px 2px 4px rgba(55, 25, 97, 0.15));
 }
