@@ -13,10 +13,9 @@ h2 {
 
 .contact-faq {
     background-color: var(--bg-card);
-    flex: 1;
+    flex: 1.3;
     border-right: 2px solid var(--iris-purple); 
     padding: 40px;
-    overflow-y: auto;
 }
 
 .faq-group {
@@ -37,6 +36,10 @@ summary {
     overflow-y: auto;
     padding: 40px;
     flex: 2;
+
+    position: sticky;
+    top: 20px;
+    height: fit-content; 
 }
 
 #contact-form {
@@ -72,7 +75,7 @@ label {
 }
 
 .contact-methods img {
-    height: 32px;          
+    height: 40px;          
     width: auto;
     display: inline-block;
 }
@@ -111,6 +114,9 @@ label {
         height: auto;
         max-height: none;
         overflow: visible;
+
+        position: static;
+        height: auto
     }
 
     .contact-faq {

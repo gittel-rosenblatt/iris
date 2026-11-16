@@ -123,7 +123,7 @@
                         alt="User's profile picture">
                     <div class="account-meta">
                         <p><strong>Username:</strong> {{ user.username }}</p>
-                        <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %Y') if user.created_at else
+                        <p><strong>Member Since:</strong> {{ user.created_at.strftime('%b %Y') if user.created_at else
                             'N/A' }}</p>
                     </div>
                     <button type="button" class="account-btn" id="changePassword">Change Password</button>

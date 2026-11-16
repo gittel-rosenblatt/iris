@@ -28,19 +28,20 @@ html {
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--dark-iris-purple) transparent;
-    max-height: 100dvh;
+    height: 100%;
+    margin: 0;
     max-width: 100dvw;
 }
 
 body {
     margin: 0;
     padding: 0;
-    height: 100dvh;
     display: flex;
     flex-direction: column;
     font-family: var(--main-font);
     background-color: var(--bg-cream);
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
 body, p, h1, h2, h3, h4, nav a {
@@ -386,11 +387,15 @@ li {
 main {
     display: flex;
     flex: 1;
-    height: 0;
+    height: auto;
     flex-shrink: 0;
 }
 
 footer {
+    position: static; 
+    margin-top: auto;
+    width: 100%;
+
     display: flex;
     align-items: center; 
     justify-content: center;
@@ -564,14 +569,6 @@ footer {
     .header-tagline {
         font-size: var(--font-size-lg);
     } 
-
-    .long-text {
-        display: none;
-    }
-    
-    .short-text {
-        display: inline; 
-    }
 }
 
 @media (max-width: 1150px) {
@@ -579,6 +576,14 @@ footer {
         font-size: var(--font-size-md);
         max-width: 400px;
     } 
+    
+    .long-text {
+        display: none;
+    }
+    
+    .short-text {
+        display: inline; 
+    }
 }
 
 @media (max-width: 600px) {
