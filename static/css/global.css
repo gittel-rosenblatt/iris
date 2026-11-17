@@ -5,7 +5,7 @@
     --bg-head-foot: #F3EDE2;      /* Header & Footer backgrounds */
     
     /* Typography */
-    --main-font: 'Atkinson Hyperlegible', Arial, sans-serif;
+    --main-font: 'Atkinson Hyperlegible', sans-serif;
     --text-main: #371961;         /* Body text & links */
     --text-header: #5522A6;       /* Headers & hovered links */
     
