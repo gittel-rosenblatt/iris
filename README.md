@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/9bb03dfd-b5eb-43aa-b2a5-8f39defb6f2d" alt="Iris Logo" width="400">
+  <img src="https://github.com/user-attachments/assets/abb63fd2-93b6-4621-9f92-5a3e44d1c0ec" alt="Iris Logo" width="400" >
 </p>
 
 # Iris
@@ -24,15 +24,43 @@ My father has Retinitis Pigmentosa, which is a degenerative genetic eye disease 
 
 2. **Form Extraction:** When a PDF form is uploaded, Iris utilizes the Gemini API to parse and extract form fields, questions, and required inputs.
 
-3. **Accessible Interface:** Questions are converted into a distraction-free, single-field-at-a-time interface featuring large, clear typography.
+5. **Accessible Interface:** Questions are converted into a distraction-free, single-field-at-a-time interface featuring large, clear typography.
 
-4. **Preview & Export:** Stored profile information automatically pre-fills matching fields. Once reviewed, the final document is exported as a completed, downloadable form.
+6. **Preview & Export:** Stored profile information automatically pre-fills matching fields. Once reviewed, the final document is exported as a completed, downloadable form.
 
 ## Technical Features & Accessibility
 
 - **Built With:** Python, Flask, Jinja2, SQL, HTML5, CSS3, Gemini API
 - **Accessibility Compliance:** Iris exceeds the WCAG AAA Standards with full support for up to 200% zoom without breaking layout responsiveness, as well as text-to-speech and voice-to-text.
-- **Future Roadmap:** In future versions, Iris will have customizable font color and size. 
+- **Future Roadmap:** In future versions, Iris will have customizable font color and size.
+
+## Running Locally
+
+To run a local copy of Iris on your own machine:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/gittel-rosenblatt/iris.git
+   cd iris
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set up environment variables:**
+   Create a `.env` file in the root directory and add your keys:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   SECRET_KEY=your_flask_secret_key_here
+   ```
+
+4. **Start the application:**
+   ```bash
+   python app.py
+   ```
+   Open your browser and go to `http://127.0.0.1:5000`.
 
 Iris is my attempt to improve online accessibility. I hope to be able to do more someday. 
 
