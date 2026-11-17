@@ -1,7 +1,7 @@
 main {
     display: flex;
     flex-direction: column;
-    padding-bottom: 50px;
+    padding: clamp(40px, 4%, 90px);
 }
 
 h1, h2 {
@@ -15,7 +15,6 @@ p {
 .profile-main {
     display: flex;
     flex-direction: column;
-    padding: clamp(40px, 4%, 90px);
     gap: 50px;
 }
 
@@ -61,7 +60,8 @@ p {
     display: flex;
     gap: 50px;
     align-items: stretch; 
-    height: 638px;
+    height: fit-content;
+    max-height: 730px;
 }
 
 .account-info, .profile-autofill  {
@@ -69,16 +69,16 @@ p {
     padding: 40px;
     filter: drop-shadow(0px 4px 8px rgba(55, 25, 97, 0.15));
     border-radius: 12px;
-    min-height: 700px;
-    max-height: fit-content;
 }
 
 .account-info {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
     flex: 1;
+    min-width: 0;
 }
 
 .profile-autofill {
@@ -93,6 +93,13 @@ p {
     padding: 20px 0;
 }
 
+.account-meta {
+    text-align: left;
+    width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
 .account-meta p {
     margin: 0;
 }
@@ -100,8 +107,8 @@ p {
 .account-actions {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 90%;
+    gap: 20px;
+    width: 100%;
 }
 
 .account-btn {
@@ -115,7 +122,6 @@ p {
     font-weight: 700;
     cursor: pointer;
     width: 100%;
-    min-width: 250px;
     box-sizing: border-box;
 }
 
