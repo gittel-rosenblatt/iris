@@ -480,26 +480,34 @@ def complete_project(doc_id):
 
     return send_file(doc.completed_file_path, mimetype='application/pdf', as_attachment=True, download_name=doc.filename)
 
+def remove_single_document(doc):
+    """
+    Deletes a single document from the database and cloud storage.
+    """
+    try:
+        supabase.storage.from_("pdfs").remove([doc.filename])
+    except Exception as e:
+        print(f"Cloud storage cleanup anomaly: {e}")
+
+    file_path = doc.original_file_path
+    completed_file_path = doc.completed_file_path
+
+    if file_path and os.path.exists(file_path):
+        os.remove(file_path)
+    if completed_file_path and os.path.exists(completed_file_path):
+        os.remove(completed_file_path)
+
+    db.session.delete(doc)
+    db.session.commit()
+
 @projects_bp.route('/delete-document/<int:doc_id>', methods=['POST'])
 @login_required
 def delete_document(doc_id):
     current_user = g.current_user 
     doc = Document.query.filter_by(id=doc_id, user_id=current_user.id).first()
 
-    if doc:
-        try:
-            supabase.storage.from_("pdfs").remove([doc.filename])
-        except Exception as e:
-            print(f"Cloud storage cleanup anomaly: {e}")
-        file_path = doc.original_file_path
-        completed_file_path = doc.completed_file_path
-        if file_path and os.path.exists(file_path):
-            os.remove(file_path)
-        if completed_file_path and os.path.exists(completed_file_path):
-            os.remove(completed_file_path)
-
-        db.session.delete(doc)
-        db.session.commit()
+    if doc: 
+        remove_single_document(doc)
         flash("Project deleted successfully.", "info")
     else:
         flash("Document not found or access denied.", "danger")

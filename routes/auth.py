@@ -7,7 +7,8 @@ from cryptography.fernet import Fernet
 from extensions import db, serializer
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for, jsonify, g
 from flask_mailman import EmailMultiAlternatives
-from models import User, login_required
+from models import User, Document, login_required
+from routes.projects import remove_single_document
 from sqlalchemy import text
 from supabase import create_client
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -206,7 +207,7 @@ def reset_password(token):
         confirm_password = request.form.get('confirm_password')
 
         if password != confirm_password:
-            flash(f"Passwords to not match. Please try again.", "danger")
+            flash(f"Passwords do not match. Please try again.", "danger")
             return redirect(url_for('auth.reset_password', token=token))
         else: 
             user_to_update = User.query.filter_by(email_hash=email).first()
@@ -232,3 +233,25 @@ def logout():
 def keep_alive():
     session.modified = True  
     return jsonify({"status": "session_extended"})
+
+@auth_bp.route('/delete-account', methods=['POST'])
+@login_required
+def delete_account():
+    current_user = g.current_user  
+
+    if current_user:
+        documents = Document.query.filter_by(user_id=current_user.id).all()
+        for doc in documents:
+            remove_single_document(doc)
+        try:
+            db.session.delete(current_user)
+        except Exception as e:
+            print(f"Cloud storage cleanup anomaly: {e}")
+        db.session.commit()
+        session.clear()
+        flash("Your account has been deleted successfully.", "success")
+    else:
+        flash("User not found.", "danger")
+        return redirect(url_for('dashboard.dashboard'))
+
+    return redirect(url_for('auth.signup'))
