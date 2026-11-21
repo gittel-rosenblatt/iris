@@ -10,3 +10,6 @@ __pycache__/
 *.pyc
 instance/
 uploads/
+
+# Ignore notes files from now on
+*.rtf
