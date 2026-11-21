@@ -8,9 +8,13 @@
 
 ## Overview
 
-My app is called Iris, after the part of the eye responsible for controlling the amount of light that enters the eye, as well as the flower and the Greek goddess. Iris is an accessibility-focused web application built for the Congressional App Challenge. It bridges the gap between complex digital PDF forms and visual accessibility needs.
+Iris is named after the part of the eye responsible for controlling the amount of light that enters the eye, as well as the flower and the Greek goddess. Iris is an accessibility-focused web application built for the Congressional App Challenge. It bridges the gap between complex digital PDF forms and visual accessibility needs.
 
-## Our Mission
+## Mission Statement 
+
+Our mission is to make filling out digital PDFs accessible for visually impaired users, ensuring everyone has the digital independence they deserve.
+
+## Our Goal
 
 Iris is dedicated to making digital forms accessible to everyone and breaking down barriers to online accessibility. We believe that navigating the internet should be equitable, stress-free, and seamless for everyone. By transforming complex digital paperwork into clean, accessible user experiences, Iris empowers visually impaired individuals to navigate essential online spaces with absolute independence and confidence.
 
