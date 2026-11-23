@@ -68,6 +68,6 @@ To run a local copy of Iris on your own machine:
 
 Iris is my attempt to improve online accessibility. I hope to be able to do more someday. 
 
-Thnx for reading, and check out Iris at the [official website](https://irisforms.org)! 
+Thnx for reading, and check out Iris at the [official website](https://irisforms.org)! You can also review our [Terms of Service](https://www.irisforms.org/terms) and [Privacy Policy](https://www.irisforms.org/privacy).
 
 — Gittel Rosenblatt <3
