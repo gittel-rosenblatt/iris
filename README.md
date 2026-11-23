@@ -28,9 +28,9 @@ My father has Retinitis Pigmentosa, which is a degenerative genetic eye disease 
 
 2. **Form Extraction:** When a PDF form is uploaded, Iris utilizes the Gemini API to parse and extract form fields, questions, and required inputs.
 
-5. **Accessible Interface:** Questions are converted into a distraction-free, single-field-at-a-time interface featuring large, clear typography.
+3. **Accessible Interface:** Questions are converted into a distraction-free, single-field-at-a-time interface featuring large, clear typography.
 
-6. **Preview & Export:** Stored profile information automatically pre-fills matching fields. Once reviewed, the final document is exported as a completed, downloadable form.
+4. **Preview & Export:** Stored profile information automatically pre-fills matching fields. Once reviewed, the final document is exported as a completed, downloadable form.
 
 ## Technical Features & Accessibility
 
