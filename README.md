@@ -24,13 +24,13 @@ My father has Retinitis Pigmentosa, which is a degenerative genetic eye disease 
 
 ## How It Works
 
-1. **Profile Setup:** A user creates an account, then has the option to add certain information (e.g., full name, address, etc.) to their profile.
+1. **Profile Setup:** A user creates an account, then has the option to add certain information (e.g., full name, address, etc.) to their profile. This information will be a part of the autofill feature coming out in Version 2.0. 
 
-2. **Form Extraction:** When a PDF form is uploaded, Iris utilizes the Gemini API to parse and extract form fields, questions, and required inputs.
+2. **Form Extraction:** When a PDF form is uploaded, Iris utilizes Python's PyMuPDF, as well as the Gemini API, to parse and extract form fields, questions, and required inputs.
 
 3. **Accessible Interface:** Questions are converted into a distraction-free, single-field-at-a-time interface featuring large, clear typography.
 
-4. **Preview & Export:** Stored profile information automatically pre-fills matching fields. Once reviewed, the final document is exported as a completed, downloadable form.
+4. **Preview & Export:** Once reviewed, the final document is exported as a completed, downloadable form.
 
 ## Technical Features & Accessibility
 
