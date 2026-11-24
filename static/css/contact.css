@@ -72,6 +72,14 @@ label {
     display: flex;
     align-items: center; 
     gap: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.contact-methods a:hover {
+    color: var(--text-header);
+    text-decoration: underline;
+    text-decoration-color: var(--iris-purple);
 }
 
 .contact-methods img {

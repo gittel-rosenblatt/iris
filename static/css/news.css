@@ -1,0 +1,17 @@
+.news-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px;
+}
+
+summary {
+    padding: 10px 0;
+}
+
+.news-feed {
+    font-family: var(--main-font);
+    color: var(--text-main);
+    font-size: var(--font-size-md);
+    line-height: 1.6; 
+}
