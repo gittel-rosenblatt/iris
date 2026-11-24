@@ -23,6 +23,10 @@ def privacy():
 def contact():
     return render_template("contact.html") 
 
+@main_bp.route("/news")
+def news():
+    return render_template("news.html") 
+
 @main_bp.route("/health")
 def health_check():
     return "OK", 200

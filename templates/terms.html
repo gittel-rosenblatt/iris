@@ -28,193 +28,201 @@
 
 <body>
 
-    <header>
-        <div class="header-left">
-            <a href="{{ url_for('main.home') }}">
-                <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}"
-                    alt="iris logo">
-            </a>
-            <h1 class="header-name">
-                <span class="brand-name">Iris</span>
-                <span class="divider" aria-hidden="true">|</span>
-                <span class="header-tagline">Making digital forms accessible to everyone</span>
-            </h1>
-        </div>
+<header>
+    <div class="header-left">
+        <a href="{{ url_for('main.home') }}">
+            <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}"
+                alt="iris logo">
+        </a>
+        <h1 class="header-name">
+            <span class="brand-name">Iris</span>
+            <span class="divider" aria-hidden="true">|</span>
+            <span class="header-tagline">Making digital forms accessible to everyone</span>
+        </h1>
+    </div>
 
-        <nav class="header-nav">
-            <button aria-hidden="true" type="button" class="btn-tts">
-                <span class="long-text">Listen 🔊</span>
-                <span class="short-text">🔊</span>
-            </button>
-            <a href="{{ url_for('main.story') }}">Story</a>
-            <a href="{{ url_for('auth.login') }}">Login</a>
-        </nav>
-    </header>
+    <nav class="header-nav">
+        <button aria-hidden="true" type="button" class="btn-tts">
+            <span class="long-text">Listen 🔊</span>
+            <span class="short-text">🔊</span>
+        </button>
+        <a href="{{ url_for('main.story') }}">Story</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    </nav>
+</header>
 
-    <main>
-        <section class="terms">
-            <article class="legal-doc">
-                <section>
-                    <h1>TERMS OF SERVICE</h1>
-                    <p class="last-updated"><strong>Last updated:</strong> November 23, 2026</p>
-                    <p>Welcome to <strong>Iris</strong> ("we," "us," "our"), operating at <a
-                            href="https://www.irisforms.org/">https://www.irisforms.org/</a>. By accessing or using our
-                        website and PDF accessibility tools ("Services"), you agree to these Legal Terms. If you do not
-                        agree, please discontinue use.</p>
-                </section>
+<main>
+    <section class="terms">
+        <article class="legal-doc">
+            <section>
+                <h1>TERMS OF SERVICE</h1>
+                <p class="last-updated"><strong>Last updated:</strong> November 23, 2026</p>
+                <p>Welcome to <strong>Iris</strong> ("we," "us," "our"), operating at <a
+                        href="https://www.irisforms.org/">https://www.irisforms.org/</a>. By accessing or using our
+                    website and PDF accessibility tools ("Services"), you agree to these Legal Terms. If you do not
+                    agree, please discontinue use.</p>
+            </section>
 
-                <section id="sec-1">
-                    <h2>1. OUR SERVICES</h2>
-                    <p>Iris provides software designed to help make digital PDF forms more accessible.</p>
-                    <p><em>Compliance Notice:</em> The Services are not tailored or certified for industry-specific
-                        regulatory frameworks (such as HIPAA for health records or GLBA for non-public financial data).
-                        If you use Iris to process regulated confidential data, you are responsible for ensuring compliance
-                        with applicable laws and regulations.</p>
-                </section>
+            <section id="sec-1">
+                <h2>1. OUR SERVICES</h2>
+                <p>Iris provides software designed to help make digital PDF forms more accessible.</p>
+                <p><em>Compliance Notice:</em> The Services are not tailored or certified for industry-specific
+                    regulatory frameworks (such as HIPAA for health records or GLBA for non-public financial data).
+                    If you use Iris to process regulated confidential data, you are responsible for ensuring compliance
+                    with applicable laws and regulations.</p>
+            </section>
 
-                <section id="sec-2">
-                    <h2>2. AGE REQUIREMENT & MINORS</h2>
-                    <p>Iris is open to individuals age 13 or older who agree to use the platform lawfully and
-                        responsibly.</p>
-                </section>
+            <section id="sec-2">
+                <h2>2. AGE REQUIREMENT & MINORS</h2>
+                <p>Iris is open to individuals age 13 or older who agree to use the platform lawfully and
+                    responsibly.</p>
+            </section>
 
-                <section id="sec-3">
-                    <h2>3. USER REPRESENTATIONS</h2>
-                    <p>By using Iris, you represent that:</p>
-                    <ol>
-                        <li>All registration and profile data you provide is accurate and kept up to date.</li>
-                        <li>You hold the legal right or permission to upload any PDFs you submit to the platform.</li>
-                        <li>You will not use the Services for illegal, harmful, or unauthorized activities.</li>
-                    </ol>
-                </section>
+            <section id="sec-3">
+                <h2>3. USER REPRESENTATIONS</h2>
+                <p>By using Iris, you represent that:</p>
+                <ol>
+                    <li>All registration and profile data you provide is accurate and kept up to date.</li>
+                    <li>You hold the legal right or permission to upload any PDFs you submit to the platform.</li>
+                    <li>You will not use the Services for illegal, harmful, or unauthorized activities.</li>
+                </ol>
+            </section>
 
-                <section id="sec-4">
-                    <h2>4. USER ACCOUNTS AND PASSWORDS</h2>
-                    <p>You are responsible for safeguarding your login credentials and for all activity occurring under
-                        your account.</p>
-                </section>
+            <section id="sec-4">
+                <h2>4. USER ACCOUNTS AND PASSWORDS</h2>
+                <p>You are responsible for safeguarding your login credentials and for all activity occurring under
+                    your account.</p>
+            </section>
 
-                <section id="sec-5">
-                    <h2>5. PROHIBITED ACTIVITIES</h2>
-                    <p>You agree not to:</p>
-                    <ul>
-                        <li>Scrape, harvest, or systematically extract data from the Services without permission.</li>
-                        <li>Attempt to bypass security controls or interfere with site infrastructure.</li>
-                        <li>Upload malware, viruses, or destructive scripts.</li>
-                        <li>Impersonate another person or misrepresent your affiliation.</li>
-                        <li>Reverse engineer or decompile proprietary platform code.</li>
-                        <li>Use the platform to harass or violate the rights of others.</li>
-                    </ul>
-                </section>
+            <section id="sec-5">
+                <h2>5. PROHIBITED ACTIVITIES</h2>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>Scrape, harvest, or systematically extract data from the Services without permission.</li>
+                    <li>Attempt to bypass security controls or interfere with site infrastructure.</li>
+                    <li>Upload malware, viruses, or destructive scripts.</li>
+                    <li>Impersonate another person or misrepresent your affiliation.</li>
+                    <li>Reverse engineer or decompile proprietary platform code.</li>
+                    <li>Use the platform to harass or violate the rights of others.</li>
+                </ul>
+            </section>
 
-                <section id="sec-6">
-                    <h2>6. YOUR FILES AND UPLOADED CONTENT</h2>
-                    <p>You retain full ownership of any PDFs, text, or data you upload ("User Content").</p>
-                    <p><em>Operational License:</em> By uploading User Content to Iris, you grant us a non-exclusive,
-                        limited license to store, host, and transmit that content strictly through our interface and
-                        Google Cloud AI subprocessor solely to provide the accessibility parsing and storage features
-                        you requested. We do not claim commercial ownership or resale rights over your documents.</p>
-                </section>
+            <section id="sec-6">
+                <h2>6. YOUR FILES AND UPLOADED CONTENT</h2>
+                <p>You retain full ownership of any PDFs, text, or data you upload ("User Content").</p>
+                <p><em>Operational License:</em> By uploading User Content to Iris, you grant us a non-exclusive,
+                    limited license to store, host, and transmit that content strictly through our interface and
+                    Google Cloud AI subprocessor solely to provide the accessibility parsing and storage features
+                    you requested. We do not claim commercial ownership or resale rights over your documents.</p>
+            </section>
 
-                <section id="sec-7">
-                    <h2>7. INTELLECTUAL PROPERTY RIGHTS</h2>
-                    <p>The Iris name, logo, site design, and application source code are owned by us. You receive a
-                        personal, non-commercial, revocable license to use the web application.</p>
-                </section>
+            <section id="sec-7">
+                <h2>7. INTELLECTUAL PROPERTY RIGHTS</h2>
+                <p>The Iris name, logo, site design, and application source code are owned by us. You receive a
+                    personal, non-commercial, revocable license to use the web application.</p>
+            </section>
 
-                <section id="sec-8">
-                    <h2>8. SERVICE MANAGEMENT &amp; AVAILABILITY</h2>
-                    <p>We provide Iris as an evolving project. We reserve the right to modify, suspend, or discontinue
-                        features or terminate accounts that violate these terms.</p>
-                </section>
+            <section id="sec-8">
+                <h2>8. SERVICE MANAGEMENT &amp; AVAILABILITY</h2>
+                <p>We provide Iris as an evolving project. We reserve the right to modify, suspend, or discontinue
+                    features or terminate accounts that violate these terms.</p>
+            </section>
 
-                <section id="sec-9">
-                    <h2>9. PRIVACY POLICY</h2>
-                    <p>Your use of the Services is also governed by our Privacy Policy at <a
-                        href="https://www.irisforms.org/privacy">https://www.irisforms.org/privacy</a>.</p>
-                </section>
+            <section id="sec-9">
+                <h2>9. PRIVACY POLICY</h2>
+                <p>Your use of the Services is also governed by our Privacy Policy at <a
+                    href="https://www.irisforms.org/privacy">https://www.irisforms.org/privacy</a>.</p>
+            </section>
 
-                <section id="sec-10">
-                    <h2>10. DISCLAIMER OF WARRANTIES</h2>
-                    <p>THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR
-                        IMPLIED. WE DO NOT GUARANTEE THAT PDF PARSING, ACCESSIBILITY CONVERSION, OR AUTOFILL RESULTS
-                        WILL BE 100% ERROR-FREE. ALWAYS VERIFY CRITICAL OFFICIAL OR LEGAL FORMS BEFORE SUBMITTING THEM.
-                    </p>
-                </section>
+            <section id="sec-10">
+                <h2>10. DISCLAIMER OF WARRANTIES</h2>
+                <p>THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR
+                    IMPLIED. WE DO NOT GUARANTEE THAT PDF PARSING, ACCESSIBILITY CONVERSION, OR AUTOFILL RESULTS
+                    WILL BE 100% ERROR-FREE. ALWAYS VERIFY CRITICAL OFFICIAL OR LEGAL FORMS BEFORE SUBMITTING THEM.
+                </p>
+            </section>
 
-                <section id="sec-11">
-                    <h2>11. LIMITATION OF LIABILITY</h2>
-                    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, IRIS AND ITS CREATORS SHALL NOT BE LIABLE FOR ANY
-                        INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES (INCLUDING MISPARSED FORM DATA OR MISSED
-                        SUBMISSION DEADLINES) ARISING FROM YOUR USE OF THE SERVICES.</p>
-                </section>
+            <section id="sec-11">
+                <h2>11. LIMITATION OF LIABILITY</h2>
+                <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, IRIS AND ITS CREATORS SHALL NOT BE LIABLE FOR ANY
+                    INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES (INCLUDING MISPARSED FORM DATA OR MISSED
+                    SUBMISSION DEADLINES) ARISING FROM YOUR USE OF THE SERVICES.</p>
+            </section>
 
-                <section id="sec-12">
-                    <h2>12. INDEMNIFICATION</h2>
-                    <p>You agree to indemnify, defend, and hold harmless Iris from any claims or losses arising out of your
-                        violation of these terms or unauthorized upload of third-party documents.</p>
-                </section>
+            <section id="sec-12">
+                <h2>12. INDEMNIFICATION</h2>
+                <p>You agree to indemnify, defend, and hold harmless Iris from any claims or losses arising out of your
+                    violation of these terms or unauthorized upload of third-party documents.</p>
+            </section>
 
-                <section id="sec-13">
-                    <h2>13. GOVERNING LAW</h2>
-                    <p>These terms are governed by the laws of the State of Florida, without regard to conflict of law
-                        principles.</p>
-                </section>
+            <section id="sec-13">
+                <h2>13. GOVERNING LAW</h2>
+                <p>These terms are governed by the laws of the State of Florida, without regard to conflict of law
+                    principles.</p>
+            </section>
 
-                <section id="sec-14">
-                    <h2>14. DISPUTE RESOLUTION</h2>
-                    <p>We encourage contacting us informally first at <a
-                        href="mailto:contact@irisforms.org">contact@irisforms.org</a> to resolve any issues.</p>
-                </section>
+            <section id="sec-14">
+                <h2>14. DISPUTE RESOLUTION</h2>
+                <p>We encourage contacting us informally first at <a
+                    href="mailto:contact@irisforms.org">contact@irisforms.org</a> to resolve any issues.</p>
+            </section>
 
-                <section id="sec-15">
-                    <h2>15. CONTACT US</h2>
-                    <p>For questions or notices:</p>
-                    <ul>
-                        <li><strong>Email:</strong> <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>
-                        </li>
-                        <li><strong>Website:</strong> <a
-                            href="https://www.irisforms.org/contact">https://www.irisforms.org/contact</a></li>
-                    </ul>
-                </section>
-            </article>
-        </section>
-    </main>
+            <section id="sec-15">
+                <h2>15. CONTACT US</h2>
+                <p>For questions or notices:</p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>
+                    </li>
+                    <li><strong>Website:</strong> <a
+                        href="https://www.irisforms.org/contact">https://www.irisforms.org/contact</a></li>
+                </ul>
+            </section>
+        </article>
+    </section>
+</main>
 
-    <footer>
-        <div>
-            <a id="back-to-top" href="#">↑</a>
-        </div>
+<footer>
+    <div>
+        <a id="back-to-top" href="#">↑</a>
+    </div>
 
-        <div class="footer-text">
-            <div class="copyright">
-                <div class="long-text">
-                    <p style="margin: 0;">&copy; 2026 Iris. All Rights Reserved.</p>
-                </div>
-                <div class="short-text" aria-hidden="true">
-                    <p style="margin: 0;">&copy; 2026 Iris.</p>
-                </div>
+    <div class="footer-text">
+        <div class="copyright">
+            <div class="long-text">
+                <p style="margin: 0;">&copy; 2026 Iris. All Rights Reserved.</p>
             </div>
-
-            <nav class="footer-nav">
-                <a href="{{ url_for('main.terms') }}">
-                    <span class="long-text">Terms of Service</span>
-                    <span class="short-text" aria-hidden="true">Terms</span>
-                </a>
-                <a href="{{ url_for('main.privacy') }}">
-                    <span class="long-text">Privacy Policy</span>
-                    <span class="short-text" aria-hidden="true">Privacy</span>
-                </a>
-                <a href="{{ url_for('main.contact') }}">
-                    <span class="long-text">Contact Us</span>
-                    <span class="short-text" aria-hidden="true">Contact</span>
-                </a>
-                <a href="{{ url_for('main.story') }}">
-                    <span class="long-text">Our story</span>
-                </a>
-            </nav>
+            <div class="short-text" aria-hidden="true">
+                <p style="margin: 0;">&copy; 2026 Iris.</p>
+            </div>
         </div>
-    </footer>
+
+        <nav class="footer-nav">
+            <a href="{{ url_for('main.story') }}">
+                <span class="long-text">Our Story</span>
+                <span class="short-text" aria-hidden="true">Story</span>
+            </a>
+            <a href="{{ url_for('main.news') }}">
+                <span class="long-text">Iris News</span>
+                <span class="short-text" aria-hidden="true">News</span>
+            </a>
+            <a href="{{ url_for('main.contact') }}">
+                <span class="long-text">Contact Us</span>
+                <span class="short-text" aria-hidden="true">Contact</span>
+            </a>
+            <a href="https://github.com/gittel-rosenblatt/iris" target="_blank" rel="noopener noreferrer">
+                <span class="long-text">Source Code</span>
+                <span class="short-text" aria-hidden="true" aria-label="Source Code on GitHub (opens in a new tab)">Code</span>
+            </a>
+            <a href="{{ url_for('main.privacy') }}">
+                <span class="long-text">Privacy Policy</span>
+                <span class="short-text" aria-hidden="true">Privacy</span>
+            </a>
+            <a href="{{ url_for('main.terms') }}">
+                <span class="long-text">Terms of Service</span>
+                <span class="short-text" aria-hidden="true">Terms</span>
+            </a>
+        </nav>
+</footer>
 
 </body>
 

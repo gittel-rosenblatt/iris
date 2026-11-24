@@ -167,9 +167,12 @@ def extract_acroform_fields(filepath):
 
     doc.close()
 
-    updated_questions = field_labels_with_gemini(filepath, questions)
-
-    return updated_questions
+    try:
+        updated_questions = field_labels_with_gemini(filepath, questions)
+        return updated_questions
+    except Exception as e:
+        print(f"Gemini label cleanup skipped ({e}); using local field names.")
+        return questions
 
 @projects_bp.route('/save', methods=['POST'])
 def save_answers(original_file_path, completed_file_path, user_answers, form_type="acroform", items_list=None):
@@ -355,13 +358,14 @@ def upload():
                 try:
                     parsed_fields = extract_acroform_fields(file_path)
                 except Exception as e:
-                    print(f'Error: {e}')
+                    print(f'Error: {e}')                    
                     flash("There was an error processing your document. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard.dashboard'))
             else:
                 try:
                     parsed_fields = parse_pdf_with_gemini(file_path)
                 except Exception as e:
+                    print(f'Error: {e}')
                     flash("Gemini API is temporarily experiencing high demand. Please try again in a moment!", "warning")
                     return redirect(url_for('dashboard.dashboard'))
 

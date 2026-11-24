@@ -28,193 +28,201 @@
 
 <body>
 
-    <header>
-        <div class="header-left">
-            <a href="{{ url_for('main.home') }}">
-                <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}"
-                    alt="iris logo">
-            </a>
-            <h1 class="header-name">
-                <span class="brand-name">Iris</span>
-                <span class="divider" aria-hidden="true">|</span>
-                <span class="header-tagline">Making digital forms accessible to everyone</span>
-            </h1>
-        </div>
+<header>
+    <div class="header-left">
+        <a href="{{ url_for('main.home') }}">
+            <img class="iris-logo" src="{{ url_for('static', filename='images/iris-circle-icon.png') }}"
+                alt="iris logo">
+        </a>
+        <h1 class="header-name">
+            <span class="brand-name">Iris</span>
+            <span class="divider" aria-hidden="true">|</span>
+            <span class="header-tagline">Making digital forms accessible to everyone</span>
+        </h1>
+    </div>
 
-        <nav class="header-nav">
-            <button aria-hidden="true" type="button" class="btn-tts">
-                <span class="long-text">Listen 🔊</span>
-                <span class="short-text">🔊</span>
-            </button>
-            <a href="{{ url_for('main.story') }}">Story</a>
-            <a href="{{ url_for('auth.login') }}">Login</a>
-        </nav>
-    </header>
+    <nav class="header-nav">
+        <button aria-hidden="true" type="button" class="btn-tts">
+            <span class="long-text">Listen 🔊</span>
+            <span class="short-text">🔊</span>
+        </button>
+        <a href="{{ url_for('main.story') }}">Story</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    </nav>
+</header>
 
-    <main>
-        <section class="privacy">
-            <article class="legal-doc">
-                <section>
-                    <h1>PRIVACY POLICY</h1>
-                    <p class="last-updated"><strong>Last updated:</strong> November 23, 2026</p>
-                    <p>Welcome to <strong>Iris</strong> ("we," "us," or "our"). We built Iris to make digital PDF forms
-                        accessible to everyone, including visually impaired users. This Privacy Policy explains what
-                        data we collect, why we collect it, and how it stays safe.</p>
-                </section>
+<main>
+    <section class="privacy">
+        <article class="legal-doc">
+            <section>
+                <h1>PRIVACY POLICY</h1>
+                <p class="last-updated"><strong>Last updated:</strong> November 23, 2026</p>
+                <p>Welcome to <strong>Iris</strong> ("we," "us," or "our"). We built Iris to make digital PDF forms
+                    accessible to everyone, including visually impaired users. This Privacy Policy explains what
+                    data we collect, why we collect it, and how it stays safe.</p>
+            </section>
 
-                <section id="sec-1">
-                    <h2>1. WHAT INFORMATION DO WE COLLECT?</h2>
-                    <h3>Personal and Profile Information</h3>
-                    <p>We collect information that you voluntarily provide when you create an account or set up your
-                        profile. This includes:</p>
-                    <ul>
-                        <li>Names</li>
-                        <li>Email addresses</li>
-                        <li>Phone numbers</li>
-                        <li>Usernames and passwords</li>
-                        <li>Birthdays</li>
-                        <li>Physical addresses</li>
-                    </ul>
-                    <p><em>Note on future v2 Architecture:</em> Some profile fields (like address and birthday) support our
-                        automated form-filling features planned to release in Version 2.0 of Iris. They are saved in your account profile so you can reuse them,
-                        and they remain stored until you update or delete them.</p>
+            <section id="sec-1">
+                <h2>1. WHAT INFORMATION DO WE COLLECT?</h2>
+                <h3>Personal and Profile Information</h3>
+                <p>We collect information that you voluntarily provide when you create an account or set up your
+                    profile. This includes:</p>
+                <ul>
+                    <li>Names</li>
+                    <li>Email addresses</li>
+                    <li>Phone numbers</li>
+                    <li>Usernames and passwords</li>
+                    <li>Birthdays</li>
+                    <li>Physical addresses</li>
+                </ul>
+                <p><em>Note on future v2 Architecture:</em> Some profile fields (like address and birthday) support our
+                    automated form-filling features planned to release in Version 2.0 of Iris. They are saved in your account profile so you can reuse them,
+                    and they remain stored until you update or delete them.</p>
 
-                    <h3>Uploaded Files (PDFs)</h3>
-                    <p>When you upload a PDF to make it accessible, we store that file in our database so you can
-                        access, read, and manage it across sessions. Your uploaded files stay stored until you
-                        explicitly delete them from your dashboard or close your account.</p>
+                <h3>Uploaded Files (PDFs)</h3>
+                <p>When you upload a PDF to make it accessible, we store that file in our database so you can
+                    access, read, and manage it across sessions. Your uploaded files stay stored until you
+                    explicitly delete them from your dashboard or close your account.</p>
 
-                    <h3>Sensitive Information</h3>
-                    <p>We do not intentionally collect or process special categories of sensitive personal data. Because
-                        our tool helps read and fill general PDFs, please avoid uploading documents containing highly
-                        sensitive medical or financial identifiers unless necessary for your workflow.</p>
-                </section>
+                <h3>Sensitive Information</h3>
+                <p>We do not intentionally collect or process special categories of sensitive personal data. Because
+                    our tool helps read and fill general PDFs, please avoid uploading documents containing highly
+                    sensitive medical or financial identifiers unless necessary for your workflow.</p>
+            </section>
 
-                <section id="sec-2">
-                    <h2>2. HOW DO WE PROCESS YOUR INFORMATION?</h2>
-                    <p>We process your data strictly to deliver and improve Iris:</p>
-                    <ul>
-                        <li><strong>Account &amp; Authentication:</strong> Managing your login and securing your
-                            profile.</li>
-                        <li><strong>Service Delivery:</strong> Rendering and storing your uploaded PDFs and profile
-                            data.</li>
-                        <li><strong>AI Processing:</strong> Sending text structure from uploaded PDFs through
-                            <strong>Google Cloud AI</strong> to perform document parsing, layout extraction, and text
-                            analysis. Google Cloud AI processes this data under enterprise API terms and does not use
-                            user-submitted documents to train public models.</li>
-                        <li><strong>Support &amp; Communication:</strong> Responding to bug reports or account inquiries
-                            sent to <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>.</li>
-                    </ul>
-                </section>
+            <section id="sec-2">
+                <h2>2. HOW DO WE PROCESS YOUR INFORMATION?</h2>
+                <p>We process your data strictly to deliver and improve Iris:</p>
+                <ul>
+                    <li><strong>Account &amp; Authentication:</strong> Managing your login and securing your
+                        profile.</li>
+                    <li><strong>Service Delivery:</strong> Rendering and storing your uploaded PDFs and profile
+                        data.</li>
+                    <li><strong>AI Processing:</strong> Sending text structure from uploaded PDFs through
+                        <strong>Google Cloud AI</strong> to perform document parsing, layout extraction, and text
+                        analysis. Google Cloud AI processes this data under enterprise API terms and does not use
+                        user-submitted documents to train public models.</li>
+                    <li><strong>Support &amp; Communication:</strong> Responding to bug reports or account inquiries
+                        sent to <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>.</li>
+                </ul>
+            </section>
 
-                <section id="sec-3">
-                    <h2>3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</h2>
-                    <p>We do not sell, rent, or trade your personal information or uploaded documents to third parties.
-                    </p>
-                    <p>We only share data in these limited scenarios:</p>
-                    <ul>
-                        <li><strong>AI Subprocessor:</strong> Google Cloud AI (as described above) strictly to parse
-                            document text.</li>
-                        <li><strong>Business Transfers:</strong> If Iris is ever acquired or merged, user data would
-                            transfer under the same privacy commitments.</li>
-                        <li><strong>Legal Compliance:</strong> If required by valid legal process or to prevent imminent
-                            harm.</li>
-                    </ul>
-                </section>
+            <section id="sec-3">
+                <h2>3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</h2>
+                <p>We do not sell, rent, or trade your personal information or uploaded documents to third parties.
+                </p>
+                <p>We only share data in these limited scenarios:</p>
+                <ul>
+                    <li><strong>AI Subprocessor:</strong> Google Cloud AI (as described above) strictly to parse
+                        document text.</li>
+                    <li><strong>Business Transfers:</strong> If Iris is ever acquired or merged, user data would
+                        transfer under the same privacy commitments.</li>
+                    <li><strong>Legal Compliance:</strong> If required by valid legal process or to prevent imminent
+                        harm.</li>
+                </ul>
+            </section>
 
-                <section id="sec-4">
-                    <h2>4. COOKIES AND TRACKING TECHNOLOGIES</h2>
-                    <p>We use basic session cookies and local storage strictly to keep you logged in and prevent site 
-                        crashes. We do not use cross-site advertising trackers.</p>
-                </section>
+            <section id="sec-4">
+                <h2>4. COOKIES AND TRACKING TECHNOLOGIES</h2>
+                <p>We use basic session cookies and local storage strictly to keep you logged in and prevent site 
+                    crashes. We do not use cross-site advertising trackers.</p>
+            </section>
 
-                <section id="sec-5">
-                    <h2>5. ARTIFICIAL INTELLIGENCE-BASED FEATURES</h2>
-                    <p>Our parsing tools rely on Google Cloud AI. Uploaded content is transmitted via encrypted API
-                        requests solely to convert inaccessible PDF layouts into screen-reader-friendly text.</p>
-                </section>
+            <section id="sec-5">
+                <h2>5. ARTIFICIAL INTELLIGENCE-BASED FEATURES</h2>
+                <p>Our parsing tools rely on Google Cloud AI. Uploaded content is transmitted via encrypted API
+                    requests solely to convert inaccessible PDF layouts into screen-reader-friendly text.</p>
+            </section>
 
-                <section id="sec-6">
-                    <h2>6. DATA RETENTION</h2>
-                    <p>Your profile data and uploaded PDFs remain stored persistently in our database for as long as
-                        your account is active or until you delete specific files. If you delete an item or your
-                        account, the data is removed from our active systems. If you delete your account, all 
-                        associated data will be permanently deleted.</p>
-                </section>
+            <section id="sec-6">
+                <h2>6. DATA RETENTION</h2>
+                <p>Your profile data and uploaded PDFs remain stored persistently in our database for as long as
+                    your account is active or until you delete specific files. If you delete an item or your
+                    account, the data is removed from our active systems. If you delete your account, all 
+                    associated data will be permanently deleted.</p>
+            </section>
 
-                <section id="sec-7">
-                    <h2>7. DATA SECURITY</h2>
-                    <p>We use HTTPS/TLS encryption in transit and standard cloud database security controls at rest. No
-                        internet transmission is 100% immune to risk, so we encourage strong, unique passwords.</p>
-                </section>
+            <section id="sec-7">
+                <h2>7. DATA SECURITY</h2>
+                <p>We use HTTPS/TLS encryption in transit and standard cloud database security controls at rest. No
+                    internet transmission is 100% immune to risk, so we encourage strong, unique passwords.</p>
+            </section>
 
-                <section id="sec-8">
-                    <h2>8. AGE REQUIREMENT & MINORS</h2>
-                    <p>Iris is open to students, creators, and individuals age 13 or older. We do not knowingly collect 
-                        information from children under 13.</p>
-                </section>
+            <section id="sec-8">
+                <h2>8. AGE REQUIREMENT & MINORS</h2>
+                <p>Iris is open to students, creators, and individuals age 13 or older. We do not knowingly collect 
+                    information from children under 13.</p>
+            </section>
 
-                <section id="sec-9">
-                    <h2>9. YOUR PRIVACY RIGHTS &amp; DATA CONTROL</h2>
-                    <p>You can view, edit, or delete your profile information and uploaded PDFs at any time directly in
-                        your account dashboard. You can delete your account at any time, which will result in the permanent
-                        deletion of all associated data.</p>
-                </section>
+            <section id="sec-9">
+                <h2>9. YOUR PRIVACY RIGHTS &amp; DATA CONTROL</h2>
+                <p>You can view, edit, or delete your profile information and uploaded PDFs at any time directly in
+                    your account dashboard. You can delete your account at any time, which will result in the permanent
+                    deletion of all associated data.</p>
+            </section>
 
-                <section id="sec-10">
-                    <h2>10. CHANGES TO THIS POLICY</h2>
-                    <p>We may update this policy as Iris evolves. Significant changes will be noted with an updated date
-                        at the top.</p>
-                </section>
+            <section id="sec-10">
+                <h2>10. CHANGES TO THIS POLICY</h2>
+                <p>We may update this policy as Iris evolves. Significant changes will be noted with an updated date
+                    at the top.</p>
+            </section>
 
-                <section id="sec-11">
-                    <h2>11. CONTACT US</h2>
-                    <p>Questions? Reach out anytime at:</p>
-                    <ul>
-                        <li><strong>Email:</strong> <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>
-                        </li>
-                        <li><strong>Website:</strong> <a
-                                href="https://www.irisforms.org/contact">https://www.irisforms.org/contact</a></li>
-                    </ul>
-                </section>
-            </article>
-        </section>
-    </main>
+            <section id="sec-11">
+                <h2>11. CONTACT US</h2>
+                <p>Questions? Reach out anytime at:</p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:contact@irisforms.org">contact@irisforms.org</a>
+                    </li>
+                    <li><strong>Website:</strong> <a
+                            href="https://www.irisforms.org/contact">https://www.irisforms.org/contact</a></li>
+                </ul>
+            </section>
+        </article>
+    </section>
+</main>
 
-    <footer>
-        <div>
-            <a id="back-to-top" href="#">↑</a>
-        </div>
+<footer>
+    <div>
+        <a id="back-to-top" href="#">↑</a>
+    </div>
 
-        <div class="footer-text">
-            <div class="copyright">
-                <div class="long-text">
-                    <p style="margin: 0;">&copy; 2026 Iris. All Rights Reserved.</p>
-                </div>
-                <div class="short-text" aria-hidden="true">
-                    <p style="margin: 0;">&copy; 2026 Iris.</p>
-                </div>
+    <div class="footer-text">
+        <div class="copyright">
+            <div class="long-text">
+                <p style="margin: 0;">&copy; 2026 Iris. All Rights Reserved.</p>
             </div>
-
-            <nav class="footer-nav">
-                <a href="{{ url_for('main.terms') }}">
-                    <span class="long-text">Terms of Service</span>
-                    <span class="short-text" aria-hidden="true">Terms</span>
-                </a>
-                <a href="{{ url_for('main.privacy') }}">
-                    <span class="long-text">Privacy Policy</span>
-                    <span class="short-text" aria-hidden="true">Privacy</span>
-                </a>
-                <a href="{{ url_for('main.contact') }}">
-                    <span class="long-text">Contact Us</span>
-                    <span class="short-text" aria-hidden="true">Contact</span>
-                </a>
-                <a href="{{ url_for('main.story') }}">
-                    <span class="long-text">Our story</span>
-                </a>
-            </nav>
+            <div class="short-text" aria-hidden="true">
+                <p style="margin: 0;">&copy; 2026 Iris.</p>
+            </div>
         </div>
-    </footer>
+
+        <nav class="footer-nav">
+            <a href="{{ url_for('main.story') }}">
+                <span class="long-text">Our Story</span>
+                <span class="short-text" aria-hidden="true">Story</span>
+            </a>
+            <a href="{{ url_for('main.news') }}">
+                <span class="long-text">Iris News</span>
+                <span class="short-text" aria-hidden="true">News</span>
+            </a>
+            <a href="{{ url_for('main.contact') }}">
+                <span class="long-text">Contact Us</span>
+                <span class="short-text" aria-hidden="true">Contact</span>
+            </a>
+            <a href="https://github.com/gittel-rosenblatt/iris" target="_blank" rel="noopener noreferrer">
+                <span class="long-text">Source Code</span>
+                <span class="short-text" aria-hidden="true" aria-label="Source Code on GitHub (opens in a new tab)">Code</span>
+            </a>
+            <a href="{{ url_for('main.privacy') }}">
+                <span class="long-text">Privacy Policy</span>
+                <span class="short-text" aria-hidden="true">Privacy</span>
+            </a>
+            <a href="{{ url_for('main.terms') }}">
+                <span class="long-text">Terms of Service</span>
+                <span class="short-text" aria-hidden="true">Terms</span>
+            </a>
+        </nav>
+</footer>
 
 </body>
 
