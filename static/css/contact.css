@@ -101,6 +101,8 @@ label {
 
 .btn {
     margin-bottom: 15px;
+    font-size: var(--font-size-md);
+    width: 100%;
 }
 
 @media (max-width: 900px) {

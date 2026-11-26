@@ -3,6 +3,18 @@
 All notable technical changes to Iris will be documented in this file.
 Note: Formal version logging began after the v1.0.0 release; earlier iterative updates between initial deployment (Oct 10, 2026) and v1.0.0 are summarized together below.
 
+## 2026-11-26 - v1.1.1
+### Added
+- Added current version status on news page. 
+- Added `<hr>` lines between articles on news page. 
+
+### Fixed
+- Adjusted text sizing of `send message` button in the contact form and set `width` to `100%`. 
+
+### Changed
+- Changed title of contact page from `Contact Us & Support | Iris` to `Contact Us & Frequently Asked Questions | Iris`.
+- Rephrased answer to "Are my uploaded PDFs secure?" to include the link to `CHANGELOG.md`. 
+
 ## 2026-11-24 - v1.1.0 
 ### Added
 - Created `CHANGELOG.md` to track technical updates across versions.
